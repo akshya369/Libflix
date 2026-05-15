@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Libflix for Library Science</title>
+    <style>
+        :root {
+            --bg-primary: #f0f8ff;
+            --bg-secondary: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #546e7a;
+            --accent-light: #e3f2fd;
+            --accent: #4fc3f7;
+            --accent-dark: #0288d1;
+            --card-bg: white;
+            --card-shadow: 0 4px 12px rgba(79,195,247,0.2);
+            --border: #b3e5fc;
+            --nav-bg: #e3f2fd;
+            --footer-bg: white;
+        }
+
+        body.dark-theme {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-light: #1a1a1a;
+            --accent: #e50914;
+            --accent-dark: #ff3232;
+            --card-bg: #1e1e1e;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            --border: #333;
+            --nav-bg: #1e1e1e;
+            --footer-bg: #1e1e1e;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; transition: all 0.3s ease; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Navbar Improvements */
+        .navbar {
+            position: fixed;
+            top:0;
+            width:100%;
+            padding: 10px 5%;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            z-index:1000;
+            background: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+        .logo span { font-size:1.5rem; font-weight:800; color:var(--accent-dark); }
+
+        .nav-links { display:flex; gap:5px; list-style:none; }
+        .nav-links a {
+            text-decoration:none;
+            font-weight:600;
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        .nav-links a:hover { background: var(--accent); color: white; }
+
+        .nav-right { display:flex; align-items:center; gap:10px; }
+        .search-box {
+            border: 1px solid var(--border);
+            padding: 8px 15px;
+            border-radius: 20px;
+            outline: none;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .theme-toggle {
+            background: var(--accent-dark);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Hero Section */
+        .page-hero {
+            padding: 140px 5% 60px;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            text-align: center;
+            clip-path: ellipse(150% 100% at 50% 0%);
+        }
+
+        .page-hero h1 { font-size: 2.8rem; margin-bottom: 10px; }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 40px 5%;
+            max-width: 900px;
+            margin: -40px auto 0;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 20px;
+        }
+
+        .contact-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border);
+        }
+
+        .contact-info-side {
+            background: var(--accent-dark);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .contact-card h2 { margin-bottom: 20px; }
+        .contact-card input, .contact-card textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+        }
+
+        .contact-card input:focus, .contact-card textarea:focus {
+            outline: none;
+            border-color: var(--accent-dark);
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--accent-dark);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+        /* Footer */
+        .footer {
+            background: var(--footer-bg);
+            padding: 40px 5%;
+            margin-top: 60px;
+            text-align: center;
+            border-top: 2px solid var(--accent);
+        }
+        .footer-links { margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-secondary); text-decoration: none; }
+        .footer-links a:hover { color: var(--accent-dark); }
+
+        @media (max-width: 768px) {
+            .contact-section { grid-template-columns: 1fr; margin-top: 20px; }
+            .nav-links { display: none; } /* Consider a mobile menu later */
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="logo">
+        <span>📚 Libflix</span>
+    </a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pyq.html">PYQs</a></li>
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+        <input class="search-box" placeholder="Search resources...">
+        <button class="theme-toggle" id="themeBtn">🌙</button>
+    </div>
+</nav>
+
+<section class="page-hero">
+    <h1>📩 Get in Touch</h1>
+    <p>Empowering Library Science Students with the best resources.</p>
+</section>
+
+<section class="contact-section">
+    <div class="contact-card">
+        <h2>Send a Message</h2>
+        <form id="contactForm">
+            <input type="text" placeholder="Full Name" required>
+            <input type="email" placeholder="Email Address" required>
+            <input type="text" placeholder="Subject">
+            <textarea rows="5" placeholder="How can we help you?"></textarea>
+            <button type="submit" class="btn">Send Message</button>
+        </form>
+    </div>
+
+    <div class="contact-info-side">
+        <h3>Contact Details</h3>
+        <br>
+        <p><strong>📧 Email:</strong><br>libflix369@gmail.com</p>
+        <br>
+        <p><strong>📺 YouTube:</strong><br>LIBflix (Study with Akshaya)</p>
+        <br>
+        <p><strong>💬 Telegram:</strong><br>@libflix369</p>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-links">
+        <a href="about.html">About Us</a>
+        <a href="#">Privacy Policy</a>
+        <a href="contact.html">Contact</a>
+    </div>
+    <p>© 2026 <strong>Libflix</strong>. Built for Library Science Aspirants 💙</p>
+</footer>
+
+<script>
+    // Theme Toggle Logic
+    const themeBtn = document.getElementById('themeBtn');
+    const body = document.body;
+
+    themeBtn.addEventListener('click', () => {
+        body.classList.toggle('dark-theme');
+        if (body.classList.contains('dark-theme')) {
+            themeBtn.innerText = '☀️';
+        } else {
+            themeBtn.innerText = '🌙';
+        }
+    });
+
+    // Form Submit Message
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Thank you! Your message has been sent to Libflix.');
+    });
+</script>
+
+</body>
+</html>

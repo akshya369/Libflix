@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="University Level Library Science Previous Year Papers - IIT, NIT, IIIT, Central Universities, State Universities">
+    <title>University Papers - Library Science PYQs | Libflix</title>
+    <style>
+        :root {
+            --bg-primary: #f0f8ff;
+            --bg-secondary: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #546e7a;
+            --accent-light: #e3f2fd;
+            --accent: #4fc3f7;
+            --accent-dark: #0288d1;
+            --card-bg: white;
+            --card-shadow: 0 4px 12px rgba(79,195,247,0.2);
+            --border: #b3e5fc;
+            --nav-scrolled: #e3f2fd;
+            --footer-bg: white;
+            --university-accent: #ff9800;
+            --university-light: #fff3e0;
+            --university-dark: #f57c00;
+            --iit-accent: #2196f3;
+            --nit-accent: #4caf50;
+            --iiit-accent: #9c27b0;
+        }
+        body.dark-theme {
+            --bg-primary: #141414;
+            --bg-secondary: #1f1f1f;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-light: #330000;
+            --accent: #e50914;
+            --accent-dark: #b20710;
+            --card-bg: #1f1f1f;
+            --border: #330000;
+            --nav-scrolled: #141414;
+            --footer-bg: #1f1f1f;
+            --university-accent: #ffb74d;
+            --university-light: #3e2a1f;
+            --university-dark: #ffa726;
+            --iit-accent: #64b5f6;
+            --nit-accent: #81c784;
+            --iiit-accent: #ce93d8;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;transition:all 0.3s}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6}
+
+        /* NAVBAR (same as state-set.html) */
+        .navbar{position:fixed;top:0;width:100%;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;z-index:1000;background:linear-gradient(to bottom,var(--accent-light),transparent)}
+        .navbar.scrolled{background:var(--nav-scrolled);box-shadow:0 2px 10px rgba(0,0,0,0.08)}
+        .logo{font-size:1.8rem;font-weight:800;color:var(--accent-dark);text-decoration:none}
+        .nav-links{display:flex;gap:20px;list-style:none}
+        .nav-links a{font-weight:700;color:var(--text-primary);text-decoration:none;font-size:0.9rem}
+        .nav-links a:hover,.nav-links a.active{color:var(--accent-dark)}
+        .nav-right{display:flex;align-items:center;gap:12px}
+        .theme-toggle{background:var(--accent);color:white;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;font-weight:bold}
+        .theme-toggle:hover{transform:scale(1.05);background:var(--accent-dark)}
+        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+        .hamburger span{display:block;width:22px;height:2px;background:var(--text-primary);border-radius:2px}
+        .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+        .hamburger.open span:nth-child(2){opacity:0}
+        .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+        .mobile-nav{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-secondary);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+        .mobile-nav.open{display:flex}
+        .mobile-nav a{font-size:1.4rem;font-weight:700;color:var(--text-primary);text-decoration:none}
+        .mobile-nav a.active,.mobile-nav a:hover{color:var(--accent-dark)}
+        .mobile-nav-close{position:absolute;top:20px;right:5%;background:none;border:none;font-size:1.8rem;cursor:pointer;color:var(--text-primary)}
+
+        /* HERO */
+        .page-header{padding:110px 5% 44px;background:linear-gradient(135deg,var(--university-light) 0%,var(--accent-light) 100%);text-align:center}
+        .page-header h1{font-size:2.8rem;margin-bottom:12px;color:var(--text-primary)}
+        .page-header p{font-size:1.1rem;color:var(--text-secondary);max-width:680px;margin:0 auto}
+        .breadcrumb{margin-top:16px;font-size:0.88rem}
+        .breadcrumb a{color:var(--accent-dark);text-decoration:none}
+        .header-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+        .header-tag{background:var(--university-accent);color:white;padding:4px 14px;border-radius:20px;font-size:0.8rem;font-weight:600}
+
+        /* STATS */
+        .stats{display:flex;justify-content:space-around;padding:28px 5%;background:var(--bg-secondary);flex-wrap:wrap;gap:16px;border-bottom:3px solid var(--university-accent)}
+        .stat-item{text-align:center}
+        .stat-number{font-size:2rem;font-weight:800;color:var(--university-dark)}
+        .stat-label{color:var(--text-secondary);font-size:0.88rem}
+
+        /* UNIVERSITY TABS */
+        .uni-tabs{display:flex;justify-content:center;gap:12px;padding:20px 5%;flex-wrap:wrap}
+        .uni-tab{background:var(--card-bg);border:2px solid var(--border);padding:10px 24px;border-radius:30px;cursor:pointer;font-weight:700;transition:all 0.2s}
+        .uni-tab:hover,.uni-tab.active{background:var(--university-accent);color:white;border-color:var(--university-accent)}
+
+        /* UNIVERSITY GRID */
+        .uni-grid{padding:20px 5% 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
+        .uni-card{background:var(--card-bg);border-radius:15px;padding:20px;border:2px solid var(--border);transition:all 0.3s;cursor:pointer}
+        .uni-card:hover{transform:translateY(-5px);border-color:var(--university-accent)}
+        .uni-icon{font-size:2.5rem;margin-bottom:12px}
+        .uni-name{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:var(--text-primary)}
+        .uni-details{color:var(--text-secondary);font-size:0.85rem;margin:10px 0}
+        .uni-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:600;margin-right:8px}
+        .badge-iit{background:var(--iit-accent);color:white}
+        .badge-nit{background:var(--nit-accent);color:white}
+        .badge-iiit{background:var(--iiit-accent);color:white}
+        .badge-central{background:var(--university-accent);color:white}
+        .year-select-small{padding:6px;margin-top:12px;width:100%;border-radius:6px;border:2px solid var(--border);background:var(--card-bg);color:var(--text-primary)}
+
+        /* FOOTER */
+        .footer{background:var(--footer-bg);padding:44px 5%;margin-top:36px;border-top:3px solid var(--accent)}
+        .social-links{display:flex;gap:18px;margin-bottom:20px}
+        .social-links a{color:var(--accent-dark);text-decoration:none;font-size:1.4rem}
+        .footer-links{display:flex;flex-wrap:wrap;gap:14px 22px;margin-bottom:20px}
+        .footer-links a{color:var(--text-secondary);text-decoration:none;font-size:0.85rem}
+        .copyright{color:var(--text-secondary);font-size:0.8rem}
+
+        @media(max-width:900px){.nav-links{display:none}.hamburger{display:flex}}
+        @media(max-width:600px){.page-header h1{font-size:2rem}}
+    </style>
+</head>
+<body>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+    <a href="index.html">Home</a>
+    <a href="pyq.html">PYQs</a>
+    <a href="ugcnet.html">UGC NET</a>
+    <a href="state-set.html">State SETs</a>
+    <a href="university.html" class="active">University</a>
+    <a href="iit-nit.html">IIT/NIT/IIIT</a>
+    <a href="kvs-nvs.html">KVS/NVS/EMRS</a>
+    <a href="solutions.html">Solution Hub</a>
+    <a href="notes.html">Notes</a>
+    <a href="books.html">Books</a>
+    <a href="about.html">About</a>
+</nav>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="logo">📚 Libflix</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pyq.html">PYQs</a></li>
+        <li><a href="ugcnet.html">UGC NET</a></li>
+        <li><a href="state-set.html">State SETs</a></li>
+        <li><a href="university.html" class="active">University</a></li>
+        <li><a href="iit-nit.html">IIT/NIT/IIIT</a></li>
+        <li><a href="kvs-nvs.html">KVS/NVS/EMRS</a></li>
+        <li><a href="solutions.html">Solution Hub</a></li>
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+        <button class="theme-toggle" onclick="toggleTheme()"><span id="themeIcon">🌙</span><span>Dark</span></button>
+        <button class="hamburger" id="hamburger" onclick="openMobileNav()"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="page-header">
+    <h1>🎓 University Level Papers</h1>
+    <p>Previous year question papers from IITs, NITs, IIITs, Central & State Universities</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="pyq.html">PYQs</a> / <span>University Papers</span></div>
+    <div class="header-tags">
+        <span class="header-tag">🏛️ 7 IITs</span>
+        <span class="header-tag">🏫 31 NITs</span>
+        <span class="header-tag">💻 20 IIITs</span>
+        <span class="header-tag">📚 50+ Universities</span>
+    </div>
+</section>
+
+<!-- Stats -->
+<div class="stats">
+    <div class="stat-item"><div class="stat-number">7</div><div class="stat-label">IITs</div></div>
+    <div class="stat-item"><div class="stat-number">31</div><div class="stat-label">NITs</div></div>
+    <div class="stat-item"><div class="stat-number">20</div><div class="stat-label">IIITs</div></div>
+    <div class="stat-item"><div class="stat-number">50+</div><div class="stat-label">Universities</div></div>
+    <div class="stat-item"><div class="stat-number">500+</div><div class="stat-label">Papers</div></div>
+</div>
+
+<!-- Tabs -->
+<div class="uni-tabs">
+    <div class="uni-tab active" data-category="all" onclick="filterUniversities('all')">All</div>
+    <div class="uni-tab" data-category="iit" onclick="filterUniversities('iit')">IITs (7)</div>
+    <div class="uni-tab" data-category="nit" onclick="filterUniversities('nit')">NITs (31)</div>
+    <div class="uni-tab" data-category="iiit" onclick="filterUniversities('iiit')">IIITs (20)</div>
+    <div class="uni-tab" data-category="central" onclick="filterUniversities('central')">Central Universities</div>
+</div>
+
+<!-- University Grid -->
+<div class="uni-grid" id="uniGrid"></div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="social-links">
+        <a href="https://www.youtube.com/@LIBflix-w6y" target="_blank">📺</a>
+        <a href="https://t.me/libflix369" target="_blank">💬</a>
+        <a href="mailto:libflix369@gmail.com">📧</a>
+    </div>
+    <div class="footer-links">
+        <a href="about.html">About Us</a><a href="privacy.html">Privacy Policy</a>
+        <a href="contact.html">Contact</a><a href="faq.html">FAQ</a>
+    </div>
+    <div class="copyright">
+        <p>© 2026 Libflix. Complete PYQ Library for Library Science Aspirants</p>
+    </div>
+</footer>
+
+<script>
+    const universities = [
+        // IITs
+        { name: "IIT Delhi", category: "iit", years: ["2020", "2021", "2022", "2023"], papers: 8, type: "IIT" },
+        { name: "IIT Bombay", category: "iit", years: ["2020", "2021", "2022", "2023"], papers: 8, type: "IIT" },
+        { name: "IIT Madras", category: "iit", years: ["2020", "2021", "2022", "2023"], papers: 8, type: "IIT" },
+        { name: "IIT Kanpur", category: "iit", years: ["2019", "2020", "2021", "2022"], papers: 7, type: "IIT" },
+        { name: "IIT Kharagpur", category: "iit", years: ["2019", "2020", "2021", "2022"], papers: 7, type: "IIT" },
+        { name: "IIT Roorkee", category: "iit", years: ["2020", "2021", "2022", "2023"], papers: 7, type: "IIT" },
+        { name: "IIT Guwahati", category: "iit", years: ["2020", "2021", "2022"], papers: 6, type: "IIT" },
+        // NITs
+        { name: "NIT Trichy", category: "nit", years: ["2020", "2021", "2022", "2023"], papers: 8, type: "NIT" },
+        { name: "NIT Surathkal", category: "nit", years: ["2020", "2021", "2022"], papers: 7, type: "NIT" },
+        { name: "NIT Warangal", category: "nit", years: ["2020", "2021", "2022"], papers: 7, type: "NIT" },
+        { name: "NIT Calicut", category: "nit", years: ["2019", "2020", "2021", "2022"], papers: 7, type: "NIT" },
+        { name: "NIT Rourkela", category: "nit", years: ["2020", "2021", "2022"], papers: 6, type: "NIT" },
+        { name: "NIT Durgapur", category: "nit", years: ["2019", "2020", "2021"], papers: 6, type: "NIT" },
+        // IIITs
+        { name: "IIIT Hyderabad", category: "iiit", years: ["2020", "2021", "2022", "2023"], papers: 8, type: "IIIT" },
+        { name: "IIIT Bangalore", category: "iiit", years: ["2020", "2021", "2022"], papers: 7, type: "IIIT" },
+        { name: "IIIT Delhi", category: "iiit", years: ["2020", "2021", "2022"], papers: 6, type: "IIIT" },
+        { name: "IIIT Allahabad", category: "iiit", years: ["2019", "2020", "2021", "2022"], papers: 7, type: "IIIT" },
+        // Central Universities
+        { name: "BHU", category: "central", years: ["2020", "2021", "2022", "2023"], papers: 8, type: "Central" },
+        { name: "JNU", category: "central", years: ["2020", "2021", "2022"], papers: 7, type: "Central" },
+        { name: "DU", category: "central", years: ["2020", "2021", "2022", "2023"], papers: 8, type: "Central" },
+        { name: "Hyderabad University", category: "central", years: ["2020", "2021", "2022"], papers: 6, type: "Central" },
+        { name: "Pondicherry University", category: "central", years: ["2019", "2020", "2021", "2022"], papers: 7, type: "Central" }
+    ];
+
+    function renderUniversities(category) {
+        const filtered = category === 'all' ? universities : universities.filter(u => u.category === category);
+        const grid = document.getElementById('uniGrid');
+        grid.innerHTML = filtered.map(uni => `
+            <div class="uni-card" data-category="${uni.category}">
+                <div class="uni-icon">${uni.type === 'IIT' ? '🏛️' : uni.type === 'NIT' ? '🏫' : uni.type === 'IIIT' ? '💻' : '📚'}</div>
+                <div class="uni-name">${uni.name}</div>
+                <div class="uni-details">
+                    <span class="uni-badge badge-${uni.category}">${uni.type}</span>
+                    <span>📄 ${uni.papers} Papers</span>
+                </div>
+                <select class="year-select-small" onchange="downloadPaper('${uni.name.replace(/\s/g, '_')}', this.value)">
+                    <option value="">Select Year →</option>
+                    ${uni.years.map(year => `<option value="${uni.name.replace(/\s/g, '_')}_${year}.pdf">${year} - Paper</option>`).join('')}
+                    ${uni.years.map(year => `<option value="${uni.name.replace(/\s/g, '_')}_${year}_key.pdf">${year} - Answer Key</option>`).join('')}
+                </select>
+            </div>
+        `).join('');
+    }
+
+    function filterUniversities(category) {
+        document.querySelectorAll('.uni-tab').forEach(tab => tab.classList.remove('active'));
+        event.target.classList.add('active');
+        renderUniversities(category);
+    }
+
+    function downloadPaper(name, value) {
+        if (!value) return;
+        window.open(`university_papers/${value}`, '_blank');
+    }
+
+    renderUniversities('all');
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        const dark = document.body.classList.contains('dark-theme');
+        document.getElementById('themeIcon').textContent = dark ? '☀️' : '🌙';
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }
+    
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+        document.getElementById('themeIcon').textContent = '☀️';
+    }
+
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    function openMobileNav() {
+        document.getElementById('mobileNav').classList.add('open');
+        document.getElementById('hamburger').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeMobileNav() {
+        document.getElementById('mobileNav').classList.remove('open');
+        document.getElementById('hamburger').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+</script>
+</body>
+</html>

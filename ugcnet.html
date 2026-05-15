@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UGC NET Library Science Previous Year Question Papers - Complete collection 2004-2024 with answer keys">
+    <title>UGC NET Library Science PYQs - Libflix</title>
+    <style>
+        :root {
+            --bg-primary: #f0f8ff;
+            --bg-secondary: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #546e7a;
+            --accent-light: #e3f2fd;
+            --accent: #4fc3f7;
+            --accent-dark: #0288d1;
+            --card-bg: white;
+            --card-shadow: 0 4px 12px rgba(79,195,247,0.2);
+            --card-hover: 0 8px 24px rgba(2,136,209,0.3);
+            --border: #b3e5fc;
+            --nav-scrolled: #e3f2fd;
+            --footer-bg: white;
+            --glow-color: rgba(79,195,247,0.5);
+            --badge-bg: #4fc3f7;
+            --ugc-accent: #9c27b0;
+            --ugc-light: #f3e5f5;
+            --ugc-dark: #6a1b9a;
+        }
+        body.dark-theme {
+            --bg-primary: #141414;
+            --bg-secondary: #1f1f1f;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-light: #330000;
+            --accent: #e50914;
+            --accent-dark: #b20710;
+            --card-bg: #1f1f1f;
+            --card-shadow: 0 4px 12px rgba(229,9,20,0.3);
+            --card-hover: 0 8px 24px rgba(229,9,20,0.5);
+            --border: #330000;
+            --nav-scrolled: #141414;
+            --footer-bg: #1f1f1f;
+            --glow-color: rgba(229,9,20,0.5);
+            --badge-bg: #e50914;
+            --ugc-accent: #ce93d8;
+            --ugc-light: #2a1030;
+            --ugc-dark: #ce93d8;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;transition:background-color 0.3s,color 0.3s,border-color 0.3s}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6}
+
+        /* Accessibility - Screen Reader Only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+
+        /* NAV */
+        .navbar{position:fixed;top:0;width:100%;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;z-index:1000;background:linear-gradient(to bottom,var(--accent-light),transparent)}
+        .navbar.scrolled{background:var(--nav-scrolled);box-shadow:0 2px 10px rgba(0,0,0,0.08)}
+        .logo{font-size:1.8rem;font-weight:800;color:var(--accent-dark);text-decoration:none;flex-shrink:0}
+        .logo:focus-visible{outline:2px solid var(--ugc-accent);outline-offset:2px}
+        .nav-links{display:flex;gap:20px;list-style:none}
+        .nav-links a{font-weight:700;color:var(--text-primary);text-decoration:none;font-size:0.9rem;transition:color 0.2s}
+        .nav-links a:hover,.nav-links a.active{color:var(--accent-dark)}
+        .nav-links a:focus-visible{outline:2px solid var(--ugc-accent);outline-offset:2px}
+        .nav-right{display:flex;align-items:center;gap:12px}
+        .search-wrapper{position:relative}
+        .search-box{background:var(--card-bg);border:2px solid var(--accent);padding:8px 32px 8px 34px;border-radius:20px;color:var(--text-primary);width:220px;outline:none;font-size:0.88rem;transition:width 0.3s}
+        .search-box:focus{border-color:var(--accent-dark);width:270px;outline:2px solid var(--ugc-accent);outline-offset:2px}
+        .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text-secondary);pointer-events:none}
+        .search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:13px;color:var(--text-secondary);display:none;padding:2px}
+        .search-clear:focus-visible{outline:2px solid var(--ugc-accent);border-radius:50%}
+        .search-clear.visible{display:block}
+        .search-results{position:absolute;top:calc(100% + 6px);left:0;width:340px;background:var(--card-bg);border:2px solid var(--accent);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:320px;overflow-y:auto;display:none;z-index:2000}
+        .search-results.open{display:block}
+        .sri{padding:11px 14px;cursor:pointer;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;transition:background 0.15s}
+        .sri:last-child{border-bottom:none}
+        .sri:hover,.sri:focus{background:var(--accent-light);outline:none}
+        .sri-title{font-weight:600;font-size:0.88rem;color:var(--text-primary)}
+        .sri-title mark{background:rgba(255,200,0,0.35);color:inherit;border-radius:2px;padding:0 1px}
+        .sri-desc{font-size:0.78rem;color:var(--text-secondary)}
+        .sri-badge{font-size:0.7rem;background:var(--ugc-accent);color:white;padding:2px 7px;border-radius:10px;flex-shrink:0}
+        .no-results{padding:18px;text-align:center;color:var(--text-secondary);font-size:0.88rem}
+        .theme-toggle{background:var(--accent);color:white;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;font-weight:bold;font-size:0.85rem;display:flex;align-items:center;gap:5px;flex-shrink:0;transition:background 0.2s,transform 0.2s}
+        .theme-toggle:hover{transform:scale(1.05);background:var(--accent-dark)}
+        .theme-toggle:focus-visible{outline:2px solid var(--ugc-accent);outline-offset:2px}
+        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+        .hamburger span{display:block;width:22px;height:2px;background:var(--text-primary);border-radius:2px;transition:all 0.3s}
+        .hamburger:focus-visible{outline:2px solid var(--ugc-accent);border-radius:4px}
+        .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+        .hamburger.open span:nth-child(2){opacity:0}
+        .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+        .mobile-nav{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-secondary);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+        .mobile-nav.open{display:flex}
+        .mobile-nav a{font-size:1.4rem;font-weight:700;color:var(--text-primary);text-decoration:none}
+        .mobile-nav a.active,.mobile-nav a:hover{color:var(--accent-dark)}
+        .mobile-nav a:focus-visible{outline:2px solid var(--ugc-accent);outline-offset:2px}
+        .mobile-nav-close{position:absolute;top:20px;right:5%;background:none;border:none;font-size:1.8rem;cursor:pointer;color:var(--text-primary)}
+        .mobile-nav-close:focus-visible{outline:2px solid var(--ugc-accent);border-radius:4px}
+
+        /* HERO */
+        .page-header{padding:110px 5% 44px;background:linear-gradient(135deg,var(--ugc-light) 0%,var(--accent-light) 60%,var(--accent) 100%);text-align:center}
+        .page-header h1{font-size:2.8rem;margin-bottom:12px;color:var(--text-primary)}
+        .page-header p{font-size:1.1rem;color:var(--text-secondary);max-width:680px;margin:0 auto}
+        .breadcrumb{margin-top:16px;font-size:0.88rem;color:var(--text-secondary)}
+        .breadcrumb a{color:var(--accent-dark);text-decoration:none}
+        .breadcrumb a:focus-visible{outline:2px solid var(--ugc-accent);outline-offset:2px}
+        .header-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+        .header-tag{background:var(--ugc-accent);color:white;padding:4px 14px;border-radius:20px;font-size:0.8rem;font-weight:600}
+
+        /* STATS */
+        .stats{display:flex;justify-content:space-around;padding:28px 5%;background:var(--bg-secondary);flex-wrap:wrap;gap:16px;border-bottom:3px solid var(--ugc-accent)}
+        .stat-item{text-align:center}
+        .stat-number{font-size:2rem;font-weight:800;color:var(--ugc-dark)}
+        .stat-label{color:var(--text-secondary);font-size:0.88rem;margin-top:4px}
+
+        /* ANALYSIS STRIP */
+        .analysis-strip{background:var(--ugc-light);padding:20px 5%;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;border-bottom:1px solid var(--border)}
+        .analysis-pill{background:var(--card-bg);border:1.5px solid var(--ugc-accent);color:var(--ugc-dark);padding:8px 18px;border-radius:30px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px}
+
+        /* TOPIC FILTER */
+        .filter-section{padding:28px 5% 8px}
+        .filter-label{text-align:center;font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em}
+        .filter-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+        .filter-tag{background:var(--card-bg);padding:8px 18px;border-radius:30px;cursor:pointer;font-size:0.88rem;border:2px solid var(--accent);color:var(--text-primary);transition:all 0.2s;user-select:none}
+        .filter-tag:hover,.filter-tag.active{background:var(--ugc-accent);color:white;border-color:var(--ugc-accent);transform:translateY(-2px)}
+        .filter-tag:focus-visible{outline:2px solid var(--ugc-accent);outline-offset:2px;transform:translateY(-2px)}
+
+        /* YEAR TABS */
+        .year-nav{padding:20px 5% 0;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+        .year-tab{background:var(--card-bg);border:2px solid var(--border);padding:6px 16px;border-radius:8px;cursor:pointer;font-size:0.82rem;font-weight:700;color:var(--text-secondary);transition:all 0.2s;user-select:none}
+        .year-tab:hover{border-color:var(--ugc-accent);color:var(--ugc-dark)}
+        .year-tab.active{background:var(--ugc-accent);color:white;border-color:var(--ugc-accent)}
+        .year-tab:focus-visible{outline:2px solid var(--ugc-accent);outline-offset:2px}
+
+        /* SECTIONS */
+        .pyq-section{padding:32px 5%}
+        .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+        .section-header h2{font-size:1.6rem;color:var(--text-primary);display:flex;align-items:center;gap:8px}
+        .section-header a{color:var(--ugc-dark);text-decoration:none;font-weight:600;font-size:0.88rem}
+        .section-header a:focus-visible{outline:2px solid var(--ugc-accent);outline-offset:2px}
+
+        /* CARDS */
+        .flash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+        .flash-card{background:var(--card-bg);border-radius:15px;padding:22px 18px;position:relative;box-shadow:var(--card-shadow);border:2px solid var(--border);transition:transform 0.3s,box-shadow 0.3s,border-color 0.3s,opacity 0.3s;display:flex;flex-direction:column;overflow:hidden;cursor:pointer}
+        @media (prefers-reduced-motion: reduce) {
+            .flash-card { transition: none; }
+            .flash-card:hover { transform: none; }
+        }
+        .flash-card:nth-child(1){animation-delay:0s}.flash-card:nth-child(2){animation-delay:0.2s}.flash-card:nth-child(3){animation-delay:0.4s}.flash-card:nth-child(4){animation-delay:0.6s}.flash-card:nth-child(5){animation-delay:0.8s}.flash-card:nth-child(6){animation-delay:1s}.flash-card:nth-child(7){animation-delay:1.2s}.flash-card:nth-child(8){animation-delay:1.4s}
+        .flash-card:hover,.flash-card:focus-within{animation-play-state:paused;transform:translateY(-5px);border-color:var(--ugc-accent);box-shadow:0 8px 28px rgba(156,39,176,0.25)}
+        .flash-card.hidden{display:none}
+        .flash-card::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.13),transparent);transition:left 0.5s;pointer-events:none}
+        .flash-card:hover::after{left:100%}
+        .flash-card.glow{animation:cardGlow 0.5s ease forwards}
+        @keyframes cardGlow{0%{box-shadow:0 0 0 var(--glow-color)}50%{box-shadow:0 0 40px rgba(156,39,176,0.4);transform:scale(1.04)}100%{box-shadow:var(--card-shadow);transform:translateY(-5px)}}
+        .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+        .card-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;background:var(--ugc-light);color:var(--ugc-dark);flex-shrink:0}
+        .card-badge{background:var(--ugc-accent);color:white;padding:3px 10px;border-radius:20px;font-size:0.73rem;font-weight:700}
+        .card-badge.new{background:#4caf50}.card-badge.hot{background:#ff5722}.card-badge.bundle{background:#ff9800}
+        .flash-card h3{color:var(--text-primary);font-size:1.15rem;margin-bottom:7px}
+        .flash-card p{color:var(--text-secondary);font-size:0.88rem;margin-bottom:10px;flex-grow:1}
+        .card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+        .card-stats{display:flex;gap:10px;color:var(--text-secondary);font-size:0.8rem;flex-wrap:wrap}
+        .card-link{color:var(--ugc-dark);text-decoration:none;font-weight:700;font-size:0.85rem;white-space:nowrap}
+        .card-link:focus-visible{outline:2px solid var(--ugc-accent);outline-offset:2px}
+
+        /* FEATURED */
+        .featured-card{grid-column:span 2;background:linear-gradient(135deg,var(--ugc-light),var(--card-bg));border:2px solid var(--ugc-accent)}
+
+        /* DROPDOWN */
+        .year-dropdown-container{margin:10px 0;padding:12px;background:var(--ugc-light);border-radius:8px}
+        .year-dropdown-container label{display:block;margin-bottom:7px;font-weight:700;color:var(--text-primary);font-size:0.85rem}
+        .year-select{width:100%;padding:9px 12px;border-radius:8px;border:2px solid var(--ugc-accent);background:var(--card-bg);color:var(--text-primary);font-size:0.87rem;outline:none;cursor:pointer}
+        .year-select:focus{border-color:var(--ugc-dark);outline:2px solid var(--ugc-accent)}
+        .bundle-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+        .bundle-row span{color:var(--text-secondary);font-size:0.82rem}
+        .bundle-btn{background:var(--ugc-dark);color:white;padding:6px 12px;border-radius:5px;text-decoration:none;font-size:0.82rem;transition:opacity 0.2s}
+        .bundle-btn:hover{opacity:0.85}
+        .bundle-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+        /* ANSWER KEY TOGGLE */
+        .ak-toggle{display:flex;align-items:center;gap:8px;margin:8px 0;padding:8px 12px;background:var(--accent-light);border-radius:8px;cursor:pointer;border:1.5px solid var(--border);transition:border-color 0.2s}
+        .ak-toggle:hover{border-color:var(--ugc-accent)}
+        .ak-toggle input{accent-color:var(--ugc-accent);width:16px;height:16px;cursor:pointer}
+        .ak-toggle label{font-size:0.85rem;font-weight:600;color:var(--text-primary);cursor:pointer}
+        .ak-badge{margin-left:auto;font-size:0.72rem;background:var(--ugc-accent);color:white;padding:2px 8px;border-radius:10px}
+
+        /* TOPIC WISE TABLE */
+        .topic-table{width:100%;border-collapse:collapse;margin-top:12px}
+        .topic-table th{background:var(--ugc-light);color:var(--ugc-dark);padding:10px 14px;text-align:left;font-size:0.85rem;font-weight:700;border-bottom:2px solid var(--ugc-accent)}
+        .topic-table td{padding:9px 14px;font-size:0.85rem;color:var(--text-primary);border-bottom:1px solid var(--border)}
+        .topic-table tr:hover td{background:var(--accent-light)}
+        .topic-table tr:focus-within td{background:var(--accent-light)}
+        .topic-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;min-width:80px}
+        .topic-bar-fill{height:100%;background:var(--ugc-accent);border-radius:4px;transition:width 0.6s ease}
+
+        /* NO RESULTS */
+        .no-cards-msg{text-align:center;padding:40px;color:var(--text-secondary);grid-column:1/-1;display:none}
+        .no-cards-msg.visible{display:block}
+
+        /* FOOTER */
+        .footer{background:var(--footer-bg);padding:44px 5%;margin-top:36px;border-top:3px solid var(--accent)}
+        .social-links{display:flex;gap:18px;margin-bottom:20px}
+        .social-links a{color:var(--accent-dark);text-decoration:none;font-size:1.4rem}
+        .social-links a:focus-visible{outline:2px solid var(--ugc-accent);outline-offset:2px}
+        .footer-links{display:flex;flex-wrap:wrap;gap:14px 22px;margin-bottom:20px}
+        .footer-links a{color:var(--text-secondary);text-decoration:none;font-size:0.85rem}
+        .footer-links a:hover{color:var(--accent-dark)}
+        .footer-links a:focus-visible{outline:2px solid var(--ugc-accent);outline-offset:2px}
+        .copyright{color:var(--text-secondary);font-size:0.8rem}
+        .copyright p+p{margin-top:5px}
+
+        /* RESPONSIVE */
+        @media(max-width:900px){.nav-links{display:none}.hamburger{display:flex}.search-box{width:160px}.search-box:focus{width:200px}.featured-card{grid-column:span 1}}
+        @media(max-width:600px){.page-header h1{font-size:2rem}.page-header{padding:100px 5% 28px}.search-box{width:130px}.flash-grid{grid-template-columns:1fr}.section-header{flex-direction:column;align-items:flex-start;gap:6px}.stats{padding:18px 5%}.stat-number{font-size:1.6rem}.theme-toggle span:last-child{display:none}.analysis-strip{gap:10px}}
+    </style>
+</head>
+<body>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+    <button class="mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">✕</button>
+    <a href="index.html">Home</a>
+    <a href="pyq.html">PYQs</a>
+    <a href="ugcnet.html" class="active">UGC NET</a>
+    <a href="solutions.html">Solution Hub</a>
+    <a href="notes.html">Notes</a>
+    <a href="books.html">Books</a>
+    <a href="about.html">About</a>
+</nav>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar" aria-label="Main navigation">
+    <a href="index.html" class="logo" aria-label="Libflix Home">📚 Libflix</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pyq.html">PYQs</a></li>
+        <li><a href="ugcnet.html" class="active">UGC NET</a></li>
+        <li><a href="solutions.html">Solution Hub</a></li>
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+        <div class="search-wrapper">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input type="text" class="search-box" id="searchInput" placeholder="Search papers..." autocomplete="off" aria-label="Search papers">
+            <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Clear search">✕</button>
+            <div class="search-results" id="searchResults" role="listbox"></div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+            <span id="themeIcon" aria-hidden="true">🌙</span><span id="themeText">Dark</span>
+        </button>
+        <button class="hamburger" id="hamburger" onclick="openMobileNav()" aria-label="Open menu" aria-expanded="false">
+            <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+        </button>
+    </div>
+</nav>
+
+<main>
+    <!-- Hero -->
+    <header class="page-header">
+        <h1>🎯 UGC NET Library Science</h1>
+        <p>Complete previous year question papers from 2004–2024 with answer keys, topic-wise filters and detailed analysis</p>
+        <div class="breadcrumb"><a href="index.html">Home</a> / <a href="pyq.html">PYQs</a> / <span>UGC NET</span></div>
+        <div class="header-tags">
+            <span class="header-tag">📄 Paper 1 &amp; 2</span>
+            <span class="header-tag">🔑 Answer Keys</span>
+            <span class="header-tag">📊 Topic-Wise</span>
+            <span class="header-tag">📅 2004–2024</span>
+        </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats">
+        <div class="stat-item"><div class="stat-number">30+</div><div class="stat-label">Question Papers</div></div>
+        <div class="stat-item"><div class="stat-number">4,500+</div><div class="stat-label">Total Questions</div></div>
+        <div class="stat-item"><div class="stat-number">20</div><div class="stat-label">Years Covered</div></div>
+        <div class="stat-item"><div class="stat-number">10</div><div class="stat-label">Topic Units</div></div>
+        <div class="stat-item"><div class="stat-number">100%</div><div class="stat-label">Free Access</div></div>
+    </div>
+
+    <!-- Analysis strip -->
+    <div class="analysis-strip">
+        <div class="analysis-pill"><span aria-hidden="true">📌</span> Most repeated: Classification &amp; Cataloguing</div>
+        <div class="analysis-pill"><span aria-hidden="true">🔥</span> Trending unit: IT &amp; Digital Libraries</div>
+        <div class="analysis-pill"><span aria-hidden="true">💡</span> Avg. cut-off: 55–60 marks</div>
+        <div class="analysis-pill"><span aria-hidden="true">📆</span> Next exam: Dec 2025</div>
+    </div>
+
+    <!-- Topic Filter -->
+    <section class="filter-section" aria-label="Topic filters">
+        <div class="filter-label">Filter by Topic Unit</div>
+        <div class="filter-tags">
+            <div class="filter-tag active" data-topic="all" onclick="filterCards('all',this)" tabindex="0" role="button" aria-pressed="true">All Units</div>
+            <div class="filter-tag" data-topic="classification" onclick="filterCards('classification',this)" tabindex="0" role="button">Classification</div>
+            <div class="filter-tag" data-topic="cataloguing" onclick="filterCards('cataloguing',this)" tabindex="0" role="button">Cataloguing</div>
+            <div class="filter-tag" data-topic="management" onclick="filterCards('management',this)" tabindex="0" role="button">Management</div>
+            <div class="filter-tag" data-topic="ict" onclick="filterCards('ict',this)" tabindex="0" role="button">ICT &amp; Digital</div>
+            <div class="filter-tag" data-topic="reference" onclick="filterCards('reference',this)" tabindex="0" role="button">Reference Services</div>
+            <div class="filter-tag" data-topic="research" onclick="filterCards('research',this)" tabindex="0" role="button">Research Methods</div>
+        </div>
+    </section>
+
+    <!-- Year quick-jump tabs -->
+    <div class="year-nav" id="yearNav">
+        <div class="year-tab active" data-year="all" onclick="jumpYear('all',this)" tabindex="0" role="button">All Years</div>
+        <div class="year-tab" data-year="2024" onclick="jumpYear('2024',this)" tabindex="0" role="button">2024</div>
+        <div class="year-tab" data-year="2023" onclick="jumpYear('2023',this)" tabindex="0" role="button">2023</div>
+        <div class="year-tab" data-year="2022" onclick="jumpYear('2022',this)" tabindex="0" role="button">2022</div>
+        <div class="year-tab" data-year="2021" onclick="jumpYear('2021',this)" tabindex="0" role="button">2021</div>
+        <div class="year-tab" data-year="2020" onclick="jumpYear('2020',this)" tabindex="0" role="button">2020</div>
+        <div class="year-tab" data-year="2019" onclick="jumpYear('2019',this)" tabindex="0" role="button">2019</div>
+        <div class="year-tab" data-year="2018" onclick="jumpYear('2018',this)" tabindex="0" role="button">2018</div>
+        <div class="year-tab" data-year="older" onclick="jumpYear('older',this)" tabindex="0" role="button">2004–2017</div>
+    </div>
+
+    <!-- ===== RECENT PAPERS ===== -->
+    <section class="pyq-section" id="recent-papers" aria-label="Recent question papers">
+        <div class="section-header">
+            <h2>🆕 Recent Papers (2020–2024)</h2>
+            <a href="#" aria-label="Download all recent papers">Download All Recent →</a>
+        </div>
+        <div class="flash-grid" id="mainGrid">
+
+            <!-- 2024 June -->
+            <article class="flash-card featured-card" data-filter="all" data-year="2024" data-search="ugc net june 2024 library science paper 2 answer key latest" onclick="glowCard(this)">
+                <div class="card-header">
+                    <div class="card-icon" aria-hidden="true">24</div>
+                    <span class="card-badge new">LATEST</span>
+                </div>
+                <h3>UGC NET June 2024</h3>
+                <p>The most recent UGC NET Library Science paper. Includes Paper 2 with 100 questions covering all 10 units. Official NTA answer key included.</p>
+                <div class="ak-toggle">
+                    <input type="checkbox" id="ak2024j" onchange="toggleAK(this,'ak2024j-info')" aria-label="Include answer key">
+                    <label for="ak2024j">Include Answer Key</label>
+                    <span class="ak-badge">Official NTA</span>
+                </div>
+                <div id="ak2024j-info" style="display:none;font-size:0.8rem;color:var(--ugc-dark);padding:6px 0;">✅ Answer key + detailed explanations included in download</div>
+                <div class="year-dropdown-container">
+                    <label for="select2024j">📥 Select Download:</label>
+                    <select id="select2024j" class="year-select" onchange="downloadPDF(this.value,'UGC NET June 2024');this.value=''" aria-label="Download options for 2024 June paper">
+                        <option value="">-- Choose Paper --</option>
+                        <option value="ugcnet/2024june_p2.pdf">2024 June – Paper 2 (Question Paper)</option>
+                        <option value="ugcnet/2024june_ak.pdf">2024 June – Official Answer Key</option>
+                        <option value="ugcnet/2024june_bundle.pdf">2024 June – Complete Bundle</option>
+                    </select>
+                    <div class="bundle-row">
+                        <span>📄 3 Files</span>
+                        <a href="ugcnet/2024june_bundle.pdf" download class="bundle-btn" aria-label="Download complete bundle for 2024 June">📥 Full Bundle</a>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="card-stats"><span>📝 100 Qs</span><span>⭐ All units</span></div>
+                    <a href="ugcnet/2024june_bundle.pdf" class="card-link" download aria-label="Download 2024 June paper">Download →</a>
+                </div>
+            </article>
+
+            <!-- 2023 Dec -->
+            <article class="flash-card" data-filter="all" data-year="2023" data-search="ugc net december 2023 library science paper 2 answer key" onclick="glowCard(this)">
+                <div class="card-header">
+                    <div class="card-icon" aria-hidden="true">23</div>
+                    <span class="card-badge hot">TRENDING</span>
+                </div>
+                <h3>UGC NET December 2023</h3>
+                <p>Complete Paper 2 with 100 questions. Official answer key + expert explanations for all questions.</p>
+                <div class="ak-toggle">
+                    <input type="checkbox" id="ak2023d" onchange="toggleAK(this,'ak2023d-info')" aria-label="Include answer key">
+                    <label for="ak2023d">Include Answer Key</label>
+                    <span class="ak-badge">Official NTA</span>
+                </div>
+                <div id="ak2023d-info" style="display:none;font-size:0.8rem;color:var(--ugc-dark);padding:6px 0;">✅ Answer key included in download</div>
+                <div class="year-dropdown-container">
+                    <label for="select2023d">📥 Select Download:</label>
+                    <select id="select2023d" class="year-select" onchange="downloadPDF(this.value,'UGC NET Dec 2023');this.value=''" aria-label="Download options for 2023 December paper">
+                        <option value="">-- Choose Paper --</option>
+                        <option value="ugcnet/2023dec_p2.pdf">2023 Dec – Paper 2</option>
+                        <option value="ugcnet/2023dec_ak.pdf">2023 Dec – Answer Key</option>
+                        <option value="ugcnet/2023dec_bundle.pdf">2023 Dec – Bundle</option>
+                    </select>
+                    <div class="bundle-row">
+                        <span>📄 3 Files</span>
+                        <a href="ugcnet/2023dec_bundle.pdf" download class="bundle-btn" aria-label="Download complete bundle for 2023 December">📥 Bundle</a>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="card-stats"><span>📝 100 Qs</span><span>▶️ Video solutions</span></div>
+                    <a href="ugcnet/2023dec_bundle.pdf" class="card-link" download aria-label="Download 2023 December paper">Download →</a>
+                </div>
+            </article>
+
+            <!-- 2023 June -->
+            <article class="flash-card" data-filter="all" data-year="2023" data-search="ugc net june 2023 library science paper 2" onclick="glowCard(this)">
+                <div class="card-header">
+                    <div class="card-icon" aria-hidden="true">23</div>
+                    <span class="card-badge">JUNE</span>
+                </div>
+                <h3>UGC NET June 2023</h3>
+                <p>Paper 2 with complete answer key. Heavily tested units: Classification, ICT, and Management.</p>
+                <div class="ak-toggle">
+                    <input type="checkbox" id="ak2023j" onchange="toggleAK(this,'ak2023j-info')" aria-label="Include answer key">
+                    <label for="ak2023j">Include Answer Key</label>
+                    <span class="ak-badge">Official NTA</span>
+                </div>
+                <div id="ak2023j-info" style="display:none;font-size:0.8rem;color:var(--ugc-dark);padding:6px 0;">✅ Answer key included</div>
+                <div class="year-dropdown-container">
+                    <label for="select2023j">📥 Select Download:</label>
+                    <select id="select2023j" class="year-select" onchange="downloadPDF(this.value,'UGC NET June 2023');this.value=''" aria-label="Download options for 2023 June paper">
+                        <option value="">-- Choose Paper --</option>
+                        <option value="ugcnet/2023june_p2.pdf">2023 June – Paper 2</option>
+                        <option value="ugcnet/2023june_ak.pdf">2023 June – Answer Key</option>
+                    </select>
+                    <div class="bundle-row">
+                        <span>📄 2 Files</span>
+                        <a href="ugcnet/2023june_bundle.pdf" download class="bundle-btn" aria-label="Download complete bundle for 2023 June">📥 Bundle</a>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="card-stats"><span>📝 100 Qs</span></div>
+                    <a href="ugcnet/2023june_bundle.pdf" class="card-link" download aria-label="Download 2023 June paper">Download →</a>
+                </div>
+            </article>
+
+            <!-- 2022 Dec -->
+            <article class="flash-card" data-filter="all" data-year="2022" data-search="ugc net december 2022 library science paper 2" onclick="glowCard(this)">
+                <div class="card-header"><div class="card-icon" aria-hidden="true">22</div><span class="card-badge">DEC</span></div>
+                <h3>UGC NET December 2022</h3>
+                <p>Paper 2 with official answer key. Special focus on Research Methods and Digital Libraries.</p>
+                <div class="year-dropdown-container">
+                    <label for="select2022d">📥 Select Download:</label>
+                    <select id="select2022d" class="year-select" onchange="downloadPDF(this.value,'UGC NET Dec 2022');this.value=''" aria-label="Download options for 2022 December paper">
+                        <option value="">-- Choose Paper --</option>
+                        <option value="ugcnet/2022dec_p2.pdf">2022 Dec – Paper 2</option>
+                        <option value="ugcnet/2022dec_ak.pdf">2022 Dec – Answer Key</option>
+                    </select>
+                    <div class="bundle-row"><span>📄 2 Files</span><a href="ugcnet/2022dec_bundle.pdf" download class="bundle-btn" aria-label="Download complete bundle for 2022 December">📥 Bundle</a></div>
+                </div>
+                <div class="card-footer"><div class="card-stats"><span>📝 100 Qs</span></div><a href="ugcnet/2022dec_bundle.pdf" class="card-link" download aria-label="Download 2022 December paper">Download →</a></div>
+            </article>
+
+            <!-- 2022 June -->
+            <article class="flash-card" data-filter="all" data-year="2022" data-search="ugc net june 2022 library science paper 2" onclick="glowCard(this)">
+                <div class="card-header"><div class="card-icon" aria-hidden="true">22</div><span class="card-badge">JUNE</span></div>
+                <h3>UGC NET June 2022</h3>
+                <p>Complete Paper 2. Includes questions from Information Retrieval and Library Management.</p>
+                <div class="year-dropdown-container">
+                    <label for="select2022j">📥 Select Download:</label>
+                    <select id="select2022j" class="year-select" onchange="downloadPDF(this.value,'UGC NET June 2022');this.value=''" aria-label="Download options for 2022 June paper">
+                        <option value="">-- Choose Paper --</option>
+                        <option value="ugcnet/2022june_p2.pdf">2022 June – Paper 2</option>
+                        <option value="ugcnet/2022june_ak.pdf">2022 June – Answer Key</option>
+                    </select>
+                    <div class="bundle-row"><span>📄 2 Files</span><a href="ugcnet/2022june_bundle.pdf" download class="bundle-btn" aria-label="Download complete bundle for 2022 June">📥 Bundle</a></div>
+                </div>
+                <div class="card-footer"><div class="card-stats"><span>📝 100 Qs</span></div><a href="ugcnet/2022june_bundle.pdf" class="card-link" download aria-label="Download 2022 June paper">Download →</a></div>
+            </article>
+
+            <!-- 2021 Nov -->
+            <article class="flash-card" data-filter="all" data-year="2021" data-search="ugc net november 2021 library science paper 2" onclick="glowCard(this)">
+                <div class="card-header"><div class="card-icon" aria-hidden="true">21</div><span class="card-badge">NOV</span></div>
+                <h3>UGC NET November 2021</h3>
+                <p>Paper 2 post-pandemic exam. Notable for increased emphasis on digital library concepts.</p>
+                <div class="year-dropdown-container">
+                    <label for="select2021n">📥 Select Download:</label>
+                    <select id="select2021n" class="year-select" onchange="downloadPDF(this.value,'UGC NET Nov 2021');this.value=''" aria-label="Download options for 2021 November paper">
+                        <option value="">-- Choose Paper --</option>
+                        <option value="ugcnet/2021nov_p2.pdf">2021 Nov – Paper 2</option>
+                        <option value="ugcnet/2021nov_ak.pdf">2021 Nov – Answer Key</option>
+                    </select>
+                    <div class="bundle-row"><span>📄 2 Files</span><a href="ugcnet/2021nov_bundle.pdf" download class="bundle-btn" aria-label="Download complete bundle for 2021 November">📥 Bundle</a></div>
+                </div>
+                <div class="card-footer"><div class="card-stats"><span>📝 100 Qs</span></div><a href="ugcnet/2021nov_bundle.pdf" class="card-link" download aria-label="Download 2021 November paper">Download →</a></div>
+            </article>
+
+            <!-- 2020 Dec -->
+            <article class="flash-card" data-filter="all" data-year="2020" data-search="ugc net december 2020 library science paper 2" onclick="glowCard(this)">
+                <div class="card-header"><div class="card-icon" aria-hidden="true">20</div><span class="card-badge">DEC</span></div>
+                <h3>UGC NET December 2020</h3>
+                <p>Paper 2 with answer key. One of the first fully CBT mode exams.</p>
+                <div class="year-dropdown-container">
+                    <label for="select2020d">📥 Select Download:</label>
+                    <select id="select2020d" class="year-select" onchange="downloadPDF(this.value,'UGC NET Dec 2020');this.value=''" aria-label="Download options for 2020 December paper">
+                        <option value="">-- Choose Paper --</option>
+                        <option value="ugcnet/2020dec_p2.pdf">2020 Dec – Paper 2</option>
+                        <option value="ugcnet/2020dec_ak.pdf">2020 Dec – Answer Key</option>
+                    </select>
+                    <div class="bundle-row"><span>📄 2 Files</span><a href="ugcnet/2020dec_bundle.pdf" download class="bundle-btn" aria-label="Download complete bundle for 2020 December">📥 Bundle</a></div>
+                </div>
+                <div class="card-footer"><div class="card-stats"><span>📝 100 Qs</span></div><a href="ugcnet/2020dec_bundle.pdf" class="card-link" download aria-label="Download 2020 December paper">Download →</a></div>
+            </article>
+
+        </div>
+        <p class="no-cards-msg" id="noCardsMsg">No papers found for the selected filter. Try a different combination.</p>
+    </section>
+
+    <!-- ===== OLDER PAPERS ===== -->
+    <section class="pyq-section" id="older-papers" aria-label="Older question papers">
+        <div class="section-header">
+            <h2>📂 Older Papers (2004–2019)</h2>
+            <a href="#" aria-label="Download complete archive">Download Complete Archive →</a>
+        </div>
+        <div class="flash-grid">
+
+            <!-- 2019 June -->
+            <article class="flash-card" data-filter="all" data-year="2019" data-search="ugc net june 2019 library science" onclick="glowCard(this)">
+                <div class="card-header"><div class="card-icon" aria-hidden="true">19</div><span class="card-badge">2019</span></div>
+                <h3>UGC NET June 2019</h3>
+                <p>Paper 2. First year under the revised NTA pattern — 100 questions, no Paper 3.</p>
+                <div class="year-dropdown-container">
+                    <label for="select2019j">📥 Select Download:</label>
+                    <select id="select2019j" class="year-select" onchange="downloadPDF(this.value,'UGC NET June 2019');this.value=''" aria-label="Download options for 2019 June paper">
+                        <option value="">-- Choose Paper --</option>
+                        <option value="ugcnet/2019june_p2.pdf">2019 June – Paper 2</option>
+                        <option value="ugcnet/2019june_ak.pdf">2019 June – Answer Key</option>
+                    </select>
+                    <div class="bundle-row"><span>📄 2 Files</span><a href="ugcnet/2019june_bundle.pdf" download class="bundle-btn" aria-label="Download complete bundle for 2019 June">📥 Bundle</a></div>
+                </div>
+                <div class="card-footer"><div class="card-stats"><span>📝 100 Qs</span></div><a href="ugcnet/2019june_bundle.pdf" class="card-link" download aria-label="Download 2019 June paper">Download →</a></div>
+            </article>
+
+            <!-- 2018 Dec -->
+            <article class="flash-card" data-filter="all" data-year="2018" data-search="ugc net december 2018 library science paper 2 paper 3" onclick="glowCard(this)">
+                <div class="card-header"><div class="card-icon" aria-hidden="true">18</div><span class="card-badge">2018</span></div>
+                <h3>UGC NET December 2018</h3>
+                <p>Last exam under old pattern with Paper 2 + Paper 3. Very important for pattern analysis.</p>
+                <div class="year-dropdown-container">
+                    <label for="select2018d">📥 Select Download:</label>
+                    <select id="select2018d" class="year-select" onchange="downloadPDF(this.value,'UGC NET Dec 2018');this.value=''" aria-label="Download options for 2018 December paper">
+                        <option value="">-- Choose Paper --</option>
+                        <option value="ugcnet/2018dec_p2.pdf">2018 Dec – Paper 2</option>
+                        <option value="ugcnet/2018dec_p3.pdf">2018 Dec – Paper 3</option>
+                        <option value="ugcnet/2018dec_ak.pdf">2018 Dec – Answer Key</option>
+                    </select>
+                    <div class="bundle-row"><span>📄 3 Files</span><a href="ugcnet/2018dec_bundle.pdf" download class="bundle-btn" aria-label="Download complete bundle for 2018 December">📥 Bundle</a></div>
+                </div>
+                <div class="card-footer"><div class="card-stats"><span>📝 P2 + P3</span></div><a href="ugcnet/2018dec_bundle.pdf" class="card-link" download aria-label="Download 2018 December paper">Download →</a></div>
+            </article>
+
+            <!-- 2017 Nov -->
+            <article class="flash-card" data-filter="all" data-year="2017" data-search="ugc net november 2017 library science paper 2 paper 3" onclick="glowCard(this)">
+                <div class="card-header"><div class="card-icon" aria-hidden="true">17</div><span class="card-badge">2017</span></div>
+                <h3>UGC NET November 2017</h3>
+                <p>Paper 2 and Paper 3. Important for understanding the transition period syllabus.</p>
+                <div class="year-dropdown-container">
+                    <label for="select2017n">📥 Select Download:</label>
+                    <select id="select2017n" class="year-select" onchange="downloadPDF(this.value,'UGC NET Nov 2017');this.value=''" aria-label="Download options for 2017 November paper">
+                        <option value="">-- Choose Paper --</option>
+                        <option value="ugcnet/2017nov_p2.pdf">2017 Nov – Paper 2</option>
+                        <option value="ugcnet/2017nov_p3.pdf">2017 Nov – Paper 3</option>
+                        <option value="ugcnet/2017nov_ak.pdf">2017 Nov – Answer Key</option>
+                    </select>
+                    <div class="bundle-row"><span>📄 3 Files</span><a href="ugcnet/2017nov_bundle.pdf" download class="bundle-btn" aria-label="Download complete bundle for 2017 November">📥 Bundle</a></div>
+                </div>
+                <div class="card-footer"><div class="card-stats"><span>📝 P2 + P3</span></div><a href="ugcnet/2017nov_bundle.pdf" class="card-link" download aria-label="Download 2017 November paper">Download →</a></div>
+            </article>
+
+            <!-- Archive bundle -->
+            <article class="flash-card featured-card" data-filter="all" data-year="older" data-search="ugc net complete archive 2004 to 2017 all papers bundle" onclick="glowCard(this)">
+                <div class="card-header"><div class="card-icon" aria-hidden="true">🗄️</div><span class="card-badge bundle">ARCHIVE</span></div>
+                <h3>Complete Archive Bundle (2004–2017)</h3>
+                <p>All UGC NET Library Science papers from 2004 to 2017 in a single download. Includes Paper 2 and Paper 3 wherever available, with all answer keys.</p>
+                <div class="card-footer">
+                    <div class="card-stats"><span>📅 14 Years</span><span>📄 30+ Papers</span><span>📝 3000+ Qs</span></div>
+                    <a href="ugcnet/archive_bundle.pdf" class="card-link bundle-btn" download style="text-decoration:none" aria-label="Download complete archive bundle 2004-2017">📥 Download Archive →</a>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- ===== TOPIC WISE ===== -->
+    <section class="pyq-section" id="topic-wise" aria-label="Topic-wise analysis">
+        <div class="section-header">
+            <h2>📊 Topic-Wise Question Analysis</h2>
+            <a href="#" aria-label="Download topic-wise PDF">Download Topic-Wise PDF →</a>
+        </div>
+        <div style="background:var(--card-bg);border-radius:15px;padding:24px;border:2px solid var(--border);overflow-x:auto">
+            <table class="topic-table">
+                <thead>
+                    <tr>
+                        <th>Unit / Topic</th>
+                        <th>Approx. Questions</th>
+                        <th>% Weightage</th>
+                        <th>Frequency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr onclick="filterCards('classification',null)" style="cursor:pointer" tabindex="0" role="button">
+                        <td>📚 Library Classification (DDC, CC, UDC)</td>
+                        <td>600+</td>
+                        <td><div class="topic-bar"><div class="topic-bar-fill" style="width:90%"></div></div></td>
+                        <td><span style="color:#4caf50;font-weight:700">Very High</span></td>
+                    </tr>
+                    <tr onclick="filterCards('cataloguing',null)" style="cursor:pointer" tabindex="0" role="button">
+                        <td>🗂️ Cataloguing &amp; Metadata (AACR2, RDA)</td>
+                        <td>550+</td>
+                        <td><div class="topic-bar"><div class="topic-bar-fill" style="width:82%"></div></div></td>
+                        <td><span style="color:#4caf50;font-weight:700">Very High</span></td>
+                    </tr>
+                    <tr onclick="filterCards('management',null)" style="cursor:pointer" tabindex="0" role="button">
+                        <td>🏢 Library Management &amp; Administration</td>
+                        <td>480+</td>
+                        <td><div class="topic-bar"><div class="topic-bar-fill" style="width:72%"></div></div></td>
+                        <td><span style="color:#ff9800;font-weight:700">High</span></td>
+                    </tr>
+                    <tr onclick="filterCards('ict',null)" style="cursor:pointer" tabindex="0" role="button">
+                        <td>💻 ICT, Digital Libraries &amp; Internet</td>
+                        <td>460+</td>
+                        <td><div class="topic-bar"><div class="topic-bar-fill" style="width:68%"></div></div></td>
+                        <td><span style="color:#ff9800;font-weight:700">High</span></td>
+                    </tr>
+                    <tr onclick="filterCards('reference',null)" style="cursor:pointer" tabindex="0" role="button">
+                        <td>🔍 Reference &amp; Information Services</td>
+                        <td>380+</td>
+                        <td><div class="topic-bar"><div class="topic-bar-fill" style="width:57%"></div></div></td>
+                        <td><span style="color:#ff9800;font-weight:700">Medium-High</span></td>
+                    </tr>
+                    <tr onclick="filterCards('research',null)" style="cursor:pointer" tabindex="0" role="button">
+                        <td>📐 Research Methods &amp; Statistics</td>
+                        <td>340+</td>
+                        <td><div class="topic-bar"><div class="topic-bar-fill" style="width:50%"></div></div></td>
+                        <td><span style="color:#2196f3;font-weight:700">Medium</span></td>
+                    </tr>
+                    <tr>
+                        <td>📖 History &amp; Philosophy of LIS</td>
+                        <td>280+</td>
+                        <td><div class="topic-bar"><div class="topic-bar-fill" style="width:42%"></div></div></td>
+                        <td><span style="color:#2196f3;font-weight:700">Medium</span></td>
+                    </tr>
+                    <tr>
+                        <td>🌐 Information Sources &amp; Services</td>
+                        <td>260+</td>
+                        <td><div class="topic-bar"><div class="topic-bar-fill" style="width:38%"></div></div></td>
+                        <td><span style="color:#9e9e9e;font-weight:700">Moderate</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:14px;">💡 Click any row to filter cards by that topic unit.</p>
+        </div>
+    </section>
+
+    <!-- COMPLETE BUNDLE CTA -->
+    <section class="pyq-section" aria-label="Master bundle download">
+        <div style="background:linear-gradient(135deg,var(--ugc-light),var(--accent-light));border:2px solid var(--ugc-accent);border-radius:18px;padding:36px;text-align:center">
+            <div style="font-size:3rem;margin-bottom:12px" aria-hidden="true">🏆</div>
+            <h2 style="font-size:1.8rem;margin-bottom:10px;color:var(--text-primary)">UGC NET Complete Master Bundle</h2>
+            <p style="color:var(--text-secondary);max-width:560px;margin:0 auto 20px">All 30+ papers from 2004 to 2024, answer keys, topic-wise analysis, and detailed solutions — everything you need in one download.</p>
+            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+                <a href="ugcnet/master_bundle.pdf" download style="background:var(--ugc-accent);color:white;padding:12px 28px;border-radius:30px;text-decoration:none;font-weight:700;font-size:1rem" aria-label="Download master bundle">📥 Download Master Bundle</a>
+                <a href="ugcnet/topic_wise_bundle.pdf" download style="background:var(--card-bg);color:var(--ugc-dark);padding:12px 28px;border-radius:30px;text-decoration:none;font-weight:700;font-size:1rem;border:2px solid var(--ugc-accent)" aria-label="Download topic-wise bundle">📊 Topic-Wise Bundle</a>
+            </div>
+            <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:14px">📄 30+ Papers &nbsp;·&nbsp; 🔑 All Answer Keys &nbsp;·&nbsp; 📊 Analysis Sheets &nbsp;·&nbsp; 100% Free</p>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="social-links">
+        <a href="https://www.youtube.com/@LIBflix-w6y" title="YouTube" target="_blank" rel="noopener" aria-label="YouTube channel">📺</a>
+        <a href="https://t.me/libflix369" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram group">💬</a>
+        <a href="mailto:libflix369@gmail.com" title="Email" aria-label="Send email">📧</a>
+    </div>
+    <div class="footer-links">
+        <a href="#">About Us</a><a href="#">Privacy Policy</a><a href="#">Terms of Use</a>
+        <a href="#">Contact</a><a href="#">FAQ</a><a href="#">Help Center</a>
+    </div>
+    <div class="copyright">
+        <p>© 2025 LIS Study Hub. Complete PYQ Library for Library Science Aspirants</p>
+        <p>UGC NET is a trademark of NTA / UGC. All papers are for educational purposes only.</p>
+    </div>
+</footer>
+
+<script>
+    /* ===== DOWNLOAD with error handling ===== */
+    function downloadPDF(path, name) {
+        if (!path) return;
+        try {
+            // Create a temporary anchor element for better download handling
+            const link = document.createElement('a');
+            link.href = path;
+            link.download = path.split('/').pop();
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch(e) {
+            // Fallback to opening in new tab if download fails
+            console.warn('Download failed, opening in new tab:', e);
+            window.open(path, '_blank');
+        }
+    }
+
+    /* ===== GLOW ===== */
+    function glowCard(card) {
+        card.classList.remove('glow');
+        void card.offsetWidth; // Force reflow
+        card.classList.add('glow');
+        setTimeout(() => card.classList.remove('glow'), 600);
+    }
+
+    /* ===== ANSWER KEY TOGGLE ===== */
+    function toggleAK(cb, infoId) {
+        const infoElement = document.getElementById(infoId);
+        if (infoElement) {
+            infoElement.style.display = cb.checked ? 'block' : 'none';
+        }
+    }
+
+    /* ===== FILTER BY TOPIC ===== */
+    let currentTopic = 'all';
+    let currentYear = 'all';
+
+    function filterCards(type, el) {
+        if (el) {
+            // Update active state for filter tags
+            document.querySelectorAll('.filter-tag').forEach(t => {
+                t.classList.remove('active');
+                t.setAttribute('aria-pressed', 'false');
+            });
+            el.classList.add('active');
+            el.setAttribute('aria-pressed', 'true');
+            currentTopic = type;
+        }
+        // Get current active year
+        const activeYearTab = document.querySelector('.year-tab.active');
+        currentYear = activeYearTab ? activeYearTab.getAttribute('data-year') : 'all';
+        applyFilters(currentTopic, currentYear);
+    }
+
+    /* ===== YEAR JUMP ===== */
+    function jumpYear(year, el) {
+        document.querySelectorAll('.year-tab').forEach(t => {
+            t.classList.remove('active');
+            t.setAttribute('aria-pressed', 'false');
+        });
+        el.classList.add('active');
+        el.setAttribute('aria-pressed', 'true');
+        currentYear = year;
+        
+        // Get current active topic
+        const activeTopicTag = document.querySelector('.filter-tag.active');
+        currentTopic = activeTopicTag ? activeTopicTag.getAttribute('data-topic') : 'all';
+        
+        applyFilters(currentTopic, year);
+        
+        // Scroll to first card of selected year
+        if (year !== 'all') {
+            const firstCard = document.querySelector(`.flash-card[data-year="${year}"]`);
+            if (firstCard) {
+                firstCard.scrollIntoView({behavior:'smooth', block:'center'});
+            }
+        }
+    }
+
+    /* ===== COMBINED FILTER ===== */
+    function applyFilters(topic, year) {
+        let visible = 0;
+        const cards = document.querySelectorAll('.flash-card');
+        
+        cards.forEach(card => {
+            const cardFilter = card.getAttribute('data-filter') || 'all';
+            const cardYear = card.getAttribute('data-year') || 'all';
+            
+            // Topic filter logic
+            let topicOk = topic === 'all' || cardFilter === 'all' || cardFilter === topic;
+            
+            // Year filter logic
+            let yearOk = year === 'all';
+            if (!yearOk) {
+                if (year === 'older') {
+                    // 'older' includes years before 2020 and cards marked as 'older'
+                    const yearNum = parseInt(cardYear);
+                    yearOk = (cardYear === 'older') || (!isNaN(yearNum) && yearNum < 2020);
+                } else {
+                    yearOk = cardYear === year;
+                }
+            }
+            
+            const show = topicOk && yearOk;
+            card.classList.toggle('hidden', !show);
+            if (show) visible++;
+        });
+        
+        const msg = document.getElementById('noCardsMsg');
+        if (msg) {
+            msg.classList.toggle('visible', visible === 0);
+            if (visible === 0) {
+                msg.textContent = 'No papers found for the selected filter. Try a different combination.';
+            }
+        }
+    }
+
+    /* ===== SEARCH FUNCTIONALITY ===== */
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const searchClear = document.getElementById('searchClear');
+
+    function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function highlight(text, query) {
+        if (!query || !text) return text;
+        const escapedQuery = escapeRegExp(query);
+        const regex = new RegExp(`(${escapedQuery})`, 'gi');
+        return text.replace(regex, '<mark>$1</mark>');
+    }
+
+    function performSearch(query) {
+        query = query.trim().toLowerCase();
+        searchClear.classList.toggle('visible', query.length > 0);
+        
+        if (!query) {
+            searchResults.classList.remove('open');
+            // Reset all filters when search is cleared
+            const activeTopic = document.querySelector('.filter-tag.active');
+            const activeYear = document.querySelector('.year-tab.active');
+            if (activeTopic && activeYear) {
+                applyFilters(
+                    activeTopic.getAttribute('data-topic') || 'all',
+                    activeYear.getAttribute('data-year') || 'all'
+                );
+            }
+            return;
+        }
+        
+        const matches = [];
+        const cards = document.querySelectorAll('.flash-card');
+        
+        cards.forEach(card => {
+            const searchText = (card.getAttribute('data-search') || '') + ' ' + 
+                              (card.querySelector('h3')?.textContent || '') + ' ' + 
+                              (card.querySelector('p')?.textContent || '');
+            if (searchText.toLowerCase().includes(query)) {
+                matches.push(card);
+            }
+        });
+        
+        // Hide non-matching cards
+        cards.forEach(card => {
+            card.classList.toggle('hidden', !matches.includes(card));
+        });
+        
+        // Update no results message
+        const msg = document.getElementById('noCardsMsg');
+        if (msg) {
+            msg.classList.toggle('visible', matches.length === 0);
+            if (matches.length === 0) {
+                msg.textContent = `No results found for "${query}"`;
+            }
+        }
+        
+        // Build search results dropdown
+        if (matches.length === 0) {
+            searchResults.innerHTML = `<div class="no-results">No results for "<strong>${escapeHtml(query)}</strong>"</div>`;
+        } else {
+            searchResults.innerHTML = matches.map(card => {
+                const title = card.querySelector('h3')?.textContent || '';
+                const desc = (card.querySelector('p')?.textContent || '').substring(0, 65) + '...';
+                const badge = card.querySelector('.card-badge')?.textContent || '';
+                const escapedTitle = escapeHtml(title);
+                return `<div class="sri" onclick="scrollToCard('${escapedTitle.replace(/'/g, "\\'")}')" role="option">
+                    <div style="font-size:1.3rem" aria-hidden="true">🎯</div>
+                    <div style="flex:1;min-width:0">
+                        <div class="sri-title">${highlight(escapedTitle, escapeHtml(query))}</div>
+                        <div class="sri-desc">${escapeHtml(desc)}</div>
+                    </div>
+                    ${badge ? `<span class="sri-badge">${escapeHtml(badge)}</span>` : ''}
+                </div>`;
+            }).join('');
+        }
+        searchResults.classList.add('open');
+    }
+    
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function scrollToCard(title) {
+        const cards = document.querySelectorAll('.flash-card');
+        let targetCard = null;
+        
+        for (let card of cards) {
+            const cardTitle = card.querySelector('h3')?.textContent;
+            if (cardTitle === title) {
+                targetCard = card;
+                break;
+            }
+        }
+        
+        if (targetCard) {
+            targetCard.scrollIntoView({behavior:'smooth', block:'center'});
+            glowCard(targetCard);
+        }
+        searchResults.classList.remove('open');
+        searchInput.blur();
+    }
+
+    function clearSearch() {
+        searchInput.value = '';
+        searchClear.classList.remove('visible');
+        searchResults.classList.remove('open');
+        
+        // Reset to current filters
+        const activeTopic = document.querySelector('.filter-tag.active');
+        const activeYear = document.querySelector('.year-tab.active');
+        if (activeTopic && activeYear) {
+            applyFilters(
+                activeTopic.getAttribute('data-topic') || 'all',
+                activeYear.getAttribute('data-year') || 'all'
+            );
+        }
+        searchInput.focus();
+    }
+
+    // Search event listeners
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => performSearch(e.target.value));
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                clearSearch();
+                searchInput.blur();
+            }
+        });
+        searchInput.addEventListener('focus', () => {
+            if (searchInput.value.trim()) {
+                searchResults.classList.add('open');
+            }
+        });
+    }
+    
+    // Close search results when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-wrapper')) {
+            searchResults.classList.remove('open');
+        }
+    });
+
+    /* ===== THEME TOGGLE ===== */
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        const isDark = document.body.classList.contains('dark-theme');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        
+        if (themeIcon) themeIcon.textContent = isDark ? '☀️' : '🌙';
+        if (themeText) themeText.textContent = isDark ? 'Light' : 'Dark';
+        
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+    
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        if (themeIcon) themeIcon.textContent = '☀️';
+        if (themeText) themeText.textContent = 'Light';
+    }
+
+    /* ===== NAVBAR SCROLL EFFECT ===== */
+    window.addEventListener('scroll', () => {
+        const navbar = document.getElementById('navbar');
+        if (navbar) {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        }
+    });
+
+    /* ===== MOBILE NAVIGATION ===== */
+    function openMobileNav() {
+        const mobileNav = document.getElementById('mobileNav');
+        const hamburger = document.getElementById('hamburger');
+        if (mobileNav) {
+            mobileNav.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            if (hamburger) hamburger.setAttribute('aria-expanded', 'true');
+        }
+    }
+    
+    function closeMobileNav() {
+        const mobileNav = document.getElementById('mobileNav');
+        const hamburger = document.getElementById('hamburger');
+        if (mobileNav) {
+            mobileNav.classList.remove('open');
+            document.body.style.overflow = '';
+            if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
+        }
+    }
+    
+    // Close mobile nav when clicking a link
+    document.querySelectorAll('.mobile-nav a').forEach(link => {
+        link.addEventListener('click', closeMobileNav);
+    });
+
+    /* ===== INITIALIZE ===== */
+    // Ensure all cards are visible on load
+    document.addEventListener('DOMContentLoaded', () => {
+        applyFilters('all', 'all');
+    });
+</script>
+</body>
+</html>

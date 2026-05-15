@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Libflix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-primary: #f0f8ff;
+            --bg-secondary: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #546e7a;
+            --accent-light: #e3f2fd;
+            --accent: #4fc3f7;
+            --accent-dark: #0288d1;
+            --card-bg: white;
+            --border: #b3e5fc;
+            --nav-bg: #e3f2fd;
+            --footer-bg: white;
+        }
+
+        body.dark-theme {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-light: #1a1a1a;
+            --accent: #e50914;
+            --accent-dark: #ff3232;
+            --card-bg: #1e1e1e;
+            --border: #333;
+            --nav-bg: #1e1e1e;
+            --footer-bg: #1e1e1e;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; transition: background 0.3s, color 0.3s; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top:0; width:100%; padding: 10px 5%;
+            display:flex; justify-content:space-between; align-items:center;
+            z-index:1000; background: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+        .logo span { font-size:1.5rem; font-weight:800; color:var(--accent-dark); }
+
+        .nav-links { display:flex; gap:10px; list-style:none; }
+        .nav-links a { text-decoration:none; font-weight:600; color: var(--text-primary); padding: 8px 12px; }
+
+        .theme-toggle {
+            background: var(--accent-dark); color: white; border: none;
+            padding: 8px 15px; border-radius: 20px; cursor: pointer;
+        }
+
+        /* Policy Content */
+        .main-content { flex: 1; padding: 140px 10% 60px; }
+        
+        .policy-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        h1 { color: var(--accent-dark); margin-bottom: 20px; font-size: 2.5rem; text-align: center; }
+        h2 { color: var(--accent-dark); margin-top: 30px; margin-bottom: 10px; border-bottom: 2px solid var(--accent-light); padding-bottom: 5px; }
+        p { margin-bottom: 15px; color: var(--text-secondary); }
+        ul { margin-bottom: 20px; padding-left: 20px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+
+        .last-updated { font-style: italic; text-align: center; margin-bottom: 40px; color: var(--text-secondary); }
+
+        .footer { background: var(--footer-bg); padding: 30px 5%; text-align: center; border-top: 2px solid var(--accent); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .main-content { padding: 120px 5% 40px; }
+            .policy-container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="logo"><span>📚 Libflix</span></a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pyq.html">PYQs</a></li>
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+        <button class="theme-toggle" id="themeBtn">🌙 Mode</button>
+    </div>
+</nav>
+
+<div class="main-content">
+    <div class="policy-container">
+        <h1>Privacy Policy</h1>
+        <p class="last-updated">Last Updated: March 2026</p>
+
+        <p>Welcome to <strong>Libflix</strong>. We value your privacy and are committed to protecting your personal data. This policy outlines how we handle information when you visit our website.</p>
+
+        <h2>1. Information We Collect</h2>
+        <p>We may collect limited information in the following ways:</p>
+        <ul>
+            <li><strong>Contact Information:</strong> If you use our contact form, we collect your name and email address to respond to your inquiries.</li>
+            <li><strong>Usage Data:</strong> We may collect non-personal information such as browser type, device information, and pages visited to improve our resources.</li>
+        </ul>
+
+        <h2>2. How We Use Your Information</h2>
+        <p>Your information is used solely for the following purposes:</p>
+        <ul>
+            <li>To provide and improve Library Science resources.</li>
+            <li>To respond to your feedback or questions.</li>
+            <li>To notify you about updates to notes or PYQs (if opted-in).</li>
+        </ul>
+
+        <h2>3. Data Security</h2>
+        <p>We implement industry-standard security measures to ensure that your data remains safe. We do not sell, trade, or rent your personal information to third parties.</p>
+
+        <h2>4. Third-Party Links</h2>
+        <p>Libflix may contain links to external sites (like Telegram, YouTube, or Google Drive for PDFs). We are not responsible for the privacy practices of these external platforms.</p>
+
+        <h2>5. Cookies</h2>
+        <p>Our website may use basic cookies to remember your theme preference (Light/Dark mode) and to enhance your browsing experience.</p>
+
+        <h2>6. Contact Us</h2>
+        <p>If you have any questions regarding this Privacy Policy, you can reach us at:</p>
+        <p><strong>Email:</strong> libflix369@gmail.com</p>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>© 2026 <strong>Libflix</strong>. Built with 💙 for Students.</p>
+</footer>
+
+<script>
+    const themeBtn = document.getElementById('themeBtn');
+    themeBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-theme');
+        themeBtn.innerText = document.body.classList.contains('dark-theme') ? '☀️ Light' : '🌙 Dark';
+    });
+</script>
+
+</body>
+</html>

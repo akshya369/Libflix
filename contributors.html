@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team - Libflix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-primary: #f0f8ff;
+            --bg-secondary: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #546e7a;
+            --accent-light: #e3f2fd;
+            --accent: #4fc3f7;
+            --accent-dark: #0288d1;
+            --card-bg: white;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --border: #b3e5fc;
+            --nav-bg: #e3f2fd;
+            --footer-bg: white;
+        }
+
+        body.dark-theme {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-light: #1a1a1a;
+            --accent: #e50914;
+            --accent-dark: #ff3232;
+            --card-bg: #1e1e1e;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            --border: #333;
+            --nav-bg: #1e1e1e;
+            --footer-bg: #1e1e1e;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; transition: background 0.3s, color 0.3s; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed; top:0; width:100%; padding: 10px 5%;
+            display:flex; justify-content:space-between; align-items:center;
+            z-index:1000; background: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+        .logo img { height: 40px; }
+        .logo span { font-size:1.5rem; font-weight:800; color:var(--accent-dark); }
+
+        .nav-links { display:flex; gap:15px; list-style:none; }
+        .nav-links a {
+            text-decoration:none; font-weight:600; color: var(--text-primary);
+            padding: 8px 12px; border-radius: 5px; font-size: 0.9rem;
+        }
+        .nav-links a.active, .nav-links a:hover { background: var(--accent); color: white; }
+
+        .nav-right { display:flex; align-items:center; gap:15px; }
+
+        /* Search Container */
+        .search-container { position: relative; display: flex; align-items: center; }
+        .search-box {
+            border: 2px solid var(--border); padding: 8px 35px 8px 15px;
+            border-radius: 20px; outline: none;
+            background: var(--bg-secondary); color: var(--text-primary);
+            width: 200px;
+        }
+        .search-icon { position: absolute; right: 10px; cursor: pointer; }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            background: none; border: none; cursor: pointer;
+        }
+        .hamburger span {
+            display: block; width: 25px; height: 3px;
+            background: var(--accent-dark); border-radius: 3px;
+            transition: 0.3s;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--accent-dark); color: white; border: none;
+            padding: 8px 15px; border-radius: 20px; cursor: pointer;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .theme-text { font-size: 0.8rem; font-weight: bold; }
+
+        /* Hero */
+        .page-hero {
+            padding: 140px 5% 70px;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            text-align: center;
+            clip-path: ellipse(150% 100% at 50% 0%);
+        }
+
+        .main-content { flex: 1; }
+
+        .contributors-section {
+            padding: 50px 5%; max-width: 1200px;
+            margin: -40px auto 40px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .contributor-card {
+            background: var(--card-bg); border-radius: 20px;
+            padding: 40px 20px; text-align: center;
+            box-shadow: var(--card-shadow); border: 1px solid var(--border);
+        }
+
+        .profile-img {
+            width: 110px; height: 110px; border-radius: 50%;
+            border: 4px solid var(--accent-dark); margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        .role-tag {
+            display: inline-block; background: var(--accent-light);
+            color: var(--accent-dark); padding: 5px 15px;
+            border-radius: 20px; font-weight: bold; font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-btn {
+            display: inline-block; padding: 10px 20px;
+            border: 2px solid var(--accent-dark); color: var(--accent-dark);
+            border-radius: 25px; text-decoration: none;
+            font-weight: bold; font-size: 0.9rem;
+        }
+        .contact-btn:hover { background: var(--accent-dark); color: white; }
+
+        #noResults { display: none; text-align: center; grid-column: 1 / -1; padding: 50px; }
+
+        .footer { background: var(--footer-bg); padding: 30px 5%; text-align: center; border-top: 2px solid var(--accent); }
+
+        /* Mobile View (Responsive) */
+        @media (max-width: 1024px) {
+            .navbar { padding: 10px 2%; }
+            .nav-links {
+                position: absolute; top: 100%; left: -100%;
+                flex-direction: column; background: var(--nav-bg);
+                width: 100%; padding: 20px; text-align: center;
+                transition: 0.4s; box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+            .nav-links.active { left: 0; }
+            .hamburger { display: flex; }
+            .search-box { width: 150px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="logo">
+        <img src="logo.png" alt="Libflix Logo">
+        <span>📚 Libflix</span>
+    </a>
+
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pyq.html">PYQs</a></li>
+        <li><a href="solutions.html">Solution Hub</a></li>
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="digital.html">Digital Library Softwares</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+
+    <div class="nav-right">
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchInput"
+                placeholder="🔍 Search team..." autocomplete="off">
+            <span class="search-icon">🔍</span>
+        </div>
+        <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme">
+            <span id="themeIcon">🌙</span>
+            <span id="themeText" class="theme-text">Dark</span>
+        </button>
+    </div>
+</nav>
+
+<div class="main-content">
+    <section class="page-hero">
+        <h1>🤝 Meet Our Contributors</h1>
+        <p>The minds behind Libflix's Library Science resources.</p>
+    </section>
+
+    <section class="contributors-section" id="contributorGrid">
+        <div class="contributor-card">
+            <img src="https://via.placeholder.com/110" class="profile-img" alt="Akshaya">
+            <h3 class="name">Akshaya</h3>
+            <span class="role-tag">Founder & Lead Dev</span>
+            <br>
+            <a href="mailto:libflix369@gmail.com?subject=Contact%20Akshaya" class="contact-btn">
+                <i class="fas fa-envelope"></i> Contact Akshaya
+            </a>
+        </div>
+
+        <div class="contributor-card">
+            <img src="https://via.placeholder.com/110" class="profile-img" alt="S. Sharma">
+            <h3 class="name">S. Sharma</h3>
+            <span class="role-tag">Notes Provider</span>
+            <br>
+            <a href="mailto:libflix369@gmail.com?subject=Contact%20Sharma" class="contact-btn">
+                <i class="fas fa-envelope"></i> Contact Sharma
+            </a>
+        </div>
+
+        <div id="noResults">
+            <h1 style="font-size: 3rem;">🔍</h1>
+            <h3>No team members match your search.</h3>
+        </div>
+    </section>
+</div>
+
+<footer class="footer">
+    <p>© 2026 <strong>Libflix</strong>. Built for Students 💙</p>
+</footer>
+
+<script>
+    // --- 1. HAMBURGER MENU LOGIC ---
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        // Animation for hamburger lines
+        hamburger.classList.toggle('toggle');
+    });
+
+    // --- 2. THEME TOGGLE LOGIC ---
+    const themeBtn = document.getElementById('themeBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+
+    themeBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-theme');
+        if (document.body.classList.contains('dark-theme')) {
+            themeIcon.innerText = '☀️';
+            themeText.innerText = 'Light';
+        } else {
+            themeIcon.innerText = '🌙';
+            themeText.innerText = 'Dark';
+        }
+    });
+
+    // --- 3. DYNAMIC SEARCH LOGIC ---
+    const searchInput = document.getElementById('searchInput');
+    const cards = document.getElementsByClassName('contributor-card');
+    const noResults = document.getElementById('noResults');
+
+    searchInput.addEventListener('input', () => {
+        const filter = searchInput.value.toLowerCase().trim();
+        let foundAny = false;
+
+        for (let i = 0; i < cards.length; i++) {
+            const name = cards[i].querySelector('.name').innerText.toLowerCase();
+            const role = cards[i].querySelector('.role-tag').innerText.toLowerCase();
+
+            if (name.includes(filter) || role.includes(filter)) {
+                cards[i].style.display = "block";
+                foundAny = true;
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+        noResults.style.display = foundAny ? "none" : "block";
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution Hub - Libflix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ===== THEME VARIABLES ===== */
+        :root {
+            --bg-primary: #f0f8ff;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a2a3a;
+            --text-secondary: #546e7a;
+            --accent-light: #e3f2fd;
+            --accent: #4fc3f7;
+            --accent-dark: #0277bd;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 20px rgba(2, 119, 189, 0.12);
+            --card-hover: 0 12px 32px rgba(2, 119, 189, 0.25);
+            --border: #b3e5fc;
+            --nav-bg: rgba(240, 248, 255, 0.9);
+            --nav-scrolled: rgba(240, 248, 255, 0.98);
+            --footer-bg: #0d1b2a;
+            --footer-text: #a0b4c8;
+            --glow-color: rgba(79, 195, 247, 0.45);
+            --badge-bg: #4fc3f7;
+            --solution-bg: #f0f8ff;
+            --video-bg: #0d1b2a;
+            --no-results: #ef5350;
+            --tag-active-bg: #0277bd;
+            --tag-active-text: #fff;
+            --playlist-header: linear-gradient(135deg, #0277bd 0%, #29b6f6 100%);
+            --hero-gradient: linear-gradient(135deg, #e3f2fd 0%, #b3e5fc 60%, #4fc3f7 100%);
+        }
+
+        body.dark-theme {
+            --bg-primary: #0e0e0e;
+            --bg-secondary: #181818;
+            --text-primary: #f0f0f0;
+            --text-secondary: #9e9e9e;
+            --accent-light: #1a0000;
+            --accent: #e50914;
+            --accent-dark: #b71c1c;
+            --card-bg: #1c1c1c;
+            --card-shadow: 0 4px 20px rgba(229,9,20,0.18);
+            --card-hover: 0 12px 32px rgba(229,9,20,0.35);
+            --border: #2a0000;
+            --nav-bg: rgba(14,14,14,0.92);
+            --nav-scrolled: rgba(14,14,14,0.99);
+            --footer-bg: #080808;
+            --footer-text: #666;
+            --glow-color: rgba(229, 9, 20, 0.4);
+            --badge-bg: #e50914;
+            --solution-bg: #252525;
+            --video-bg: #000;
+            --no-results: #ef5350;
+            --tag-active-bg: #e50914;
+            --tag-active-text: #fff;
+            --playlist-header: linear-gradient(135deg, #b71c1c 0%, #e50914 100%);
+            --hero-gradient: linear-gradient(135deg, #1a0000 0%, #2d0000 60%, #e50914 100%);
+        }
+
+        *, *::before, *::after {
+            margin: 0; padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 14px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid transparent;
+            transition: all 0.4s ease;
+        }
+        .navbar.scrolled {
+            background: var(--nav-scrolled);
+            border-bottom-color: var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--accent-dark);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-dark);
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .search-box-nav {
+            background: var(--card-bg);
+            border: 1.5px solid var(--border);
+            padding: 8px 15px;
+            border-radius: 22px;
+            color: var(--text-primary);
+            width: 180px;
+            font-size: 0.875rem;
+            outline: none;
+            font-family: 'DM Sans', sans-serif;
+            transition: width 0.3s, border-color 0.2s;
+        }
+        .search-box-nav:focus {
+            border-color: var(--accent-dark);
+            width: 230px;
+        }
+        .theme-toggle {
+            background: var(--accent-dark);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 22px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'DM Sans', sans-serif;
+            transition: transform 0.2s, background 0.2s;
+            white-space: nowrap;
+        }
+        .theme-toggle:hover { transform: scale(1.04); }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block; width: 24px; height: 2.5px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 65px; left: 0; right: 0;
+            background: var(--nav-scrolled);
+            backdrop-filter: blur(16px);
+            padding: 20px 5%;
+            z-index: 999;
+            border-bottom: 1px solid var(--border);
+            flex-direction: column;
+            gap: 15px;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .page-header {
+            padding: 130px 5% 70px;
+            background: var(--hero-gradient);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 70% 30%, rgba(79,195,247,0.18) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+        .page-header p {
+            font-size: clamp(0.95rem, 2vw, 1.15rem);
+            color: var(--text-secondary);
+            max-width: 620px;
+            margin: 0 auto 10px;
+        }
+        .breadcrumb {
+            margin-top: 10px;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+        }
+        .breadcrumb a { color: var(--accent-dark); text-decoration: none; }
+
+        /* ===== SEARCH BAR ===== */
+        .search-wrapper {
+            max-width: 640px;
+            margin: 28px auto 0;
+            position: relative;
+        }
+        .search-bar-large {
+            display: flex;
+            gap: 0;
+            background: var(--card-bg);
+            border-radius: 50px;
+            box-shadow: 0 6px 24px rgba(2,119,189,0.18);
+            overflow: hidden;
+            border: 2px solid var(--accent);
+        }
+        .search-bar-large input {
+            flex: 1;
+            padding: 15px 22px;
+            border: none;
+            font-size: 0.95rem;
+            background: transparent;
+            color: var(--text-primary);
+            outline: none;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .search-bar-large input::placeholder { color: var(--text-secondary); }
+        .search-bar-large button {
+            padding: 14px 28px;
+            border: none;
+            background: var(--accent-dark);
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .search-bar-large button:hover { background: var(--accent); }
+        .search-results-count {
+            position: absolute;
+            bottom: -24px;
+            left: 16px;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0; right: 0;
+            background: var(--card-bg);
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            margin-top: 8px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            z-index: 100;
+            display: none;
+            overflow: hidden;
+        }
+        .search-suggestions.visible { display: block; }
+        .suggestion-item {
+            padding: 11px 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+            transition: background 0.15s;
+        }
+        .suggestion-item:hover { background: var(--accent-light); }
+        .suggestion-item span { color: var(--text-secondary); font-size: 0.8rem; }
+
+        /* ===== STATS ===== */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 28px 5%;
+            background: var(--bg-secondary);
+            flex-wrap: wrap;
+            gap: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+        .stat-item { text-align: center; }
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+        }
+        .stat-label { color: var(--text-secondary); font-size: 0.85rem; margin-top: 3px; }
+
+        /* ===== CATEGORY TABS ===== */
+        .categories { padding: 36px 5% 16px; }
+        .categories-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .category-tab {
+            padding: 10px 22px;
+            border-radius: 28px;
+            background: var(--card-bg);
+            border: 1.5px solid var(--border);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .category-tab:hover {
+            border-color: var(--accent-dark);
+            color: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+        .category-tab.active {
+            background: var(--accent-dark);
+            border-color: var(--accent-dark);
+            color: white;
+            box-shadow: 0 4px 14px var(--glow-color);
+        }
+
+        /* ===== FEATURED SOLUTION ===== */
+        .featured-section { padding: 36px 5%; }
+        .section-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent-dark);
+            margin-bottom: 10px;
+        }
+        .featured-solution {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-hover);
+            border: 2px solid var(--accent);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .featured-video {
+            background: var(--video-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
+            position: relative;
+            overflow: hidden;
+        }
+        .featured-video::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(79,195,247,0.08), transparent 70%);
+        }
+        .video-placeholder {
+            text-align: center;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+        .play-icon {
+            font-size: 5rem;
+            cursor: pointer;
+            animation: pulse 2.2s infinite;
+            display: block;
+        }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+        .video-placeholder h3 { margin-top: 12px; color: var(--accent); font-size: 1rem; }
+        .featured-content { padding: 36px; }
+        .featured-badge {
+            background: var(--accent-dark);
+            color: white;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+        }
+        .featured-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+            margin-bottom: 14px;
+            line-height: 1.3;
+        }
+        .featured-meta {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin: 16px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .featured-actions { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+        .btn-primary {
+            padding: 12px 26px;
+            background: var(--accent-dark);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: transform 0.2s, background 0.2s;
+            display: inline-block;
+        }
+        .btn-primary:hover { transform: translateY(-2px); background: var(--accent); }
+        .btn-secondary {
+            padding: 12px 26px;
+            background: transparent;
+            border: 2px solid var(--accent-dark);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+        .btn-secondary:hover { background: var(--accent-light); }
+
+        /* ===== SOLUTIONS GRID ===== */
+        .solutions-section { padding: 36px 5%; }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 24px;
+        }
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-header a {
+            color: var(--accent-dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 22px;
+        }
+        .solution-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            border: 1.5px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.25,0.8,0.25,1);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        .solution-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent);
+            box-shadow: var(--card-hover);
+        }
+        .solution-card.highlight {
+            border-color: var(--accent-dark);
+            box-shadow: 0 0 0 3px var(--glow-color);
+        }
+        @keyframes glow { 0%,100%{box-shadow:0 0 0 var(--glow-color)} 50%{box-shadow:0 0 28px var(--glow-color)} }
+        .solution-header {
+            padding: 16px 20px;
+            background: linear-gradient(135deg, var(--accent-light), var(--card-bg));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1.5px solid var(--border);
+        }
+        .solution-type {
+            background: var(--accent-dark);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .solution-year { color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; }
+        .solution-body { padding: 18px 20px; flex: 1; display: flex; flex-direction: column; }
+        .solution-body h3 { font-size: 1.05rem; margin-bottom: 8px; font-weight: 600; }
+        .solution-desc { color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 14px; flex: 1; }
+        .solution-preview {
+            background: var(--solution-bg);
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin: 12px 0;
+            font-size: 0.85rem;
+            border-left: 3px solid var(--accent-dark);
+        }
+        .solution-preview p { color: var(--text-secondary); margin-bottom: 6px; }
+        .solution-preview p:last-child { margin-bottom: 0; }
+        .solution-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .solution-stats { display: flex; gap: 12px; color: var(--text-secondary); font-size: 0.82rem; }
+        .solution-link {
+            color: var(--accent-dark);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 2px dashed var(--no-results);
+        }
+        .no-results h3 { font-size: 1.4rem; color: var(--no-results); margin-bottom: 10px; }
+        .no-results p { color: var(--text-secondary); }
+
+        /* ===== FREE PLAYLIST SECTION ===== */
+        .playlist-section { padding: 50px 5%; background: var(--bg-secondary); }
+        .playlist-section .section-label { margin-bottom: 6px; }
+        .playlist-section .section-header { margin-bottom: 30px; }
+
+        .platform-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+        .platform-tab {
+            padding: 9px 20px;
+            border-radius: 24px;
+            border: 1.5px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex; align-items: center; gap: 7px;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .platform-tab:hover { border-color: var(--accent-dark); color: var(--accent-dark); }
+        .platform-tab.active {
+            background: var(--accent-dark);
+            border-color: var(--accent-dark);
+            color: white;
+        }
+
+        .playlist-panels > div { display: none; }
+        .playlist-panels > div.active-panel { display: block; }
+
+        .playlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 22px;
+        }
+        .playlist-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1.5px solid var(--border);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .playlist-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: var(--card-hover); }
+        .playlist-thumb {
+            position: relative;
+            height: 170px;
+            overflow: hidden;
+            background: var(--video-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .playlist-thumb img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+            transition: opacity 0.3s, transform 0.4s;
+        }
+        .playlist-card:hover .playlist-thumb img { opacity: 1; transform: scale(1.04); }
+        .playlist-thumb .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.25);
+            transition: background 0.3s;
+        }
+        .playlist-card:hover .play-overlay { background: rgba(0,0,0,0.12); }
+        .play-circle {
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.92);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            transition: transform 0.2s;
+        }
+        .playlist-card:hover .play-circle { transform: scale(1.1); }
+        .playlist-badge {
+            position: absolute;
+            top: 10px; left: 10px;
+            background: var(--accent-dark);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+        .playlist-count {
+            position: absolute;
+            bottom: 10px; right: 10px;
+            background: rgba(0,0,0,0.75);
+            color: white;
+            font-size: 0.78rem;
+            padding: 3px 10px;
+            border-radius: 6px;
+        }
+        .playlist-info { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+        .playlist-info h4 { font-size: 0.98rem; font-weight: 600; margin-bottom: 6px; line-height: 1.35; }
+        .playlist-info p { color: var(--text-secondary); font-size: 0.82rem; flex: 1; margin-bottom: 12px; }
+        .playlist-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        .playlist-platform {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-dark);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .playlist-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 14px;
+            background: var(--accent-dark);
+            color: white;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .playlist-action:hover { background: var(--accent); }
+
+        /* ===== VIDEO GRID ===== */
+        .video-section { padding: 40px 5%; }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .video-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1.5px solid var(--border);
+        }
+        .video-card:hover { transform: scale(1.03); border-color: var(--accent); box-shadow: var(--card-hover); }
+        .video-thumbnail {
+            height: 165px;
+            background: var(--video-bg);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .play-button { font-size: 3.5rem; color: var(--accent); opacity: 0.85; transition: all 0.3s; }
+        .video-card:hover .play-button { opacity: 1; transform: scale(1.1); }
+        .video-duration {
+            position: absolute;
+            bottom: 8px; right: 8px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.78rem;
+        }
+        .video-info { padding: 14px; }
+        .video-info h4 { font-size: 0.95rem; margin-bottom: 5px; font-weight: 600; }
+        .video-info p { color: var(--text-secondary); font-size: 0.83rem; }
+
+        /* ===== STEP SECTION ===== */
+        .step-section { padding: 40px 5%; background: var(--bg-secondary); }
+        .step-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1.5px solid var(--border);
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+        }
+        .step-number {
+            flex-shrink: 0;
+            width: 42px; height: 42px;
+            background: var(--accent-dark);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .step-content h3 { font-size: 1.05rem; margin-bottom: 8px; }
+        .step-content p { color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 8px; }
+
+        /* ===== DOWNLOAD SECTION ===== */
+        .download-section { padding: 40px 5%; }
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 18px;
+        }
+        .download-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 24px;
+            text-align: center;
+            border: 1.5px solid var(--border);
+            transition: all 0.3s;
+        }
+        .download-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--card-hover); }
+        .download-icon { font-size: 2.8rem; margin-bottom: 12px; }
+        .download-card h4 { margin-bottom: 8px; font-size: 0.95rem; }
+        .download-card p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 16px; }
+        .download-btn {
+            background: var(--accent-dark);
+            color: white;
+            padding: 9px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+        .download-btn:hover { background: var(--accent); }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 50px 5% 30px;
+            margin-top: 0;
+        }
+        .footer-inner {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 36px;
+            margin-bottom: 36px;
+        }
+        .footer-brand .logo { color: #4fc3f7; font-size: 1.6rem; display: block; margin-bottom: 12px; }
+        .footer-brand p { font-size: 0.875rem; line-height: 1.7; color: var(--footer-text); }
+        .footer-col h5 {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #4fc3f7;
+            margin-bottom: 14px;
+        }
+        .footer-col a {
+            display: block;
+            color: var(--footer-text);
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+            transition: color 0.2s;
+        }
+        .footer-col a:hover { color: #4fc3f7; }
+        .social-row { display: flex; gap: 14px; margin-top: 16px; }
+        .social-row a {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            border: 1.5px solid #2a3a4a;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            color: var(--footer-text);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .social-row a:hover { border-color: #4fc3f7; color: #4fc3f7; }
+        .footer-bottom {
+            border-top: 1px solid #1e2e3e;
+            padding-top: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .footer-bottom p { font-size: 0.82rem; color: #3a4a5a; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .search-box-nav { display: none; }
+            .featured-solution { grid-template-columns: 1fr; }
+            .featured-video { min-height: 200px; }
+            .solutions-grid { grid-template-columns: 1fr; }
+            .playlist-grid { grid-template-columns: 1fr; }
+            .video-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+            .download-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .step-card { flex-direction: column; gap: 12px; }
+        }
+        @media (max-width: 480px) {
+            .category-tab { padding: 8px 14px; font-size: 0.8rem; }
+            .platform-tab { padding: 7px 14px; font-size: 0.8rem; }
+            .download-grid { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr; }
+            .stats { gap: 10px; }
+            .stat-number { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">📚 Libflix</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="pyq.html">PYQs</a></li>
+            <li><a href="solutions.html" class="active">Solutions</a></li>
+            <li><a href="#">Notes</a></li>
+            <li><a href="#">Digital Library Softwares</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+        <div class="nav-right">
+            <input type="text" class="search-box-nav" id="navbarSearchInput" placeholder="🔍 Search solutions..." oninput="syncSearch('navbar')">
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark</span>
+            </button>
+            <div class="hamburger" onclick="toggleMobileMenu()" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">🏠 Home</a>
+        <a href="pyq.html">📜 PYQs</a>
+        <a href="solutions.html">✅ Solutions</a>
+        <a href="#">📓 Notes</a>
+        <a href="#">💻 Digital Library Softwares</a>
+        <a href="#">ℹ️ About</a>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>✅ Solution Hub</h1>
+        <p>Step-by-step solutions, free video playlists & PDF downloads for LIS aspirants</p>
+        <div class="breadcrumb">
+            <a href="index.html">Home</a> &rsaquo; <span>Solution Hub</span>
+        </div>
+        <div class="search-wrapper">
+            <div class="search-bar-large">
+                <input type="text" id="mainSearchInput" placeholder="Search solutions, topics, exams… (e.g. Classification, UGC NET 2024)" oninput="syncSearch('main')" onkeydown="if(event.key==='Enter')performSearch()">
+                <button onclick="performSearch()">🔍 Search</button>
+            </div>
+            <span class="search-results-count" id="searchResultsCount"></span>
+            <div class="search-suggestions" id="searchSuggestions"></div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-number" id="totalSolved">2500+</div>
+            <div class="stat-label">Solved Questions</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="totalVideos">450+</div>
+            <div class="stat-label">Video Solutions</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">10</div>
+            <div class="stat-label">Units Covered</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="searchResultCount">—</div>
+            <div class="stat-label">Search Results</div>
+        </div>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="categories">
+        <p class="categories-label">Filter by Type</p>
+        <div class="category-tabs">
+            <button class="category-tab active" onclick="filterByCategory('all', this)">📋 All Solutions</button>
+            <button class="category-tab" onclick="filterByCategory('video', this)">▶️ Video Solutions</button>
+            <button class="category-tab" onclick="filterByCategory('step', this)">📝 Step-by-Step</button>
+            <button class="category-tab" onclick="filterByCategory('pdf', this)">📥 PDF Solutions</button>
+            <button class="category-tab" onclick="filterByCategory('pyq', this)">📚 PYQ Solutions</button>
+            <button class="category-tab" onclick="filterByCategory('topic', this)">🎯 Topic Wise</button>
+        </div>
+    </div>
+
+    <!-- Featured Solution -->
+    <section class="featured-section">
+        <p class="section-label">⭐ Featured</p>
+        <div class="featured-solution">
+            <div class="featured-video">
+                <div class="video-placeholder" onclick="openLink('https://youtube.com')">
+                    <span class="play-icon">▶️</span>
+                    <h3>Watch Full Solution</h3>
+                    <p style="color:#aaa;margin-top:6px;font-size:0.88rem;">UGC NET Dec 2024 Paper 2</p>
+                </div>
+            </div>
+            <div class="featured-content">
+                <span class="featured-badge">🔥 FEATURED SOLUTION</span>
+                <h2>UGC NET December 2024<br>Paper 2 — Complete Solutions</h2>
+                <div class="featured-meta">
+                    <span>📅 2024</span>
+                    <span>📝 150 Questions</span>
+                    <span>⏱️ 3 Hours</span>
+                </div>
+                <p style="color:var(--text-secondary);font-size:0.92rem;">Detailed step-by-step solutions for all 150 questions with explanations, shortcuts, and memory tricks. Video explanations included for the trickiest questions.</p>
+                <div class="featured-actions">
+                    <a href="https://youtube.com" target="_blank" rel="noopener" class="btn-primary">▶ Watch Full Video</a>
+                    <a href="pdfs/ugc-net-dec-2024-solutions.pdf" class="btn-secondary" download>📥 Download PDF</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Grid -->
+    <section class="solutions-section" id="solutionsSection">
+        <div class="section-header">
+            <h2>📋 Latest Solutions</h2>
+            <a href="#">View All →</a>
+        </div>
+        <div class="solutions-grid" id="solutionsGrid">
+
+            <div class="solution-card" data-title="UGC NET June 2024 Solutions" data-category="pyq video" data-keywords="ugc net 2024 june paper 2 library science" onclick="openSolution('UGC NET June 2024 Solutions')">
+                <div class="solution-header">
+                    <span class="solution-type">UGC NET</span>
+                    <span class="solution-year">June 2024</span>
+                </div>
+                <div class="solution-body">
+                    <h3>UGC NET Library Science Paper 2</h3>
+                    <p class="solution-desc">Complete solved paper with detailed explanations for all 150 questions.</p>
+                    <div class="solution-preview">
+                        <p><strong>Q.42:</strong> Laws of Library Science by Ranganathan?</p>
+                        <p style="color:var(--accent-dark);">✓ Books are for use · Every reader their book · Save the reader's time · Library grows</p>
+                    </div>
+                </div>
+                <div class="solution-footer">
+                    <div class="solution-stats"><span>▶️ Video</span><span>📝 150 Qs</span></div>
+                    <span class="solution-link">View Solution →</span>
+                </div>
+            </div>
+
+            <div class="solution-card" data-title="Classification Theory Solutions" data-category="topic pdf" data-keywords="classification ddc udc cc unit 3 theory schemes" onclick="openSolution('Classification Theory Solutions')">
+                <div class="solution-header">
+                    <span class="solution-type">Topic Wise</span>
+                    <span class="solution-year">Unit 3</span>
+                </div>
+                <div class="solution-body">
+                    <h3>Classification: DDC, UDC, CC</h3>
+                    <p class="solution-desc">Detailed solutions for all classification questions from previous years.</p>
+                    <div class="solution-preview">
+                        <p><strong>Q.15:</strong> In DDC, the table of precedence of notation?</p>
+                        <p style="color:var(--accent-dark);">✓ Table of Precedence (Table G)</p>
+                    </div>
+                </div>
+                <div class="solution-footer">
+                    <div class="solution-stats"><span>📚 85 Questions</span><span>📥 PDF</span></div>
+                    <span class="solution-link">View Solutions →</span>
+                </div>
+            </div>
+
+            <div class="solution-card" data-title="KVS Librarian 2024 Solutions" data-category="pyq video" data-keywords="kvs librarian 2024 school exam" onclick="openSolution('KVS Librarian 2024 Solutions')">
+                <div class="solution-header">
+                    <span class="solution-type">KVS Exam</span>
+                    <span class="solution-year">2024</span>
+                </div>
+                <div class="solution-body">
+                    <h3>KVS Librarian Exam 2024</h3>
+                    <p class="solution-desc">Complete solved paper with answer key and explanations for all sections.</p>
+                    <div class="solution-preview">
+                        <p><strong>Q.34:</strong> Which section handles inter-library loan?</p>
+                        <p style="color:var(--accent-dark);">✓ Circulation / Document Delivery Section</p>
+                    </div>
+                </div>
+                <div class="solution-footer">
+                    <div class="solution-stats"><span>▶️ Video</span><span>📝 120 Qs</span></div>
+                    <span class="solution-link">View Solution →</span>
+                </div>
+            </div>
+
+            <div class="solution-card" data-title="Cataloguing AACR2 RDA Solutions" data-category="topic pdf" data-keywords="cataloguing aacr2 rda marc21 unit 4" onclick="openSolution('Cataloguing AACR2 RDA Solutions')">
+                <div class="solution-header">
+                    <span class="solution-type">Unit 4</span>
+                    <span class="solution-year">Cataloguing</span>
+                </div>
+                <div class="solution-body">
+                    <h3>AACR2, RDA &amp; MARC21</h3>
+                    <p class="solution-desc">Step-by-step solutions for cataloguing rules and practices.</p>
+                    <div class="solution-preview">
+                        <p><strong>Q.28:</strong> In AACR2, rule for title proper is in which chapter?</p>
+                        <p style="color:var(--accent-dark);">✓ Chapter 1 (General Rules for Description)</p>
+                    </div>
+                </div>
+                <div class="solution-footer">
+                    <div class="solution-stats"><span>📝 62 Questions</span><span>📥 PDF</span></div>
+                    <span class="solution-link">View Solutions →</span>
+                </div>
+            </div>
+
+            <div class="solution-card" data-title="Research Methods Solutions" data-category="topic step" data-keywords="research methods bibliometrics statistics unit 8" onclick="openSolution('Research Methods Solutions')">
+                <div class="solution-header">
+                    <span class="solution-type">Unit 8</span>
+                    <span class="solution-year">Research</span>
+                </div>
+                <div class="solution-body">
+                    <h3>Research Methods &amp; Bibliometrics</h3>
+                    <p class="solution-desc">Detailed solutions with formulas and worked examples.</p>
+                    <div class="solution-preview">
+                        <p><strong>Q.56:</strong> 250 articles, 5000 citations — Impact Factor?</p>
+                        <p style="color:var(--accent-dark);">✓ IF = 5000 / 250 = <strong>20</strong></p>
+                    </div>
+                </div>
+                <div class="solution-footer">
+                    <div class="solution-stats"><span>📝 45 Questions</span><span>🧮 Formulas</span></div>
+                    <span class="solution-link">View Solutions →</span>
+                </div>
+            </div>
+
+            <div class="solution-card" data-title="Maharashtra SET 2023 Solutions" data-category="pyq" data-keywords="maharashtra set state eligibility test 2023" onclick="openSolution('Maharashtra SET 2023 Solutions')">
+                <div class="solution-header">
+                    <span class="solution-type">State SET</span>
+                    <span class="solution-year">2023</span>
+                </div>
+                <div class="solution-body">
+                    <h3>Maharashtra SET 2023</h3>
+                    <p class="solution-desc">Complete solutions for Maharashtra SET Library Science paper.</p>
+                    <div class="solution-preview">
+                        <p><strong>Q.78:</strong> Primary source of information?</p>
+                        <p style="color:var(--accent-dark);">✓ Research Articles · Patents · Theses · Conference Papers</p>
+                    </div>
+                </div>
+                <div class="solution-footer">
+                    <div class="solution-stats"><span>▶️ Video</span><span>📝 150 Qs</span></div>
+                    <span class="solution-link">View Solution →</span>
+                </div>
+            </div>
+
+            <div class="solution-card" data-title="UGC NET December 2023 Solutions" data-category="pyq video" data-keywords="ugc net 2023 december paper 2" onclick="openSolution('UGC NET December 2023 Solutions')">
+                <div class="solution-header">
+                    <span class="solution-type">UGC NET</span>
+                    <span class="solution-year">Dec 2023</span>
+                </div>
+                <div class="solution-body">
+                    <h3>UGC NET December 2023</h3>
+                    <p class="solution-desc">Complete solved paper with answer key and explanations.</p>
+                    <div class="solution-preview">
+                        <p><strong>Q.23:</strong> Which is NOT a type of reference service?</p>
+                        <p style="color:var(--accent-dark);">✓ Ready Ref · Long Range Ref · ✗ Cataloguing</p>
+                    </div>
+                </div>
+                <div class="solution-footer">
+                    <div class="solution-stats"><span>▶️ Video</span><span>📝 150 Qs</span></div>
+                    <span class="solution-link">View Solution →</span>
+                </div>
+            </div>
+
+            <div class="solution-card" data-title="Digital Libraries Solutions" data-category="topic pdf" data-keywords="digital libraries unit 7 institutional repositories" onclick="openSolution('Digital Libraries Solutions')">
+                <div class="solution-header">
+                    <span class="solution-type">Unit 7</span>
+                    <span class="solution-year">Digital</span>
+                </div>
+                <div class="solution-body">
+                    <h3>Digital Libraries &amp; IR Systems</h3>
+                    <p class="solution-desc">Solutions for digital library concepts and technologies.</p>
+                    <div class="solution-preview">
+                        <p><strong>Q.12:</strong> What does OAIS stand for?</p>
+                        <p style="color:var(--accent-dark);">✓ Open Archival Information System</p>
+                    </div>
+                </div>
+                <div class="solution-footer">
+                    <div class="solution-stats"><span>📝 38 Questions</span><span>📥 PDF</span></div>
+                    <span class="solution-link">View Solutions →</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FREE VIDEO PLAYLISTS SECTION ===== -->
+    <section class="playlist-section" id="playlistSection">
+        <div class="section-header">
+            <div>
+                <p class="section-label">🎓 Free Learning Resources</p>
+                <h2>📺 Organised Video Playlists</h2>
+            </div>
+            <a href="#">Browse All →</a>
+        </div>
+
+        <!-- Platform Tabs -->
+        <div class="platform-tabs">
+            <button class="platform-tab active" onclick="switchPlatform('youtube', this)">📺 My YouTube</button>
+            <button class="platform-tab" onclick="switchPlatform('vidyamitra', this)">🎓 Vidya Mitra</button>
+            <button class="platform-tab" onclick="switchPlatform('egyan', this)">📖 eGyankosh</button>
+            <button class="platform-tab" onclick="switchPlatform('epgp', this)">🏛️ ePGPathshala</button>
+        </div>
+
+        <div class="playlist-panels">
+
+            <!-- My YouTube Playlists -->
+            <div id="panel-youtube" class="active-panel">
+                <div class="playlist-grid">
+                    <div class="playlist-card" data-category="video" data-title="UGC NET LIS Complete Course">
+                        <div class="playlist-thumb" onclick="openLink('https://youtube.com/@yourchannel')">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="UGC NET LIS Playlist" onerror="this.style.display='none'">
+                            <div class="play-overlay"><div class="play-circle">▶</div></div>
+                            <span class="playlist-badge">YouTube</span>
+                            <span class="playlist-count">📋 42 Videos</span>
+                        </div>
+                        <div class="playlist-info">
+                            <h4>UGC NET LIS — Complete Course 2024</h4>
+                            <p>Full syllabus coverage: all 10 units with MCQs, previous year analysis and shortcuts.</p>
+                            <div class="playlist-meta">
+                                <span class="playlist-platform">📺 My Channel</span>
+                                <a href="https://youtube.com/@yourchannel" target="_blank" rel="noopener" class="playlist-action">▶ Watch Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="playlist-card" data-category="video" data-title="Classification DDC UDC CC Playlist">
+                        <div class="playlist-thumb" onclick="openLink('https://youtube.com/@yourchannel')">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="Classification Playlist" onerror="this.style.display='none'">
+                            <div class="play-overlay"><div class="play-circle">▶</div></div>
+                            <span class="playlist-badge">YouTube</span>
+                            <span class="playlist-count">📋 18 Videos</span>
+                        </div>
+                        <div class="playlist-info">
+                            <h4>Classification: DDC, UDC &amp; Colon Classification</h4>
+                            <p>Deep-dive lectures on all major classification schemes with MCQ practice sessions.</p>
+                            <div class="playlist-meta">
+                                <span class="playlist-platform">📺 My Channel</span>
+                                <a href="https://youtube.com/@yourchannel" target="_blank" rel="noopener" class="playlist-action">▶ Watch Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="playlist-card" data-category="video" data-title="Bibliometrics and Research Methods">
+                        <div class="playlist-thumb" onclick="openLink('https://youtube.com/@yourchannel')">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="Bibliometrics Playlist" onerror="this.style.display='none'">
+                            <div class="play-overlay"><div class="play-circle">▶</div></div>
+                            <span class="playlist-badge">YouTube</span>
+                            <span class="playlist-count">📋 12 Videos</span>
+                        </div>
+                        <div class="playlist-info">
+                            <h4>Bibliometrics, Scientometrics &amp; Research Methods</h4>
+                            <p>All formulas solved step-by-step: Impact Factor, H-index, Bradford's Law and more.</p>
+                            <div class="playlist-meta">
+                                <span class="playlist-platform">📺 My Channel</span>
+                                <a href="https://youtube.com/@yourchannel" target="_blank" rel="noopener" class="playlist-action">▶ Watch Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vidya Mitra Playlists -->
+            <div id="panel-vidyamitra">
+                <div class="playlist-grid">
+                    <div class="playlist-card" data-category="video" data-title="Vidya Mitra Library Science Unit 1">
+                        <div class="playlist-thumb" onclick="openLink('https://vidyamitra.inflibnet.ac.in')">
+                            <div class="play-overlay" style="background:rgba(0,80,160,0.7);">
+                                <div class="play-circle" style="background:#0277bd;color:white;">▶</div>
+                            </div>
+                            <span class="playlist-badge" style="background:#0277bd;">Vidya Mitra</span>
+                            <span class="playlist-count">📋 Unit 1</span>
+                        </div>
+                        <div class="playlist-info">
+                            <h4>Library &amp; Information Science — Unit 1: Foundation</h4>
+                            <p>History of libraries, concepts, Ranganathan's laws, types of libraries. Free INFLIBNET resource.</p>
+                            <div class="playlist-meta">
+                                <span class="playlist-platform">🎓 Vidya Mitra</span>
+                                <a href="https://vidyamitra.inflibnet.ac.in" target="_blank" rel="noopener" class="playlist-action">Open Free</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="playlist-card" data-category="video" data-title="Vidya Mitra Library Cataloguing">
+                        <div class="playlist-thumb" onclick="openLink('https://vidyamitra.inflibnet.ac.in')">
+                            <div class="play-overlay" style="background:rgba(0,80,160,0.7);">
+                                <div class="play-circle" style="background:#0277bd;color:white;">▶</div>
+                            </div>
+                            <span class="playlist-badge" style="background:#0277bd;">Vidya Mitra</span>
+                            <span class="playlist-count">📋 Unit 4</span>
+                        </div>
+                        <div class="playlist-info">
+                            <h4>Cataloguing &amp; Metadata Standards</h4>
+                            <p>AACR2, RDA, MARC21, Dublin Core — video lectures by university professors.</p>
+                            <div class="playlist-meta">
+                                <span class="playlist-platform">🎓 Vidya Mitra</span>
+                                <a href="https://vidyamitra.inflibnet.ac.in" target="_blank" rel="noopener" class="playlist-action">Open Free</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="playlist-card" data-category="video" data-title="Vidya Mitra Digital Libraries">
+                        <div class="playlist-thumb" onclick="openLink('https://vidyamitra.inflibnet.ac.in')">
+                            <div class="play-overlay" style="background:rgba(0,80,160,0.7);">
+                                <div class="play-circle" style="background:#0277bd;color:white;">▶</div>
+                            </div>
+                            <span class="playlist-badge" style="background:#0277bd;">Vidya Mitra</span>
+                            <span class="playlist-count">📋 Unit 7</span>
+                        </div>
+                        <div class="playlist-info">
+                            <h4>Digital Libraries &amp; Information Systems</h4>
+                            <p>DL architecture, IR systems, OPACs, institutional repositories and digital preservation.</p>
+                            <div class="playlist-meta">
+                                <span class="playlist-platform">🎓 Vidya Mitra</span>
+                                <a href="https://vidyamitra.inflibnet.ac.in" target="_blank" rel="noopener" class="playlist-action">Open Free</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- eGyankosh Playlists -->
+            <div id="panel-egyan">
+                <div class="playlist-grid">
+                    <div class="playlist-card" data-category="video" data-title="eGyankosh Library Science IGNOU">
+                        <div class="playlist-thumb" onclick="openLink('https://egyankosh.ac.in')">
+                            <div class="play-overlay" style="background:rgba(30,100,30,0.7);">
+                                <div class="play-circle" style="background:#2e7d32;color:white;">▶</div>
+                            </div>
+                            <span class="playlist-badge" style="background:#2e7d32;">eGyankosh</span>
+                            <span class="playlist-count">📚 IGNOU MLIS</span>
+                        </div>
+                        <div class="playlist-info">
+                            <h4>IGNOU MLIS Study Material — eGyankosh</h4>
+                            <p>Free access to IGNOU MLIS/BLISc course materials, block notes and eBooks.</p>
+                            <div class="playlist-meta">
+                                <span class="playlist-platform">📖 eGyankosh</span>
+                                <a href="https://egyankosh.ac.in" target="_blank" rel="noopener" class="playlist-action">Open Free</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="playlist-card" data-category="video" data-title="eGyankosh Information Services">
+                        <div class="playlist-thumb" onclick="openLink('https://egyankosh.ac.in')">
+                            <div class="play-overlay" style="background:rgba(30,100,30,0.7);">
+                                <div class="play-circle" style="background:#2e7d32;color:white;">▶</div>
+                            </div>
+                            <span class="playlist-badge" style="background:#2e7d32;">eGyankosh</span>
+                            <span class="playlist-count">📚 BLISc</span>
+                        </div>
+                        <div class="playlist-info">
+                            <h4>Information Services &amp; Sources — BLISc</h4>
+                            <p>Reference services, information sources (primary/secondary/tertiary) and online databases.</p>
+                            <div class="playlist-meta">
+                                <span class="playlist-platform">📖 eGyankosh</span>
+                                <a href="https://egyankosh.ac.in" target="_blank" rel="noopener" class="playlist-action">Open Free</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="playlist-card" data-category="video" data-title="eGyankosh Research Methodology">
+                        <div class="playlist-thumb" onclick="openLink('https://egyankosh.ac.in')">
+                            <div class="play-overlay" style="background:rgba(30,100,30,0.7);">
+                                <div class="play-circle" style="background:#2e7d32;color:white;">▶</div>
+                            </div>
+                            <span class="playlist-badge" style="background:#2e7d32;">eGyankosh</span>
+                            <span class="playlist-count">📚 MLIS</span>
+                        </div>
+                        <div class="playlist-info">
+                            <h4>Research Methodology in LIS</h4>
+                            <p>Research design, data collection, bibliometric methods — IGNOU MLIS study blocks.</p>
+                            <div class="playlist-meta">
+                                <span class="playlist-platform">📖 eGyankosh</span>
+                                <a href="https://egyankosh.ac.in" target="_blank" rel="noopener" class="playlist-action">Open Free</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ePGPathshala Playlists -->
+            <div id="panel-epgp">
+                <div class="playlist-grid">
+                    <div class="playlist-card" data-category="video" data-title="ePGPathshala Library Classification">
+                        <div class="playlist-thumb" onclick="openLink('https://epgp.inflibnet.ac.in')">
+                            <div class="play-overlay" style="background:rgba(140,0,0,0.7);">
+                                <div class="play-circle" style="background:#b71c1c;color:white;">▶</div>
+                            </div>
+                            <span class="playlist-badge" style="background:#b71c1c;">ePGPathshala</span>
+                            <span class="playlist-count">📋 12 Modules</span>
+                        </div>
+                        <div class="playlist-info">
+                            <h4>Library Classification — ePG Pathshala</h4>
+                            <p>University-level e-content: DDC, CC, UDC theory modules with interactive quizzes.</p>
+                            <div class="playlist-meta">
+                                <span class="playlist-platform">🏛️ ePGPathshala</span>
+                                <a href="https://epgp.inflibnet.ac.in" target="_blank" rel="noopener" class="playlist-action">Open Free</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="playlist-card" data-category="video" data-title="ePGPathshala Cataloguing Metadata">
+                        <div class="playlist-thumb" onclick="openLink('https://epgp.inflibnet.ac.in')">
+                            <div class="play-overlay" style="background:rgba(140,0,0,0.7);">
+                                <div class="play-circle" style="background:#b71c1c;color:white;">▶</div>
+                            </div>
+                            <span class="playlist-badge" style="background:#b71c1c;">ePGPathshala</span>
+                            <span class="playlist-count">📋 10 Modules</span>
+                        </div>
+                        <div class="playlist-info">
+                            <h4>Cataloguing &amp; Metadata for Digital Resources</h4>
+                            <p>Expert-created modules on modern cataloguing standards — FRBR, RDA, linked data.</p>
+                            <div class="playlist-meta">
+                                <span class="playlist-platform">🏛️ ePGPathshala</span>
+                                <a href="https://epgp.inflibnet.ac.in" target="_blank" rel="noopener" class="playlist-action">Open Free</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="playlist-card" data-category="video" data-title="ePGPathshala Knowledge Organisation">
+                        <div class="playlist-thumb" onclick="openLink('https://epgp.inflibnet.ac.in')">
+                            <div class="play-overlay" style="background:rgba(140,0,0,0.7);">
+                                <div class="play-circle" style="background:#b71c1c;color:white;">▶</div>
+                            </div>
+                            <span class="playlist-badge" style="background:#b71c1c;">ePGPathshala</span>
+                            <span class="playlist-count">📋 14 Modules</span>
+                        </div>
+                        <div class="playlist-info">
+                            <h4>Knowledge Organisation &amp; Indexing</h4>
+                            <p>Thesaurus, indexing systems, ontologies, taxonomy design — PG-level content.</p>
+                            <div class="playlist-meta">
+                                <span class="playlist-platform">🏛️ ePGPathshala</span>
+                                <a href="https://epgp.inflibnet.ac.in" target="_blank" rel="noopener" class="playlist-action">Open Free</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Solutions Section -->
+    <section class="video-section">
+        <div class="section-header">
+            <h2>▶️ Quick Video Solutions</h2>
+            <a href="#">All Videos →</a>
+        </div>
+        <div class="video-grid" id="videoGrid">
+            <div class="video-card" data-title="UGC NET Dec 2024 Paper 2 Full Solution" data-category="video" onclick="openLink('https://youtube.com')">
+                <div class="video-thumbnail">
+                    <span class="play-button">▶️</span>
+                    <span class="video-duration">2:45:30</span>
+                </div>
+                <div class="video-info">
+                    <h4>UGC NET Dec 2024 Paper 2</h4>
+                    <p>Complete solved paper with explanations</p>
+                </div>
+            </div>
+            <div class="video-card" data-title="Classification DDC 23rd Edition Explained" data-category="video" onclick="openLink('https://youtube.com')">
+                <div class="video-thumbnail">
+                    <span class="play-button">▶️</span>
+                    <span class="video-duration">45:20</span>
+                </div>
+                <div class="video-info">
+                    <h4>DDC 23rd Edition Complete Guide</h4>
+                    <p>Classification theory with examples</p>
+                </div>
+            </div>
+            <div class="video-card" data-title="Cataloguing AACR2 vs RDA" data-category="video" onclick="openLink('https://youtube.com')">
+                <div class="video-thumbnail">
+                    <span class="play-button">▶️</span>
+                    <span class="video-duration">38:15</span>
+                </div>
+                <div class="video-info">
+                    <h4>AACR2 vs RDA: Key Differences</h4>
+                    <p>Important for UGC NET exams</p>
+                </div>
+            </div>
+            <div class="video-card" data-title="Bibliometrics Formulas Explained" data-category="video" onclick="openLink('https://youtube.com')">
+                <div class="video-thumbnail">
+                    <span class="play-button">▶️</span>
+                    <span class="video-duration">52:10</span>
+                </div>
+                <div class="video-info">
+                    <h4>Bibliometrics &amp; Scientometrics</h4>
+                    <p>All formulas with solved examples</p>
+                </div>
+            </div>
+            <div class="video-card" data-title="KVS Librarian 2024 Solutions" data-category="video" onclick="openLink('https://youtube.com')">
+                <div class="video-thumbnail">
+                    <span class="play-button">▶️</span>
+                    <span class="video-duration">1:20:45</span>
+                </div>
+                <div class="video-info">
+                    <h4>KVS Librarian 2024 Solutions</h4>
+                    <p>Complete paper with answer key</p>
+                </div>
+            </div>
+            <div class="video-card" data-title="Research Methodology MCQs" data-category="video" onclick="openLink('https://youtube.com')">
+                <div class="video-thumbnail">
+                    <span class="play-button">▶️</span>
+                    <span class="video-duration">1:05:30</span>
+                </div>
+                <div class="video-info">
+                    <h4>Research Methods MCQs</h4>
+                    <p>Most expected questions for NET</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step-by-Step Solutions -->
+    <section class="step-section">
+        <div class="section-header">
+            <h2>📝 Step-by-Step Explanations</h2>
+            <a href="#">View All →</a>
+        </div>
+        <div class="step-card" data-title="Understanding the Question" data-category="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h3>Understanding the Question</h3>
+                <p><strong>Q:</strong> Arrange in correct chronological order: Colon Classification, DDC 1st edition, UDC</p>
+                <p><span style="color:var(--accent-dark);">✓ Solution:</span> DDC (1876) → UDC (1895) → CC (1933)</p>
+            </div>
+        </div>
+        <div class="step-card" data-title="Formula Application" data-category="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h3>Formula Application</h3>
+                <p><strong>Q:</strong> Journal published 120 articles in 2023 &amp; received 840 citations in 2024 — Impact Factor?</p>
+                <p><span style="color:var(--accent-dark);">✓ IF = Citations / Articles = 840 / 120 = <strong>7.0</strong></span></p>
+            </div>
+        </div>
+        <div class="step-card" data-title="Memory Trick Five Laws" data-category="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h3>Memory Trick</h3>
+                <p><strong>Q:</strong> What are the five laws of Library Science?</p>
+                <p><span style="color:var(--accent-dark);">✓ Mnemonic: <strong>"Books Every Reader Saves Libraries"</strong> → Books are for use · Every reader their book · Reader its book · Save time · Library grows</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download-section">
+        <div class="section-header">
+            <h2>📥 Download Solution PDFs</h2>
+            <a href="#">All Downloads →</a>
+        </div>
+        <div class="download-grid" id="downloadGrid">
+            <div class="download-card" data-title="UGC NET Solutions 2020-2024" data-category="pdf">
+                <div class="download-icon">📘</div>
+                <h4>UGC NET Solutions 2020–2024</h4>
+                <p>All papers solved with explanations</p>
+                <a href="pdfs/ugc-net-solutions-2020-2024.pdf" class="download-btn" download>⬇ Download PDF</a>
+            </div>
+            <div class="download-card" data-title="Classification Theory Solutions" data-category="pdf">
+                <div class="download-icon">📗</div>
+                <h4>Classification Theory Solutions</h4>
+                <p>200+ questions with answers</p>
+                <a href="pdfs/classification-solutions.pdf" class="download-btn" download>⬇ Download PDF</a>
+            </div>
+            <div class="download-card" data-title="Cataloguing Q&A Bank" data-category="pdf">
+                <div class="download-icon">📙</div>
+                <h4>Cataloguing Q&amp;A Bank</h4>
+                <p>AACR2, RDA, MARC21 explained</p>
+                <a href="pdfs/cataloguing-solutions.pdf" class="download-btn" download>⬇ Download PDF</a>
+            </div>
+            <div class="download-card" data-title="Research Methods Formulas" data-category="pdf">
+                <div class="download-icon">📕</div>
+                <h4>Research Methods Formulas</h4>
+                <p>Bibliometrics complete guide</p>
+                <a href="pdfs/research-formulas.pdf" class="download-btn" download>⬇ Download PDF</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="index.html" class="logo">📚 Libflix</a>
+                <p>Your one-stop study platform for Library &amp; Information Science. Covering UGC NET, KVS, State SET and more — with solutions, notes, and free video resources.</p>
+                <div class="social-row">
+                    <a href="#" title="YouTube">📺</a>
+                    <a href="#" title="Telegram">💬</a>
+                    <a href="#" title="Twitter / X">𝕏</a>
+                    <a href="#" title="Email">📧</a>
+                    <a href="#" title="Instagram">📷</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>Resources</h5>
+                <a href="#">PYQ Solutions</a>
+                <a href="#">Topic-wise Notes</a>
+                <a href="#">Video Playlists</a>
+                <a href="#">PDF Downloads</a>
+                <a href="#">Mock Tests</a>
+            </div>
+            <div class="footer-col">
+                <h5>Free Platforms</h5>
+                <a href="https://vidyamitra.inflibnet.ac.in" target="_blank" rel="noopener">Vidya Mitra</a>
+                <a href="https://egyankosh.ac.in" target="_blank" rel="noopener">eGyankosh</a>
+                <a href="https://epgp.inflibnet.ac.in" target="_blank" rel="noopener">ePGPathshala</a>
+                <a href="https://youtube.com" target="_blank" rel="noopener">My YouTube</a>
+            </div>
+            <div class="footer-col">
+                <h5>Company</h5>
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">FAQ</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Libflix — LIS Study Hub. All solutions verified by subject experts.</p>
+            <p>Built with ❤️ for Library Science aspirants across India</p>
+        </div>
+    </footer>
+
+    <script>
+    // ===== SEARCH =====
+    const SUGGESTIONS = [
+        'UGC NET 2024', 'Classification DDC', 'KVS Librarian', 'Cataloguing RDA',
+        'Bibliometrics', 'Research Methods', 'Digital Libraries', 'Maharashtra SET',
+        'UGC NET June 2024', 'Impact Factor', 'Ranganathan', 'MARC21'
+    ];
+
+    const mainInput    = document.getElementById('mainSearchInput');
+    const navInput     = document.getElementById('navbarSearchInput');
+    const resultsCount = document.getElementById('searchResultsCount');
+    const resultStat   = document.getElementById('searchResultCount');
+    const suggestBox   = document.getElementById('searchSuggestions');
+
+    const allSearchableCards = () => [
+        ...document.querySelectorAll('.solution-card'),
+        ...document.querySelectorAll('.video-card'),
+        ...document.querySelectorAll('.step-card'),
+        ...document.querySelectorAll('.download-card'),
+        ...document.querySelectorAll('.playlist-card')
+    ];
+
+    function syncSearch(source) {
+        const q = source === 'main' ? mainInput.value : navInput.value;
+        if (source === 'main') { navInput.value = q; showSuggestions(q); }
+        else { mainInput.value = q; }
+        performSearchWithQuery(q.toLowerCase().trim());
+    }
+
+    function showSuggestions(q) {
+        if (q.length < 2) { suggestBox.classList.remove('visible'); return; }
+        const matches = SUGGESTIONS.filter(s => s.toLowerCase().includes(q.toLowerCase()));
+        if (!matches.length) { suggestBox.classList.remove('visible'); return; }
+        suggestBox.innerHTML = matches.map(m =>
+            `<div class="suggestion-item" onclick="applySuggestion('${m}')">🔍 ${m} <span>suggestion</span></div>`
+        ).join('');
+        suggestBox.classList.add('visible');
+    }
+
+    function applySuggestion(val) {
+        mainInput.value = val;
+        navInput.value  = val;
+        suggestBox.classList.remove('visible');
+        performSearchWithQuery(val.toLowerCase());
+    }
+
+    function performSearch() {
+        suggestBox.classList.remove('visible');
+        performSearchWithQuery(mainInput.value.toLowerCase().trim());
+    }
+
+    function performSearchWithQuery(query) {
+        const cards = allSearchableCards();
+        if (!query) {
+            cards.forEach(c => { c.style.display = ''; c.classList.remove('highlight'); });
+            resultsCount.textContent = '';
+            resultStat.textContent = '—';
+            return;
+        }
+        let count = 0;
+        cards.forEach(card => {
+            const haystack = [
+                card.dataset.title   || '',
+                card.dataset.category|| '',
+                card.dataset.keywords|| '',
+                card.textContent
+            ].join(' ').toLowerCase();
+            if (haystack.includes(query)) {
+                card.style.display = '';
+                card.classList.add('highlight');
+                count++;
+                setTimeout(() => card.classList.remove('highlight'), 2200);
+            } else {
+                card.style.display = 'none';
+                card.classList.remove('highlight');
+            }
+        });
+        resultsCount.textContent = count ? `Found ${count} result${count !== 1 ? 's' : ''}` : 'No results — try different keywords';
+        resultStat.textContent = count;
+        manageNoResults(count);
+    }
+
+    function manageNoResults(count) {
+        const grid = document.getElementById('solutionsGrid');
+        const existing = grid.querySelector('.no-results');
+        if (count === 0 && !existing) {
+            const div = document.createElement('div');
+            div.className = 'no-results';
+            div.innerHTML = '<h3>🔍 No solutions found</h3><p>Try different keywords or browse categories above</p>';
+            grid.appendChild(div);
+        } else if (count > 0 && existing) {
+            existing.remove();
+        }
+    }
+
+    // ===== CATEGORY FILTER =====
+    function filterByCategory(category, el) {
+        document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        mainInput.value = ''; navInput.value = '';
+        resultsCount.textContent = '';
+        const cards = allSearchableCards();
+        let count = 0;
+        cards.forEach(card => {
+            if (category === 'all' || (card.dataset.category && card.dataset.category.includes(category))) {
+                card.style.display = ''; count++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        resultStat.textContent = category === 'all' ? '—' : count;
+        const existing = document.querySelector('.no-results');
+        if (existing) existing.remove();
+    }
+
+    // ===== PLATFORM TABS =====
+    function switchPlatform(platform, el) {
+        document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        document.querySelectorAll('.playlist-panels > div').forEach(p => p.classList.remove('active-panel'));
+        const target = document.getElementById('panel-' + platform);
+        if (target) target.classList.add('active-panel');
+    }
+
+    // ===== THEME TOGGLE =====
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        const isDark = document.body.classList.contains('dark-theme');
+        document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+        document.getElementById('themeText').textContent = isDark ? 'Light' : 'Dark';
+        localStorage.setItem('libflix-theme', isDark ? 'dark' : 'light');
+    }
+
+    // Load saved theme
+    if (localStorage.getItem('libflix-theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+        document.getElementById('themeIcon').textContent = '☀️';
+        document.getElementById('themeText').textContent = 'Light';
+    }
+
+    // ===== NAVBAR SCROLL =====
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // ===== MOBILE MENU =====
+    function toggleMobileMenu() {
+        document.getElementById('mobileMenu').classList.toggle('open');
+    }
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#mobileMenu') && !e.target.closest('#hamburger')) {
+            document.getElementById('mobileMenu').classList.remove('open');
+        }
+    });
+
+    // Close suggestions on outside click
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-wrapper')) suggestBox.classList.remove('visible');
+    });
+
+    // Keyboard shortcut
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); mainInput.focus(); }
+        if (e.key === 'Escape') { suggestBox.classList.remove('visible'); }
+    });
+
+    // ===== HELPERS =====
+    function openLink(url) { window.open(url, '_blank', 'noopener,noreferrer'); }
+    function openSolution(title) { alert('📖 Opening: ' + title); }
+    </script>
+
+</body>
+</html>

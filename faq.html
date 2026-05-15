@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Libflix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-primary: #f0f8ff;
+            --bg-secondary: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #546e7a;
+            --accent-light: #e3f2fd;
+            --accent: #4fc3f7;
+            --accent-dark: #0288d1;
+            --card-bg: white;
+            --border: #b3e5fc;
+            --nav-bg: #e3f2fd;
+        }
+
+        body.dark-theme {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-light: #1a1a1a;
+            --accent: #e50914;
+            --accent-dark: #ff3232;
+            --card-bg: #1e1e1e;
+            --border: #333;
+            --nav-bg: #1e1e1e;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; transition: 0.3s ease; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top:0; width:100%; padding: 12px 5%;
+            display:flex; justify-content:space-between; align-items:center;
+            z-index:1000; background: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo { display:flex; align-items:center; gap:8px; text-decoration:none; color: var(--accent-dark); font-weight:800; font-size:1.4rem; }
+
+        /* FAQ Section */
+        .faq-container {
+            max-width: 800px;
+            margin: 140px auto 60px;
+            padding: 0 20px;
+        }
+
+        .faq-header { text-align: center; margin-bottom: 40px; }
+        .faq-header h1 { font-size: 2.5rem; color: var(--accent-dark); }
+
+        /* Accordion Style */
+        .faq-item {
+            background: var(--card-bg);
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .faq-question:hover { background: var(--accent-light); }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: 0 20px;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Adjust based on content length */
+            padding: 15px 20px 25px;
+            border-top: 1px solid var(--border);
+        }
+
+        .faq-item.active .fa-chevron-down { transform: rotate(180deg); }
+
+        .footer { padding: 40px; text-align: center; border-top: 2px solid var(--accent); background: var(--card-bg); }
+
+        @media (max-width: 600px) {
+            .faq-header h1 { font-size: 1.8rem; }
+            .faq-question { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="logo"><span>📚 Libflix</span></a>
+    <div class="nav-right">
+        <button onclick="document.body.classList.toggle('dark-theme')" 
+                style="background:var(--accent-dark); color:white; border:none; padding:8px 15px; border-radius:20px; cursor:pointer;">
+            🌙 Theme
+        </button>
+    </div>
+</nav>
+
+<div class="faq-container">
+    <div class="faq-header">
+        <h1>Frequently Asked Questions</h1>
+        <p>Everything you need to know about Libflix resources.</p>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            What is Libflix?
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+            <p>Libflix is a dedicated digital platform designed for Library Science aspirants. We provide study materials, previous year questions (PYQs), and tutorials for competitive exams like UPSC, OPSC, KVS, and NVS.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            Are the notes and resources free?
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+            <p>Yes! Most of our resources, including handwritten notes and exam papers, are free to access for students to support their learning journey.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            How can I contribute my own notes?
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+            <p>We love community contributions! You can reach out to us via the Contact page or email us at libflix369@gmail.com to share your resources.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">
+            How do I download the PDF files?
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+            <p>Simply navigate to the "Notes" or "PYQs" section, click on the desired topic, and use the "Download" button provided under each resource.</p>
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <p>© 2026 <strong>Libflix</strong>. Helping you succeed in Library Science 💙</p>
+</footer>
+
+<script>
+    // Accordion Logic
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            // Close other open items (Optional: remove this part if you want multiple open at once)
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) otherItem.classList.remove('active');
+            });
+
+            // Toggle current item
+            item.classList.toggle('active');
+        });
+    });
+</script>
+
+</body>
+</html>

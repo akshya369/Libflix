@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IIT / NIT / IIIT Librarian Exams - Libflix</title>
+    <style>
+        :root {
+            --bg-primary: #f0f8ff;
+            --bg-secondary: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #546e7a;
+            --accent-light: #e3f2fd;
+            --accent: #4fc3f7;
+            --accent-dark: #0288d1;
+            --card-bg: white;
+            --card-shadow: 0 4px 12px rgba(79,195,247,0.2);
+            --card-hover: 0 8px 24px rgba(2,136,209,0.3);
+            --border: #b3e5fc;
+            --nav-scrolled: #e3f2fd;
+            --footer-bg: white;
+            --glow-color: rgba(229,57,53,0.4);
+            --badge-bg: #4fc3f7;
+            --iit-accent: #f44336;
+            --iit-light: #ffebee;
+            --iit-dark: #c62828;
+            --nit-accent: #1976d2;
+            --nit-light: #e3f2fd;
+            --nit-dark: #0d47a1;
+            --iiit-accent: #388e3c;
+            --iiit-light: #e8f5e9;
+            --iiit-dark: #1b5e20;
+        }
+        body.dark-theme {
+            --bg-primary: #141414;
+            --bg-secondary: #1f1f1f;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-light: #330000;
+            --accent: #e50914;
+            --accent-dark: #b20710;
+            --card-bg: #1f1f1f;
+            --card-shadow: 0 4px 12px rgba(229,9,20,0.3);
+            --card-hover: 0 8px 24px rgba(229,9,20,0.5);
+            --border: #330000;
+            --nav-scrolled: #141414;
+            --footer-bg: #1f1f1f;
+            --iit-accent: #ef9a9a;
+            --iit-light: #3a1010;
+            --iit-dark: #ef9a9a;
+            --nit-accent: #90caf9;
+            --nit-light: #0d2a4a;
+            --nit-dark: #90caf9;
+            --iiit-accent: #a5d6a7;
+            --iiit-light: #0d2a10;
+            --iiit-dark: #a5d6a7;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;transition:background-color 0.3s,color 0.3s,border-color 0.3s}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6}
+
+        /* NAV — identical to ugcnet.html */
+        .navbar{position:fixed;top:0;width:100%;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;z-index:1000;background:linear-gradient(to bottom,var(--accent-light),transparent)}
+        .navbar.scrolled{background:var(--nav-scrolled);box-shadow:0 2px 10px rgba(0,0,0,0.08)}
+        .logo{font-size:1.8rem;font-weight:800;color:var(--accent-dark);text-decoration:none;flex-shrink:0}
+        .nav-links{display:flex;gap:20px;list-style:none}
+        .nav-links a{font-weight:700;color:var(--text-primary);text-decoration:none;font-size:0.9rem;transition:color 0.2s}
+        .nav-links a:hover,.nav-links a.active{color:var(--accent-dark)}
+        .nav-right{display:flex;align-items:center;gap:12px}
+        .search-wrapper{position:relative}
+        .search-box{background:var(--card-bg);border:2px solid var(--accent);padding:8px 32px 8px 34px;border-radius:20px;color:var(--text-primary);width:220px;outline:none;font-size:0.88rem;transition:width 0.3s}
+        .search-box:focus{border-color:var(--accent-dark);width:270px}
+        .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text-secondary);pointer-events:none}
+        .search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:13px;color:var(--text-secondary);display:none;padding:2px}
+        .search-clear.visible{display:block}
+        .search-results{position:absolute;top:calc(100% + 6px);left:0;width:340px;background:var(--card-bg);border:2px solid var(--accent);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:320px;overflow-y:auto;display:none;z-index:2000}
+        .search-results.open{display:block}
+        .sri{padding:11px 14px;cursor:pointer;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;transition:background 0.15s}
+        .sri:last-child{border-bottom:none}
+        .sri:hover{background:var(--accent-light)}
+        .sri-title{font-weight:600;font-size:0.88rem;color:var(--text-primary)}
+        .sri-title mark{background:rgba(255,200,0,0.35);color:inherit;border-radius:2px;padding:0 1px}
+        .sri-desc{font-size:0.78rem;color:var(--text-secondary)}
+        .theme-toggle{background:var(--accent);color:white;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;font-weight:bold;font-size:0.85rem;display:flex;align-items:center;gap:5px;flex-shrink:0;transition:background 0.2s,transform 0.2s}
+        .theme-toggle:hover{transform:scale(1.05);background:var(--accent-dark)}
+        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+        .hamburger span{display:block;width:22px;height:2px;background:var(--text-primary);border-radius:2px;transition:all 0.3s}
+        .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+        .hamburger.open span:nth-child(2){opacity:0}
+        .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+        .mobile-nav{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-secondary);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+        .mobile-nav.open{display:flex}
+        .mobile-nav a{font-size:1.4rem;font-weight:700;color:var(--text-primary);text-decoration:none}
+        .mobile-nav a.active,.mobile-nav a:hover{color:var(--accent-dark)}
+        .mobile-nav-close{position:absolute;top:20px;right:5%;background:none;border:none;font-size:1.8rem;cursor:pointer;color:var(--text-primary)}
+
+        /* HERO */
+        .page-header{padding:110px 5% 44px;background:linear-gradient(135deg,var(--iit-light) 0%,var(--accent-light) 60%,var(--accent) 100%);text-align:center}
+        .page-header h1{font-size:2.8rem;margin-bottom:12px}
+        .page-header p{font-size:1.1rem;color:var(--text-secondary);max-width:680px;margin:0 auto}
+        .breadcrumb{margin-top:16px;font-size:0.88rem;color:var(--text-secondary)}
+        .breadcrumb a{color:var(--accent-dark);text-decoration:none}
+        .header-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+        .header-tag{color:white;padding:4px 14px;border-radius:20px;font-size:0.8rem;font-weight:600}
+
+        /* STATS */
+        .stats{display:flex;justify-content:space-around;padding:28px 5%;background:var(--bg-secondary);flex-wrap:wrap;gap:16px;border-bottom:3px solid var(--iit-accent)}
+        .stat-item{text-align:center}
+        .stat-number{font-size:2rem;font-weight:800}
+        .stat-label{color:var(--text-secondary);font-size:0.88rem;margin-top:4px}
+
+        /* INSTITUTE TYPE TABS */
+        .inst-tabs{display:flex;justify-content:center;gap:0;padding:28px 5% 0;flex-wrap:wrap}
+        .inst-tab{padding:12px 32px;font-size:1rem;font-weight:700;cursor:pointer;border:2px solid var(--border);background:var(--card-bg);color:var(--text-secondary);transition:all 0.25s;user-select:none}
+        .inst-tab:first-child{border-radius:12px 0 0 12px}
+        .inst-tab:last-child{border-radius:0 12px 12px 0}
+        .inst-tab.iit.active{background:var(--iit-accent);color:white;border-color:var(--iit-accent)}
+        .inst-tab.nit.active{background:var(--nit-accent);color:white;border-color:var(--nit-accent)}
+        .inst-tab.iiit.active{background:var(--iiit-accent);color:white;border-color:var(--iiit-accent)}
+        .inst-tab.central.active{background:#ff9800;color:white;border-color:#ff9800}
+        .inst-tab.all-tab.active{background:var(--accent-dark);color:white;border-color:var(--accent-dark)}
+        .inst-tab:hover{border-color:var(--accent-dark)}
+
+        /* INSTITUTE SEARCH */
+        .inst-search-wrap{padding:16px 5% 0;display:flex;justify-content:center}
+        .inst-search{background:var(--card-bg);border:2px solid var(--accent);padding:10px 18px 10px 40px;border-radius:30px;color:var(--text-primary);width:100%;max-width:480px;outline:none;font-size:0.92rem;transition:border-color 0.2s}
+        .inst-search:focus{border-color:var(--accent-dark)}
+        .inst-search-icon{position:relative}
+        .inst-search-icon::before{content:'🔍';position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;z-index:1}
+
+        /* SECTIONS */
+        .pyq-section{padding:32px 5%}
+        .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:10px}
+        .section-header h2{font-size:1.6rem;display:flex;align-items:center;gap:8px}
+        .section-header a{text-decoration:none;font-weight:600;font-size:0.88rem}
+
+        /* FLASH GRID */
+        .flash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px}
+        .flash-card{background:var(--card-bg);border-radius:15px;padding:20px 16px;position:relative;box-shadow:var(--card-shadow);border:2px solid var(--border);transition:transform 0.3s,box-shadow 0.3s,border-color 0.3s;animation:float 3s ease-in-out infinite;display:flex;flex-direction:column;overflow:hidden;cursor:pointer}
+        .flash-card:nth-child(1){animation-delay:0s}.flash-card:nth-child(2){animation-delay:0.2s}.flash-card:nth-child(3){animation-delay:0.4s}.flash-card:nth-child(4){animation-delay:0.6s}.flash-card:nth-child(5){animation-delay:0.8s}.flash-card:nth-child(6){animation-delay:1s}.flash-card:nth-child(7){animation-delay:1.2s}.flash-card:nth-child(8){animation-delay:1.4s}.flash-card:nth-child(9){animation-delay:1.6s}.flash-card:nth-child(10){animation-delay:1.8s}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+        .flash-card:hover,.flash-card:focus-within{animation-play-state:paused;transform:translateY(-5px);box-shadow:var(--card-hover)}
+        .flash-card[data-inst="iit"]:hover{border-color:var(--iit-accent);box-shadow:0 8px 28px rgba(244,67,54,0.25)}
+        .flash-card[data-inst="nit"]:hover{border-color:var(--nit-accent);box-shadow:0 8px 28px rgba(25,118,210,0.25)}
+        .flash-card[data-inst="iiit"]:hover{border-color:var(--iiit-accent);box-shadow:0 8px 28px rgba(56,142,60,0.25)}
+        .flash-card[data-inst="central"]:hover{border-color:#ff9800;box-shadow:0 8px 28px rgba(255,152,0,0.25)}
+        .flash-card.hidden{display:none}
+        .flash-card.glow{animation:cardGlow 0.5s ease forwards}
+        @keyframes cardGlow{0%{box-shadow:0 0 0 rgba(0,0,0,0)}50%{box-shadow:0 0 40px var(--glow-color);transform:scale(1.04)}100%{box-shadow:var(--card-shadow);transform:translateY(-5px)}}
+        .flash-card::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);transition:left 0.5s;pointer-events:none}
+        .flash-card:hover::after{left:100%}
+
+        /* CARD INTERNALS */
+        .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
+        .card-icon{width:50px;height:50px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;flex-shrink:0;color:white}
+        .card-icon.iit{background:var(--iit-accent)}
+        .card-icon.nit{background:var(--nit-accent)}
+        .card-icon.iiit{background:var(--iiit-accent)}
+        .card-icon.central{background:#ff9800}
+        .card-badge{padding:3px 9px;border-radius:20px;font-size:0.72rem;font-weight:700;color:white}
+        .card-badge.iit-badge{background:var(--iit-accent)}
+        .card-badge.nit-badge{background:var(--nit-accent)}
+        .card-badge.iiit-badge{background:var(--iiit-accent)}
+        .card-badge.central-badge{background:#ff9800}
+        .card-badge.bundle{background:#9c27b0}
+        .flash-card h3{color:var(--text-primary);font-size:1.1rem;margin-bottom:6px}
+        .flash-card p{color:var(--text-secondary);font-size:0.87rem;margin-bottom:8px;flex-grow:1}
+        .card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+        .card-stats{display:flex;gap:10px;color:var(--text-secondary);font-size:0.78rem;flex-wrap:wrap}
+        .card-link{text-decoration:none;font-weight:700;font-size:0.83rem;white-space:nowrap}
+        .card-link.iit{color:var(--iit-dark)}
+        .card-link.nit{color:var(--nit-dark)}
+        .card-link.iiit{color:var(--iiit-dark)}
+        .card-link.central{color:#e65100}
+
+        /* FEATURED */
+        .featured-card{grid-column:span 2}
+
+        /* DROPDOWN */
+        .year-dropdown-container{margin:8px 0;padding:11px;border-radius:8px}
+        .year-dropdown-container.iit-drop{background:var(--iit-light)}
+        .year-dropdown-container.nit-drop{background:var(--nit-light)}
+        .year-dropdown-container.iiit-drop{background:var(--iiit-light)}
+        .year-dropdown-container.central-drop{background:#fff3e0}
+        .year-dropdown-container label{display:block;margin-bottom:6px;font-weight:700;color:var(--text-primary);font-size:0.83rem}
+        .year-select{width:100%;padding:8px 12px;border-radius:7px;background:var(--card-bg);color:var(--text-primary);font-size:0.85rem;outline:none;cursor:pointer}
+        .year-select.iit-sel{border:2px solid var(--iit-accent)}
+        .year-select.nit-sel{border:2px solid var(--nit-accent)}
+        .year-select.iiit-sel{border:2px solid var(--iiit-accent)}
+        .year-select.central-sel{border:2px solid #ff9800}
+        .bundle-row{display:flex;justify-content:space-between;align-items:center;margin-top:7px}
+        .bundle-row span{color:var(--text-secondary);font-size:0.8rem}
+        .bundle-btn{color:white;padding:5px 11px;border-radius:5px;text-decoration:none;font-size:0.8rem;transition:opacity 0.2s}
+        .bundle-btn:hover{opacity:0.85}
+        .bundle-btn.iit{background:var(--iit-dark)}
+        .bundle-btn.nit{background:var(--nit-dark)}
+        .bundle-btn.iiit{background:var(--iiit-dark)}
+        .bundle-btn.central{background:#e65100}
+
+        /* SECTION dividers */
+        .type-divider{display:flex;align-items:center;gap:14px;padding:24px 5% 0}
+        .type-divider-line{flex:1;height:2px;border-radius:2px}
+        .type-divider h2{font-size:1.5rem;white-space:nowrap}
+
+        /* NO RESULTS */
+        .no-cards-msg{text-align:center;padding:40px;color:var(--text-secondary);grid-column:1/-1;display:none}
+        .no-cards-msg.visible{display:block}
+
+        /* INSTITUTE QUICK STATS */
+        .inst-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;padding:20px 5%}
+        .inst-stat-card{background:var(--card-bg);border-radius:12px;padding:18px;border:2px solid var(--border);text-align:center;transition:border-color 0.2s,transform 0.2s;cursor:pointer}
+        .inst-stat-card:hover{transform:translateY(-3px)}
+        .inst-stat-card.iit-card{border-color:var(--iit-accent)}
+        .inst-stat-card.nit-card{border-color:var(--nit-accent)}
+        .inst-stat-card.iiit-card{border-color:var(--iiit-accent)}
+        .inst-stat-card.central-card{border-color:#ff9800}
+        .inst-stat-num{font-size:2rem;font-weight:800;margin-bottom:4px}
+        .inst-stat-num.iit{color:var(--iit-dark)}
+        .inst-stat-num.nit{color:var(--nit-dark)}
+        .inst-stat-num.iiit{color:var(--iiit-dark)}
+        .inst-stat-num.central{color:#e65100}
+        .inst-stat-lbl{font-size:0.85rem;color:var(--text-secondary)}
+        .inst-stat-sub{font-size:0.75rem;color:var(--text-secondary);margin-top:3px}
+
+        /* FOOTER */
+        .footer{background:var(--footer-bg);padding:44px 5%;margin-top:36px;border-top:3px solid var(--accent)}
+        .social-links{display:flex;gap:18px;margin-bottom:20px}
+        .social-links a{color:var(--accent-dark);text-decoration:none;font-size:1.4rem}
+        .footer-links{display:flex;flex-wrap:wrap;gap:14px 22px;margin-bottom:20px}
+        .footer-links a{color:var(--text-secondary);text-decoration:none;font-size:0.85rem}
+        .footer-links a:hover{color:var(--accent-dark)}
+        .copyright{color:var(--text-secondary);font-size:0.8rem}
+        .copyright p+p{margin-top:5px}
+
+        /* RESPONSIVE */
+        @media(max-width:900px){.nav-links{display:none}.hamburger{display:flex}.search-box{width:160px}.search-box:focus{width:200px}.featured-card{grid-column:span 1}.inst-tab{padding:10px 18px;font-size:0.88rem}}
+        @media(max-width:600px){.page-header h1{font-size:1.9rem}.page-header{padding:100px 5% 26px}.search-box{width:130px}.flash-grid{grid-template-columns:1fr}.section-header{flex-direction:column;align-items:flex-start;gap:5px}.stats{padding:16px 5%}.stat-number{font-size:1.6rem}.theme-toggle span:last-child{display:none}.inst-tabs{gap:4px}.inst-tab{border-radius:8px!important;flex:1;text-align:center;padding:8px 6px;font-size:0.8rem}}
+    </style>
+</head>
+<body>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+    <a href="index.html">Home</a>
+    <a href="pyq.html">PYQs</a>
+    <a href="ugcnet.html">UGC NET</a>
+    <a href="iit-nit.html" class="active">IIT/NIT/IIIT</a>
+    <a href="solutions.html">Solution Hub</a>
+    <a href="notes.html">Notes</a>
+    <a href="about.html">About</a>
+</nav>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="logo">📚 Libflix</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pyq.html">PYQs</a></li>
+        <li><a href="ugcnet.html">UGC NET</a></li>
+        <li><a href="iit-nit.html" class="active">IIT/NIT/IIIT</a></li>
+        <li><a href="solutions.html">Solution Hub</a></li>
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+        <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-box" id="searchInput" placeholder="Search institute..." autocomplete="off">
+            <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">
+            <span id="themeIcon">🌙</span><span id="themeText">Dark</span>
+        </button>
+        <button class="hamburger" id="hamburger" onclick="openMobileNav()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="page-header">
+    <h1>🏛️ IIT / NIT / IIIT Librarian Exams</h1>
+    <p>Previous year question papers for Librarian & Assistant Librarian posts across all premier technical institutes of India</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="pyq.html">PYQs</a> / <span>IIT/NIT/IIIT</span></div>
+    <div class="header-tags">
+        <span class="header-tag" style="background:var(--iit-accent)">🔴 7 IITs</span>
+        <span class="header-tag" style="background:var(--nit-accent)">🔵 31 NITs</span>
+        <span class="header-tag" style="background:var(--iiit-accent)">🟢 20 IIITs</span>
+        <span class="header-tag" style="background:#ff9800">🟠 Central Universities</span>
+    </div>
+</section>
+
+<!-- Stats -->
+<div class="stats">
+    <div class="stat-item"><div class="stat-number" style="color:var(--iit-dark)">7</div><div class="stat-label">IITs Covered</div></div>
+    <div class="stat-item"><div class="stat-number" style="color:var(--nit-dark)">31</div><div class="stat-label">NITs Covered</div></div>
+    <div class="stat-item"><div class="stat-number" style="color:var(--iiit-dark)">20</div><div class="stat-label">IIITs Covered</div></div>
+    <div class="stat-item"><div class="stat-number" style="color:#e65100">45+</div><div class="stat-label">Central Universities</div></div>
+    <div class="stat-item"><div class="stat-number" style="color:var(--accent-dark)">100+</div><div class="stat-label">Total Papers</div></div>
+</div>
+
+<!-- Quick institute overview cards -->
+<div class="inst-overview">
+    <div class="inst-stat-card iit-card" onclick="switchTab('iit')">
+        <div class="inst-stat-num iit">25</div>
+        <div class="inst-stat-lbl">IIT Papers</div>
+        <div class="inst-stat-sub">Bombay · Delhi · Madras · Kanpur · Kharagpur · Roorkee · Guwahati</div>
+    </div>
+    <div class="inst-stat-card nit-card" onclick="switchTab('nit')">
+        <div class="inst-stat-num nit">40+</div>
+        <div class="inst-stat-lbl">NIT Papers</div>
+        <div class="inst-stat-sub">Trichy · Warangal · Calicut · Surathkal · Rourkela + 26 more</div>
+    </div>
+    <div class="inst-stat-card iiit-card" onclick="switchTab('iiit')">
+        <div class="inst-stat-num iiit">15</div>
+        <div class="inst-stat-lbl">IIIT Papers</div>
+        <div class="inst-stat-sub">Allahabad · Gwalior · Jabalpur + 17 more</div>
+    </div>
+    <div class="inst-stat-card central-card" onclick="switchTab('central')">
+        <div class="inst-stat-num central">35</div>
+        <div class="inst-stat-lbl">Central Univ Papers</div>
+        <div class="inst-stat-sub">JNU · BHU · HCU · NEHU + 40 more</div>
+    </div>
+</div>
+
+<!-- Institute type tabs -->
+<div class="inst-tabs">
+    <div class="inst-tab all-tab active" onclick="switchTab('all')">All Institutes</div>
+    <div class="inst-tab iit" onclick="switchTab('iit')">🔴 IIT</div>
+    <div class="inst-tab nit" onclick="switchTab('nit')">🔵 NIT</div>
+    <div class="inst-tab iiit" onclick="switchTab('iiit')">🟢 IIIT</div>
+    <div class="inst-tab central" onclick="switchTab('central')">🟠 Central Univ</div>
+</div>
+
+<!-- Institute search -->
+<div class="inst-search-wrap">
+    <div class="inst-search-icon" style="position:relative;width:100%;max-width:480px">
+        <input type="text" class="inst-search" id="instSearch" placeholder="Search by institute name... e.g. IIT Bombay, NIT Trichy" oninput="instSearchFilter(this.value)">
+    </div>
+</div>
+
+<!-- ===== IIT SECTION ===== -->
+<div class="type-divider" id="iit-section" data-section="iit">
+    <div class="type-divider-line" style="background:var(--iit-accent)"></div>
+    <h2 style="color:var(--iit-dark)">🔴 IIT Librarian Papers</h2>
+    <div class="type-divider-line" style="background:var(--iit-accent)"></div>
+</div>
+<section class="pyq-section">
+    <div class="flash-grid">
+
+        <div class="flash-card" data-inst="iit" data-search="iit bombay librarian assistant librarian exam paper mumbai" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon iit">IIT</div><span class="card-badge iit-badge">Bombay</span></div>
+            <h3>IIT Bombay Librarian</h3>
+            <p>Previous papers for Librarian &amp; Deputy Librarian posts at IIT Bombay, Mumbai.</p>
+            <div class="year-dropdown-container iit-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select iit-sel" onchange="downloadPDF(this.value,'IIT Bombay');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="iit/bombay_2022.pdf">2022 – Librarian</option>
+                    <option value="iit/bombay_2019.pdf">2019 – Librarian</option>
+                    <option value="iit/bombay_2017.pdf">2017 – Asst. Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 3 Papers</span><a href="iit/bombay_bundle.pdf" download class="bundle-btn iit">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2017–2022</span><span>📝 3 Papers</span></div><a href="iit/bombay_bundle.pdf" class="card-link iit" download>Download →</a></div>
+        </div>
+
+        <div class="flash-card" data-inst="iit" data-search="iit delhi librarian assistant librarian exam paper new delhi" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon iit">IIT</div><span class="card-badge iit-badge">Delhi</span></div>
+            <h3>IIT Delhi Librarian</h3>
+            <p>Librarian and Assistant Librarian recruitment papers for IIT Delhi.</p>
+            <div class="year-dropdown-container iit-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select iit-sel" onchange="downloadPDF(this.value,'IIT Delhi');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="iit/delhi_2023.pdf">2023 – Librarian</option>
+                    <option value="iit/delhi_2020.pdf">2020 – Librarian</option>
+                    <option value="iit/delhi_2018.pdf">2018 – Asst. Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 3 Papers</span><a href="iit/delhi_bundle.pdf" download class="bundle-btn iit">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2018–2023</span><span>📝 3 Papers</span></div><a href="iit/delhi_bundle.pdf" class="card-link iit" download>Download →</a></div>
+        </div>
+
+        <div class="flash-card" data-inst="iit" data-search="iit madras librarian chennai exam paper tamil nadu" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon iit">IIT</div><span class="card-badge iit-badge">Madras</span></div>
+            <h3>IIT Madras Librarian</h3>
+            <p>Recruitment papers for Librarian posts at IIT Madras, Chennai.</p>
+            <div class="year-dropdown-container iit-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select iit-sel" onchange="downloadPDF(this.value,'IIT Madras');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="iit/madras_2022.pdf">2022 – Librarian</option>
+                    <option value="iit/madras_2019.pdf">2019 – Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 2 Papers</span><a href="iit/madras_bundle.pdf" download class="bundle-btn iit">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2019–2022</span><span>📝 2 Papers</span></div><a href="iit/madras_bundle.pdf" class="card-link iit" download>Download →</a></div>
+        </div>
+
+        <div class="flash-card" data-inst="iit" data-search="iit kanpur librarian assistant librarian exam paper uttar pradesh" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon iit">IIT</div><span class="card-badge iit-badge">Kanpur</span></div>
+            <h3>IIT Kanpur Librarian</h3>
+            <p>IIT Kanpur Librarian and Assistant Librarian previous recruitment papers.</p>
+            <div class="year-dropdown-container iit-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select iit-sel" onchange="downloadPDF(this.value,'IIT Kanpur');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="iit/kanpur_2021.pdf">2021 – Librarian</option>
+                    <option value="iit/kanpur_2018.pdf">2018 – Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 2 Papers</span><a href="iit/kanpur_bundle.pdf" download class="bundle-btn iit">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2018–2021</span><span>📝 2 Papers</span></div><a href="iit/kanpur_bundle.pdf" class="card-link iit" download>Download →</a></div>
+        </div>
+
+        <div class="flash-card" data-inst="iit" data-search="iit kharagpur librarian assistant librarian west bengal exam" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon iit">IIT</div><span class="card-badge iit-badge">Kharagpur</span></div>
+            <h3>IIT Kharagpur Librarian</h3>
+            <p>Oldest IIT's Librarian recruitment previous papers — comprehensive coverage.</p>
+            <div class="year-dropdown-container iit-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select iit-sel" onchange="downloadPDF(this.value,'IIT Kharagpur');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="iit/kgp_2023.pdf">2023 – Librarian</option>
+                    <option value="iit/kgp_2020.pdf">2020 – Librarian</option>
+                    <option value="iit/kgp_2017.pdf">2017 – Asst. Librarian</option>
+                    <option value="iit/kgp_2015.pdf">2015 – Asst. Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 4 Papers</span><a href="iit/kgp_bundle.pdf" download class="bundle-btn iit">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2015–2023</span><span>📝 4 Papers</span></div><a href="iit/kgp_bundle.pdf" class="card-link iit" download>Download →</a></div>
+        </div>
+
+        <!-- IIT Bundle -->
+        <div class="flash-card featured-card" data-inst="iit" data-search="iit complete bundle all iit librarian papers roorkee guwahati" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon iit" style="font-size:1.4rem">🔴</div><span class="card-badge iit-badge bundle">ALL IITs</span></div>
+            <h3>Complete IIT Librarian Bundle</h3>
+            <p>All available IIT Librarian papers in one download — IIT Bombay, Delhi, Madras, Kanpur, Kharagpur, Roorkee, and Guwahati. Includes all available years.</p>
+            <div class="card-footer">
+                <div class="card-stats"><span>🏫 7 IITs</span><span>📄 25+ Papers</span></div>
+                <a href="iit/all_iit_bundle.pdf" class="bundle-btn iit" download style="text-decoration:none;padding:7px 16px;border-radius:8px">📥 Download All IIT Papers →</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== NIT SECTION ===== -->
+<div class="type-divider" id="nit-section" data-section="nit">
+    <div class="type-divider-line" style="background:var(--nit-accent)"></div>
+    <h2 style="color:var(--nit-dark)">🔵 NIT Librarian Papers</h2>
+    <div class="type-divider-line" style="background:var(--nit-accent)"></div>
+</div>
+<section class="pyq-section">
+    <div class="flash-grid">
+
+        <div class="flash-card" data-inst="nit" data-search="nit trichy tiruchirappalli librarian assistant librarian exam paper" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon nit">NIT</div><span class="card-badge nit-badge">Trichy</span></div>
+            <h3>NIT Trichy Librarian</h3>
+            <p>NIT Tiruchirappalli Librarian recruitment papers — one of the most competitive NITs.</p>
+            <div class="year-dropdown-container nit-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select nit-sel" onchange="downloadPDF(this.value,'NIT Trichy');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="nit/trichy_2023.pdf">2023 – Librarian</option>
+                    <option value="nit/trichy_2021.pdf">2021 – Librarian</option>
+                    <option value="nit/trichy_2019.pdf">2019 – Asst. Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 3 Papers</span><a href="nit/trichy_bundle.pdf" download class="bundle-btn nit">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2019–2023</span><span>📝 3 Papers</span></div><a href="nit/trichy_bundle.pdf" class="card-link nit" download>Download →</a></div>
+        </div>
+
+        <div class="flash-card" data-inst="nit" data-search="nit warangal librarian assistant librarian exam paper telangana" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon nit">NIT</div><span class="card-badge nit-badge">Warangal</span></div>
+            <h3>NIT Warangal Librarian</h3>
+            <p>NIT Warangal Librarian &amp; Assistant Librarian recruitment exam papers.</p>
+            <div class="year-dropdown-container nit-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select nit-sel" onchange="downloadPDF(this.value,'NIT Warangal');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="nit/warangal_2022.pdf">2022 – Librarian</option>
+                    <option value="nit/warangal_2020.pdf">2020 – Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 2 Papers</span><a href="nit/warangal_bundle.pdf" download class="bundle-btn nit">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2020–2022</span><span>📝 2 Papers</span></div><a href="nit/warangal_bundle.pdf" class="card-link nit" download>Download →</a></div>
+        </div>
+
+        <div class="flash-card" data-inst="nit" data-search="nit calicut kozhikode librarian exam paper kerala" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon nit">NIT</div><span class="card-badge nit-badge">Calicut</span></div>
+            <h3>NIT Calicut Librarian</h3>
+            <p>NIT Calicut (Kozhikode) Librarian recruitment previous papers.</p>
+            <div class="year-dropdown-container nit-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select nit-sel" onchange="downloadPDF(this.value,'NIT Calicut');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="nit/calicut_2022.pdf">2022 – Librarian</option>
+                    <option value="nit/calicut_2019.pdf">2019 – Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 2 Papers</span><a href="nit/calicut_bundle.pdf" download class="bundle-btn nit">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2019–2022</span></div><a href="nit/calicut_bundle.pdf" class="card-link nit" download>Download →</a></div>
+        </div>
+
+        <div class="flash-card" data-inst="nit" data-search="nit rourkela librarian exam paper odisha" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon nit">NIT</div><span class="card-badge nit-badge">Rourkela</span></div>
+            <h3>NIT Rourkela Librarian</h3>
+            <p>NIT Rourkela Librarian recruitment papers — Odisha's premier technical institute.</p>
+            <div class="year-dropdown-container nit-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select nit-sel" onchange="downloadPDF(this.value,'NIT Rourkela');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="nit/rourkela_2023.pdf">2023 – Librarian</option>
+                    <option value="nit/rourkela_2021.pdf">2021 – Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 2 Papers</span><a href="nit/rourkela_bundle.pdf" download class="bundle-btn nit">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2021–2023</span></div><a href="nit/rourkela_bundle.pdf" class="card-link nit" download>Download →</a></div>
+        </div>
+
+        <!-- NIT Bundle -->
+        <div class="flash-card featured-card" data-inst="nit" data-search="nit complete bundle all nit librarian papers surathkal kurukshetra" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon nit" style="font-size:1.4rem">🔵</div><span class="card-badge nit-badge bundle">ALL NITs</span></div>
+            <h3>Complete NIT Librarian Bundle (31 NITs)</h3>
+            <p>All available NIT Librarian and Assistant Librarian papers in a single archive. Covers 31 NITs including Trichy, Warangal, Calicut, Surathkal, Rourkela, Kurukshetra, Jaipur, Silchar, and more.</p>
+            <div class="card-footer">
+                <div class="card-stats"><span>🏫 31 NITs</span><span>📄 40+ Papers</span></div>
+                <a href="nit/all_nit_bundle.pdf" class="bundle-btn nit" download style="text-decoration:none;padding:7px 16px;border-radius:8px">📥 Download All NIT Papers →</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== IIIT SECTION ===== -->
+<div class="type-divider" id="iiit-section" data-section="iiit">
+    <div class="type-divider-line" style="background:var(--iiit-accent)"></div>
+    <h2 style="color:var(--iiit-dark)">🟢 IIIT Librarian Papers</h2>
+    <div class="type-divider-line" style="background:var(--iiit-accent)"></div>
+</div>
+<section class="pyq-section">
+    <div class="flash-grid">
+
+        <div class="flash-card" data-inst="iiit" data-search="iiit allahabad librarian assistant librarian exam paper uttar pradesh" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon iiit">IIIT</div><span class="card-badge iiit-badge">Allahabad</span></div>
+            <h3>IIIT Allahabad Librarian</h3>
+            <p>IIIT Allahabad Librarian recruitment previous papers — one of the oldest IIITs.</p>
+            <div class="year-dropdown-container iiit-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select iiit-sel" onchange="downloadPDF(this.value,'IIIT Allahabad');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="iiit/allahabad_2022.pdf">2022 – Librarian</option>
+                    <option value="iiit/allahabad_2019.pdf">2019 – Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 2 Papers</span><a href="iiit/allahabad_bundle.pdf" download class="bundle-btn iiit">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2019–2022</span></div><a href="iiit/allahabad_bundle.pdf" class="card-link iiit" download>Download →</a></div>
+        </div>
+
+        <div class="flash-card" data-inst="iiit" data-search="iiit gwalior librarian exam paper madhya pradesh" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon iiit">IIIT</div><span class="card-badge iiit-badge">Gwalior</span></div>
+            <h3>IIIT Gwalior Librarian</h3>
+            <p>ABV-IIIT Gwalior Librarian &amp; Assistant Librarian recruitment papers.</p>
+            <div class="year-dropdown-container iiit-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select iiit-sel" onchange="downloadPDF(this.value,'IIIT Gwalior');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="iiit/gwalior_2021.pdf">2021 – Librarian</option>
+                    <option value="iiit/gwalior_2018.pdf">2018 – Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 2 Papers</span><a href="iiit/gwalior_bundle.pdf" download class="bundle-btn iiit">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2018–2021</span></div><a href="iiit/gwalior_bundle.pdf" class="card-link iiit" download>Download →</a></div>
+        </div>
+
+        <!-- IIIT Bundle -->
+        <div class="flash-card featured-card" data-inst="iiit" data-search="iiit complete bundle all iiit librarian papers jabalpur kancheepuram" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon iiit" style="font-size:1.4rem">🟢</div><span class="card-badge iiit-badge bundle">ALL IIITs</span></div>
+            <h3>Complete IIIT Librarian Bundle (20 IIITs)</h3>
+            <p>All available IIIT Librarian papers in one package — Allahabad, Gwalior, Jabalpur, Kancheepuram, Kota, Lucknow, Ranchi, and more.</p>
+            <div class="card-footer">
+                <div class="card-stats"><span>🏫 20 IIITs</span><span>📄 15+ Papers</span></div>
+                <a href="iiit/all_iiit_bundle.pdf" class="bundle-btn iiit" download style="text-decoration:none;padding:7px 16px;border-radius:8px">📥 Download All IIIT Papers →</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== CENTRAL UNIVERSITY ===== -->
+<div class="type-divider" id="central-section" data-section="central">
+    <div class="type-divider-line" style="background:#ff9800"></div>
+    <h2 style="color:#e65100">🟠 Central University Librarian Papers</h2>
+    <div class="type-divider-line" style="background:#ff9800"></div>
+</div>
+<section class="pyq-section">
+    <div class="flash-grid">
+
+        <div class="flash-card" data-inst="central" data-search="jnu jawaharlal nehru university librarian assistant librarian exam new delhi" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon central">JNU</div><span class="card-badge central-badge">Delhi</span></div>
+            <h3>JNU Librarian Exam</h3>
+            <p>Jawaharlal Nehru University Librarian &amp; Deputy Librarian recruitment papers.</p>
+            <div class="year-dropdown-container central-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select central-sel" onchange="downloadPDF(this.value,'JNU Librarian');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="central/jnu_2023.pdf">2023 – Librarian</option>
+                    <option value="central/jnu_2020.pdf">2020 – Deputy Librarian</option>
+                    <option value="central/jnu_2018.pdf">2018 – Asst. Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 3 Papers</span><a href="central/jnu_bundle.pdf" download class="bundle-btn central">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2018–2023</span></div><a href="central/jnu_bundle.pdf" class="card-link central" download>Download →</a></div>
+        </div>
+
+        <div class="flash-card" data-inst="central" data-search="bhu banaras hindu university librarian varanasi exam paper" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon central">BHU</div><span class="card-badge central-badge">Varanasi</span></div>
+            <h3>BHU Librarian Exam</h3>
+            <p>Banaras Hindu University Librarian posts previous recruitment papers.</p>
+            <div class="year-dropdown-container central-drop">
+                <label>📥 Select Paper:</label>
+                <select class="year-select central-sel" onchange="downloadPDF(this.value,'BHU Librarian');this.value=''">
+                    <option value="">-- Choose Paper --</option>
+                    <option value="central/bhu_2022.pdf">2022 – Librarian</option>
+                    <option value="central/bhu_2019.pdf">2019 – Librarian</option>
+                </select>
+                <div class="bundle-row"><span>📄 2 Papers</span><a href="central/bhu_bundle.pdf" download class="bundle-btn central">📥 Bundle</a></div>
+            </div>
+            <div class="card-footer"><div class="card-stats"><span>📅 2019–2022</span></div><a href="central/bhu_bundle.pdf" class="card-link central" download>Download →</a></div>
+        </div>
+
+        <!-- Central Bundle -->
+        <div class="flash-card featured-card" data-inst="central" data-search="central university complete bundle all librarian papers hcu hyderabad nehu" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon central" style="font-size:1.4rem">🟠</div><span class="card-badge central-badge bundle">ALL CUs</span></div>
+            <h3>Central University Complete Bundle (45+ Universities)</h3>
+            <p>All Central University Librarian papers in one archive — JNU, BHU, HCU, NEHU, AMU, EFLU, Pondicherry, Jamia Millia, and 40+ more central universities.</p>
+            <div class="card-footer">
+                <div class="card-stats"><span>🏫 45+ Universities</span><span>📄 35+ Papers</span></div>
+                <a href="central/all_central_bundle.pdf" class="bundle-btn central" download style="text-decoration:none;padding:7px 16px;border-radius:8px">📥 Download All Central Univ Papers →</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- MASTER BUNDLE CTA -->
+<section class="pyq-section">
+    <div style="background:linear-gradient(135deg,var(--iit-light),var(--nit-light),var(--iiit-light));border:2px solid var(--accent-dark);border-radius:18px;padding:36px;text-align:center">
+        <div style="font-size:3rem;margin-bottom:12px">🏆</div>
+        <h2 style="font-size:1.8rem;margin-bottom:10px">Ultimate Librarian Exam Master Bundle</h2>
+        <p style="color:var(--text-secondary);max-width:600px;margin:0 auto 20px">Every IIT, NIT, IIIT and Central University Librarian paper in one massive download. 100+ papers, all years, all institutes.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+            <a href="all/master_bundle.pdf" download style="background:var(--accent-dark);color:white;padding:12px 28px;border-radius:30px;text-decoration:none;font-weight:700;font-size:1rem">📥 Download Master Bundle</a>
+            <a href="pyq.html" style="background:var(--card-bg);color:var(--accent-dark);padding:12px 28px;border-radius:30px;text-decoration:none;font-weight:700;font-size:1rem;border:2px solid var(--accent-dark)">← Back to All PYQs</a>
+        </div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:14px">🔴 7 IITs &nbsp;·&nbsp; 🔵 31 NITs &nbsp;·&nbsp; 🟢 20 IIITs &nbsp;·&nbsp; 🟠 45+ Central Universities &nbsp;·&nbsp; 100% Free</p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="social-links">
+        <a href="https://www.youtube.com/@LIBflix-w6y" title="YouTube" target="_blank" rel="noopener">📺</a>
+        <a href="https://t.me/libflix369" title="Telegram" target="_blank" rel="noopener">💬</a>
+        <a href="mailto:libflix369@gmail.com" title="Email">📧</a>
+    </div>
+    <div class="footer-links">
+        <a href="#">About Us</a><a href="#">Privacy Policy</a><a href="#">Terms of Use</a>
+        <a href="#">Contact</a><a href="#">FAQ</a><a href="#">Help Center</a>
+    </div>
+    <div class="copyright">
+        <p>© 2025 LIS Study Hub. Complete PYQ Library for Library Science Aspirants</p>
+        <p>IIT, NIT, IIIT are autonomous institutions. All papers are for educational purposes only.</p>
+    </div>
+</footer>
+
+<script>
+    /* ===== DOWNLOAD ===== */
+    function downloadPDF(path, name) {
+        if (!path) return;
+        path.endsWith('.pdf') ? window.open(path, '_blank') : alert('PDF coming soon!');
+    }
+
+    /* ===== GLOW ===== */
+    function glowCard(card) {
+        card.classList.remove('glow'); void card.offsetWidth;
+        card.classList.add('glow');
+        setTimeout(() => card.classList.remove('glow'), 600);
+    }
+
+    /* ===== INSTITUTE TABS ===== */
+    function switchTab(type) {
+        document.querySelectorAll('.inst-tab').forEach(t => t.classList.remove('active'));
+        const tab = document.querySelector(`.inst-tab.${type === 'all' ? 'all-tab' : type}`);
+        if (tab) tab.classList.add('active');
+
+        document.querySelectorAll('.flash-card').forEach(card => {
+            card.classList.toggle('hidden', type !== 'all' && card.dataset.inst !== type);
+        });
+
+        // Show/hide section dividers
+        document.querySelectorAll('[data-section]').forEach(sec => {
+            sec.style.display = (type === 'all' || sec.dataset.section === type) ? 'flex' : 'none';
+        });
+
+        if (type !== 'all') {
+            const sec = document.getElementById(`${type}-section`);
+            if (sec) sec.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+
+        // Clear institute search
+        document.getElementById('instSearch').value = '';
+    }
+
+    /* ===== INSTITUTE NAME SEARCH ===== */
+    function instSearchFilter(query) {
+        query = query.trim().toLowerCase();
+        document.querySelectorAll('.flash-card').forEach(card => {
+            if (!query) { card.classList.remove('hidden'); return; }
+            const text = ((card.dataset.search || '') + ' ' + (card.querySelector('h3')?.textContent || '')).toLowerCase();
+            card.classList.toggle('hidden', !text.includes(query));
+        });
+        // Show all section dividers when searching
+        if (query) {
+            document.querySelectorAll('[data-section]').forEach(s => s.style.display = 'flex');
+            document.querySelectorAll('.inst-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('.inst-tab.all-tab')?.classList.add('active');
+        }
+    }
+
+    /* ===== NAVBAR SEARCH ===== */
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const searchClear = document.getElementById('searchClear');
+
+    function highlight(text, q) {
+        if (!q) return text;
+        return text.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'), '<mark>$1</mark>');
+    }
+
+    function performSearch(query) {
+        query = query.trim().toLowerCase();
+        searchClear.classList.toggle('visible', query.length > 0);
+        if (!query) { searchResults.classList.remove('open'); document.querySelectorAll('.flash-card').forEach(c=>c.classList.remove('hidden')); return; }
+        const matches = [];
+        document.querySelectorAll('.flash-card').forEach(card => {
+            const combined = ((card.dataset.search||'') + ' ' + (card.querySelector('h3')?.textContent||'') + ' ' + (card.querySelector('p')?.textContent||'')).toLowerCase();
+            if (combined.includes(query)) matches.push(card);
+        });
+        document.querySelectorAll('.flash-card').forEach(c => c.classList.toggle('hidden', !matches.includes(c)));
+        document.querySelectorAll('[data-section]').forEach(s => s.style.display = 'flex');
+        if (matches.length === 0) {
+            searchResults.innerHTML = `<div style="padding:18px;text-align:center;color:var(--text-secondary);font-size:0.88rem">No results for "<strong>${query}</strong>"</div>`;
+        } else {
+            searchResults.innerHTML = matches.map(card => {
+                const title = card.querySelector('h3')?.textContent || '';
+                const desc = (card.querySelector('p')?.textContent || '').substring(0,65) + '...';
+                const inst = card.dataset.inst || '';
+                const colors = {iit:'#f44336',nit:'#1976d2',iiit:'#388e3c',central:'#ff9800'};
+                return `<div class="sri" onclick="scrollToCard('${title.replace(/'/g,"\\'")}')">
+                    <div style="font-size:1.3rem">🏛️</div>
+                    <div style="flex:1;min-width:0">
+                        <div class="sri-title">${highlight(title, query)}</div>
+                        <div class="sri-desc">${desc}</div>
+                    </div>
+                    <span style="font-size:0.7rem;background:${colors[inst]||'#999'};color:white;padding:2px 7px;border-radius:10px;flex-shrink:0">${inst.toUpperCase()}</span>
+                </div>`;
+            }).join('');
+        }
+        searchResults.classList.add('open');
+    }
+
+    function scrollToCard(title) {
+        const card = Array.from(document.querySelectorAll('.flash-card')).find(c => c.querySelector('h3')?.textContent === title);
+        if (card) { card.classList.remove('hidden'); card.scrollIntoView({behavior:'smooth',block:'center'}); glowCard(card); }
+        searchResults.classList.remove('open'); searchInput.blur();
+    }
+
+    function clearSearch() {
+        searchInput.value = ''; searchClear.classList.remove('visible');
+        searchResults.classList.remove('open');
+        document.querySelectorAll('.flash-card').forEach(c => c.classList.remove('hidden'));
+    }
+
+    searchInput.addEventListener('input', e => performSearch(e.target.value));
+    searchInput.addEventListener('keydown', e => { if (e.key==='Escape') { clearSearch(); searchInput.blur(); }});
+    searchInput.addEventListener('focus', () => { if (searchInput.value.trim()) searchResults.classList.add('open'); });
+    document.addEventListener('click', e => { if (!e.target.closest('.search-wrapper')) searchResults.classList.remove('open'); });
+
+    /* ===== THEME ===== */
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        const dark = document.body.classList.contains('dark-theme');
+        document.getElementById('themeIcon').textContent = dark ? '☀️' : '🌙';
+        document.getElementById('themeText').textContent = dark ? 'Light' : 'Dark';
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+        document.getElementById('themeIcon').textContent = '☀️';
+        document.getElementById('themeText').textContent = 'Light';
+    }
+
+    /* ===== NAVBAR ===== */
+    window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50));
+    function openMobileNav() { document.getElementById('mobileNav').classList.add('open'); document.getElementById('hamburger').classList.add('open'); document.body.style.overflow='hidden'; }
+    function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); document.getElementById('hamburger').classList.remove('open'); document.body.style.overflow=''; }
+</script>
+</body>
+</html>

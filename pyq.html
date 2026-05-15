@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PYQ Library - Libflix</title>
+    <style>
+        /* ===== THEME VARIABLES ===== */
+        :root {
+            --bg-primary: #f0f8ff;
+            --bg-secondary: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #546e7a;
+            --accent-light: #e3f2fd;
+            --accent: #4fc3f7;
+            --accent-dark: #0288d1;
+            --card-bg: white;
+            --card-shadow: 0 4px 12px rgba(79, 195, 247, 0.2);
+            --card-hover: 0 8px 24px rgba(2, 136, 209, 0.3);
+            --border: #b3e5fc;
+            --nav-bg: linear-gradient(to bottom, #e3f2fd, transparent);
+            --nav-scrolled: #e3f2fd;
+            --footer-bg: white;
+            --glow-color: rgba(79, 195, 247, 0.5);
+            --badge-bg: #4fc3f7;
+        }
+
+        body.dark-theme {
+            --bg-primary: #141414;
+            --bg-secondary: #1f1f1f;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-light: #330000;
+            --accent: #e50914;
+            --accent-dark: #b20710;
+            --card-bg: #1f1f1f;
+            --card-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+            --card-hover: 0 8px 24px rgba(229, 9, 20, 0.5);
+            --border: #330000;
+            --nav-scrolled: #141414;
+            --footer-bg: #1f1f1f;
+            --glow-color: rgba(229, 9, 20, 0.5);
+            --badge-bg: #e50914;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 16px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: var(--nav-bg);
+        }
+        .navbar.scrolled {
+            background: var(--nav-scrolled);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-dark);
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            list-style: none;
+        }
+        .nav-links a {
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-dark); }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Search box */
+        .search-wrapper {
+            position: relative;
+        }
+        .search-box {
+            background: var(--card-bg);
+            border: 2px solid var(--accent);
+            padding: 8px 15px 8px 36px;
+            border-radius: 20px;
+            color: var(--text-primary);
+            width: 220px;
+            outline: none;
+            font-size: 0.9rem;
+            transition: width 0.3s, border-color 0.2s;
+        }
+        .search-box:focus { border-color: var(--accent-dark); width: 270px; }
+        .search-icon {
+            position: absolute;
+            left: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .search-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: none;
+            line-height: 1;
+            padding: 2px;
+        }
+        .search-clear.visible { display: block; }
+
+        /* Search results dropdown */
+        .search-results {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            width: 360px;
+            background: var(--card-bg);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            max-height: 360px;
+            overflow-y: auto;
+            display: none;
+            z-index: 2000;
+        }
+        .search-results.open { display: block; }
+        .search-result-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            transition: background 0.15s;
+        }
+        .search-result-item:last-child { border-bottom: none; }
+        .search-result-item:hover { background: var(--accent-light); }
+        .search-result-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .search-result-text { flex: 1; min-width: 0; }
+        .search-result-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+        .search-result-title mark {
+            background: rgba(255,200,0,0.4);
+            color: inherit;
+            border-radius: 2px;
+            padding: 0 1px;
+        }
+        .search-result-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .search-result-badge {
+            font-size: 0.7rem;
+            background: var(--badge-bg);
+            color: white;
+            padding: 2px 7px;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+        .search-no-results {
+            padding: 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.2s, transform 0.2s;
+            flex-shrink: 0;
+        }
+        .theme-toggle:hover { transform: scale(1.05); background: var(--accent-dark); }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Mobile nav drawer */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-secondary);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+        }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .mobile-nav a.active, .mobile-nav a:hover { color: var(--accent-dark); }
+        .mobile-nav-close {
+            position: absolute;
+            top: 20px;
+            right: 5%;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            padding: 110px 5% 40px;
+            background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%);
+            text-align: center;
+        }
+        .page-header h1 { font-size: 2.8rem; margin-bottom: 12px; }
+        .page-header p { font-size: 1.1rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto; }
+        .breadcrumb { margin-top: 16px; color: var(--text-secondary); font-size: 0.9rem; }
+        .breadcrumb a { color: var(--accent-dark); text-decoration: none; }
+
+        /* ===== STATS BAR ===== */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 28px 5%;
+            background: var(--bg-secondary);
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 1.9rem; font-weight: bold; color: var(--accent-dark); }
+        .stat-label { color: var(--text-secondary); font-size: 0.9rem; }
+
+        /* ===== FILTER TAGS ===== */
+        .filter-section { padding: 28px 5% 8px; }
+        .filter-tags {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .filter-tag {
+            background: var(--card-bg);
+            padding: 9px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border: 2px solid var(--accent);
+            color: var(--text-primary);
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .filter-tag:hover, .filter-tag.active { background: var(--accent); color: white; transform: translateY(-2px); }
+
+        /* No results message */
+        .no-results-msg {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            grid-column: 1/-1;
+        }
+
+        /* ===== PYQ SECTIONS ===== */
+        .pyq-section { padding: 36px 5%; }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+        .section-header h2 { font-size: 1.7rem; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .section-header a { color: var(--accent-dark); text-decoration: none; font-weight: 500; font-size: 0.9rem; }
+
+        /* ===== FLASH CARDS ===== */
+        .flash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+        }
+
+        .flash-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 22px 18px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: var(--card-shadow);
+            border: 2px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Staggered float delays */
+        .flash-card:nth-child(1)  { animation-delay: 0s; }
+        .flash-card:nth-child(2)  { animation-delay: 0.2s; }
+        .flash-card:nth-child(3)  { animation-delay: 0.4s; }
+        .flash-card:nth-child(4)  { animation-delay: 0.6s; }
+        .flash-card:nth-child(5)  { animation-delay: 0.8s; }
+        .flash-card:nth-child(6)  { animation-delay: 1s; }
+        .flash-card:nth-child(7)  { animation-delay: 1.2s; }
+        .flash-card:nth-child(8)  { animation-delay: 1.4s; }
+        .flash-card:nth-child(9)  { animation-delay: 1.6s; }
+        .flash-card:nth-child(10) { animation-delay: 1.8s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-7px); }
+        }
+
+        .flash-card:hover, .flash-card:focus-within {
+            animation-play-state: paused;
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: var(--card-hover);
+        }
+
+        .flash-card.hidden {
+            display: none;
+        }
+
+        .flash-card.glow {
+            animation: cardGlow 0.5s ease forwards;
+        }
+        @keyframes cardGlow {
+            0%   { box-shadow: 0 0 0px var(--glow-color); }
+            50%  { box-shadow: 0 0 40px var(--glow-color); transform: scale(1.04); }
+            100% { box-shadow: var(--card-shadow); transform: translateY(-5px); }
+        }
+
+        /* Shimmer on hover */
+        .flash-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s;
+            pointer-events: none;
+        }
+        .flash-card:hover::after { left: 100%; }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 13px;
+        }
+        .card-icon {
+            font-size: 1.4rem;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            flex-shrink: 0;
+        }
+        .card-badge {
+            background: var(--badge-bg);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .flash-card h3 { color: var(--text-primary); font-size: 1.2rem; margin-bottom: 8px; }
+        .flash-card p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 12px; flex-grow: 1; }
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+        .card-stats { display: flex; gap: 12px; color: var(--text-secondary); font-size: 0.82rem; flex-wrap: wrap; }
+        .card-link { color: var(--accent-dark); text-decoration: none; font-weight: bold; font-size: 0.88rem; white-space: nowrap; }
+
+        /* Type-specific icon colors */
+        .flash-card[data-type="state"]      .card-icon { background: #4caf50; color: white; }
+        .flash-card[data-type="ugc"]        .card-icon { background: #9c27b0; color: white; }
+        .flash-card[data-type="university"] .card-icon { background: #ff9800; color: white; }
+        .flash-card[data-type="govt"]       .card-icon { background: #f44336; color: white; }
+        .flash-card[data-type="kvs"]        .card-icon { background: #2196f3; color: white; }
+
+        /* Featured span */
+        .featured-card { grid-column: span 2; background: linear-gradient(135deg, var(--accent-light), var(--card-bg)); border: 2px solid var(--accent); }
+
+        /* Year dropdown styling */
+        .year-dropdown-container {
+            margin: 12px 0;
+            padding: 13px;
+            background: var(--accent-light);
+            border-radius: 8px;
+        }
+        .year-dropdown-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        .year-select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 2px solid var(--accent);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+        }
+        .year-select:focus { border-color: var(--accent-dark); }
+        .bundle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+        .bundle-row span { color: var(--text-secondary); font-size: 0.85rem; }
+        .bundle-btn {
+            background: var(--accent-dark);
+            color: white;
+            padding: 7px 13px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: opacity 0.2s;
+        }
+        .bundle-btn:hover { opacity: 0.85; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--footer-bg);
+            padding: 44px 5%;
+            margin-top: 36px;
+            border-top: 3px solid var(--accent);
+        }
+        .social-links { display: flex; gap: 18px; margin-bottom: 20px; }
+        .social-links a { color: var(--accent-dark); text-decoration: none; font-size: 1.4rem; }
+        .footer-links { display: flex; flex-wrap: wrap; gap: 16px 24px; margin-bottom: 20px; }
+        .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.88rem; }
+        .footer-links a:hover { color: var(--accent-dark); }
+        .copyright { color: var(--text-secondary); font-size: 0.82rem; }
+        .copyright p + p { margin-top: 6px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .search-box { width: 160px; }
+            .search-box:focus { width: 200px; }
+            .featured-card { grid-column: span 1; }
+        }
+        @media (max-width: 600px) {
+            .page-header h1 { font-size: 2rem; }
+            .page-header { padding: 100px 5% 30px; }
+            .search-box { width: 130px; font-size: 0.82rem; }
+            .search-box:focus { width: 170px; }
+            .search-results { width: 90vw; right: 0; left: auto; }
+            .flash-grid { grid-template-columns: 1fr; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+            .stats { padding: 18px 5%; }
+            .stat-number { font-size: 1.5rem; }
+            .theme-toggle span:last-child { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Mobile Nav Drawer -->
+<nav class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+    <a href="index.html">Home</a>
+    <a href="pyq.html" class="active">PYQs</a>
+    <a href="solutions.html">Solution Hub</a>
+    <a href="notes.html">Notes</a>
+    <a href="books.html">Books</a>
+    <a href="digital.html">Digital Library</a>
+    <a href="about.html">About</a>
+</nav>
+
+<!-- Navigation -->
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="logo">📚 Libflix</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pyq.html" class="active">PYQs</a></li>
+        <li><a href="solutions.html">Solution Hub</a></li>
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="digital.html">Digital Library</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+        <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-box" id="searchInput" placeholder="Search PYQs..." autocomplete="off">
+            <button class="search-clear" id="searchClear" onclick="clearSearch()" title="Clear search">✕</button>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+            <span id="themeIcon">🌙</span>
+            <span id="themeText">Dark</span>
+        </button>
+        <button class="hamburger" id="hamburger" onclick="openMobileNav()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Page Header -->
+<section class="page-header">
+    <h1>📋 Previous Year Questions (PYQ) Library</h1>
+    <p>Access all previous papers from various exams — all in one place</p>
+    <div class="breadcrumb">
+        <a href="index.html">Home</a> / <span>PYQ Library</span>
+    </div>
+</section>
+
+<!-- Stats Bar -->
+<div class="stats">
+    <div class="stat-item"><div class="stat-number">9,000+</div><div class="stat-label">Total Questions</div></div>
+    <div class="stat-item"><div class="stat-number">25+</div><div class="stat-label">Exam Categories</div></div>
+    <div class="stat-item"><div class="stat-number">18</div><div class="stat-label">Indian States</div></div>
+    <div class="stat-item"><div class="stat-number">50+</div><div class="stat-label">Universities</div></div>
+</div>
+
+<!-- Filter Tags -->
+<div class="filter-section">
+    <div class="filter-tags">
+        <div class="filter-tag active" onclick="filterCards('all', this)">All PYQs</div>
+        <div class="filter-tag" onclick="filterCards('state', this)">State Wise SET</div>
+        <div class="filter-tag" onclick="filterCards('ugc', this)">UGC NET</div>
+        <div class="filter-tag" onclick="filterCards('university', this)">University Exams</div>
+        <div class="filter-tag" onclick="filterCards('govt', this)">IIT/NIT/IIIT</div>
+        <div class="filter-tag" onclick="filterCards('kvs', this)">KVS/NVS/EMRS</div>
+    </div>
+</div>
+
+<!-- ===== STATE WISE SET ===== -->
+<section class="pyq-section" id="state-wise">
+    <div class="section-header">
+        <h2><span>🗺️</span> State Wise SET Examination Papers</h2>
+        <a href="set.html">View All States →</a>
+    </div>
+    <div class="flash-grid">
+
+        <!-- Maharashtra SET -->
+        <div class="flash-card" data-type="state" data-filter="state" data-search="maharashtra set mhset assistant professor library science" onclick="glowCard(this)">
+            <div class="card-header">
+                <div class="card-icon">M</div>
+                <span class="card-badge">2011–2025</span>
+            </div>
+            <h3>Maharashtra SET</h3>
+            <p>Complete question papers of Maharashtra State Eligibility Test for Assistant Professor in Library Science.</p>
+            <div class="year-dropdown-container">
+                <label>📅 Select Paper to Download:</label>
+                <select class="year-select" onchange="downloadPDF(this.value, 'Maharashtra SET'); this.value=''">
+                    <option value="">-- Choose Year &amp; Paper --</option>
+                    <optgroup label="2011">
+                        <option value="mhset/2011aug.pdf">2011 – 7 Aug</option>
+                        <option value="mhset/2011nov.pdf">2011 – 27 Nov</option>
+                    </optgroup>
+                    <optgroup label="2013">
+                        <option value="mhset/2013feb2.pdf">2013 Feb – Paper II</option>
+                        <option value="mhset/2013feb3.pdf">2013 Feb – Paper III</option>
+                        <option value="mhset/2013dec2.pdf">2013 Dec – Paper II</option>
+                        <option value="mhset/2013dec3.pdf">2013 Dec – Paper III</option>
+                    </optgroup>
+                    <optgroup label="2015">
+                        <option value="mhset/2015aug2.pdf">2015 Aug – Paper II</option>
+                        <option value="mhset/2015aug3.pdf">2015 Aug – Paper III</option>
+                    </optgroup>
+                    <optgroup label="2016">
+                        <option value="mhset/2016may2.pdf">2016 May – Paper II</option>
+                        <option value="mhset/2016may3.pdf">2016 May – Paper III</option>
+                    </optgroup>
+                    <optgroup label="2017">
+                        <option value="mhset/2017apr2.pdf">2017 April – Paper II</option>
+                        <option value="mhset/2017apr3.pdf">2017 April – Paper III</option>
+                    </optgroup>
+                    <optgroup label="2018">
+                        <option value="mhset/2018jan2.pdf">2018 Jan – Paper II</option>
+                        <option value="mhset/2018jan3.pdf">2018 Jan – Paper III</option>
+                    </optgroup>
+                    <optgroup label="2019">
+                        <option value="mhset/2019june2.pdf">2019 June – Paper II</option>
+                    </optgroup>
+                    <optgroup label="2020">
+                        <option value="mhset/2020june2.pdf">2020 June – Paper II</option>
+                    </optgroup>
+                    <optgroup label="2021">
+                        <option value="mhset/2021sept2.pdf">2021 Sept – Paper II</option>
+                    </optgroup>
+                    <optgroup label="2023">
+                        <option value="mhset/2023march2.pdf">2023 March – Paper II</option>
+                    </optgroup>
+                    <optgroup label="2024">
+                        <option value="mhset/2024april2.pdf">2024 April – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2025">
+                        <option value="mhset/2025june2.pdf">2025 June – Question Paper</option>
+                    </optgroup>
+                </select>
+                <div class="bundle-row">
+                    <span>📄 21 Papers</span>
+                    <a href="mhset/bundle.pdf" download class="bundle-btn">📥 Complete Bundle</a>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="card-stats"><span>📅 21 Papers</span><span>📝 2000+ Qs</span></div>
+                <a href="mhset/bundle.pdf" class="card-link" download>📥 Download All →</a>
+            </div>
+        </div>
+
+        <!-- Gujarat SET -->
+        <div class="flash-card" data-type="state" data-filter="state" data-search="gujarat set gset assistant professor library science" onclick="glowCard(this)">
+            <div class="card-header">
+                <div class="card-icon">GJ</div>
+                <span class="card-badge">2002–2025</span>
+            </div>
+            <h3>Gujarat SET</h3>
+            <p>Complete question papers of Gujarat State Eligibility Test for Assistant Professor in Library Science.</p>
+            <div class="year-dropdown-container">
+                <label>📅 Select Paper to Download:</label>
+                <select class="year-select" onchange="downloadPDF(this.value, 'Gujarat SET'); this.value=''">
+                    <option value="">-- Choose Year &amp; Paper --</option>
+                    <optgroup label="2002">
+                        <option value="gjset/2002g2jan.pdf">2002 Jan – Question Paper</option>
+                        <option value="gjset/2002g2dec.pdf">2002 Dec – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2003">
+                        <option value="gjset/2003g2dec.pdf">2003 Dec – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2004">
+                        <option value="gjset/2004g2july.pdf">2004 July – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2006">
+                        <option value="gjset/2006g2july.pdf">2006 July – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2008">
+                        <option value="gjset/2008g2dec.pdf">2008 Dec – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2010">
+                        <option value="gjset/2010g2oct.pdf">2010 Oct – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2011">
+                        <option value="gjset/2011g2oct.pdf">2011 Oct – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2013">
+                        <option value="gjset/2013g2dec.pdf">2013 Dec – Paper II</option>
+                        <option value="gjset/2013g3dec.pdf">2013 Dec – Paper III</option>
+                    </optgroup>
+                    <optgroup label="2014">
+                        <option value="gjset/2014g2oct.pdf">2014 Oct – Paper II</option>
+                        <option value="gjset/2014g3oct.pdf">2014 Oct – Paper III</option>
+                    </optgroup>
+                    <optgroup label="2016">
+                        <option value="gjset/2016g2sept.pdf">2016 Sept – Paper II</option>
+                        <option value="gjset/2016g3sept.pdf">2016 Sept – Paper III</option>
+                    </optgroup>
+                    <optgroup label="2017">
+                        <option value="gjset/2017g2aug.pdf">2017 Aug – Paper II</option>
+                        <option value="gjset/2017g3aug.pdf">2017 Aug – Paper III</option>
+                    </optgroup>
+                    <optgroup label="2018">
+                        <option value="gjset/2018g2sept.pdf">2018 Sept – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2019">
+                        <option value="gjset/2019g2dec.pdf">2019 Dec – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2022">
+                        <option value="gjset/2022g2jan.pdf">2022 Jan – Question Paper</option>
+                        <option value="gjset/2022g2nov.pdf">2022 Nov – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2023">
+                        <option value="gjset/2023g2nov.pdf">2023 Nov – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2024">
+                        <option value="gjset/2024g2dec.pdf">2024 Dec – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2025">
+                        <option value="gjset/2025g2nov.pdf">2025 Nov – Question Paper</option>
+                    </optgroup>
+                </select>
+                <div class="bundle-row">
+                    <span>📄 23 Papers</span>
+                    <a href="gjset/bundle.pdf" download class="bundle-btn">📥 Complete Bundle</a>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="card-stats"><span>📅 23 Papers</span><span>📝 2000+ Qs</span></div>
+                <a href="gjset/bundle.pdf" class="card-link" download>📥 Download All →</a>
+            </div>
+        </div>
+
+        <!-- Chhattisgarh SET -->
+        <div class="flash-card" data-type="state" data-filter="state" data-search="chhattisgarh set cgset assistant professor library science" onclick="glowCard(this)">
+            <div class="card-header">
+                <div class="card-icon">CG</div>
+                <span class="card-badge">2017–2024</span>
+            </div>
+            <h3>Chhattisgarh SET</h3>
+            <p>Complete question papers of Chhattisgarh State Eligibility Test for Assistant Professor in Library Science.</p>
+            <div class="year-dropdown-container">
+                <label>📅 Select Paper to Download:</label>
+                <select class="year-select" onchange="downloadPDF(this.value, 'Chhattisgarh SET'); this.value=''">
+                    <option value="">-- Choose Year &amp; Paper --</option>
+                    <optgroup label="2017">
+                        <option value="cgset/cg2017_2.pdf">2017 – Paper II</option>
+                        <option value="cgset/cg2017_3.pdf">2017 – Paper III</option>
+                    </optgroup>
+                    <optgroup label="2018">
+                        <option value="cgset/cg2018.pdf">2018 – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2019">
+                        <option value="cgset/cg2019.pdf">2019 – Question Paper</option>
+                    </optgroup>
+                    <optgroup label="2024">
+                        <option value="cgset/cg2024.pdf">2024 – Question Paper</option>
+                    </optgroup>
+                </select>
+                <div class="bundle-row">
+                    <span>📄 5 Papers</span>
+                    <a href="cgset/bundle.pdf" download class="bundle-btn">📥 Complete Bundle</a>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="card-stats"><span>📅 5 Papers</span><span>📝 300+ Qs</span></div>
+                <a href="cgset/bundle.pdf" class="card-link" download>📥 Download All →</a>
+            </div>
+        </div>
+
+        <!-- Karnataka SET -->
+        <div class="flash-card" data-type="state" data-filter="state" data-search="karnataka set kset assistant professor library science" onclick="glowCard(this)">
+            <div class="card-header">
+                <div class="card-icon">KT</div>
+                <span class="card-badge">2013–2021</span>
+            </div>
+            <h3>Karnataka SET</h3>
+            <p>Complete question papers of Karnataka State Eligibility Test for Assistant Professor in Library Science.</p>
+            <div class="year-dropdown-container">
+                <label>📅 Select Paper to Download:</label>
+                <select class="year-select" onchange="downloadPDF(this.value, 'Karnataka SET'); this.value=''">
+                    <option value="">-- Choose Year &amp; Paper --</option>
+                    <optgroup label="2013">
+                        <option value="kset/2013kset2.pdf">2013 – Paper II</option>
+                        <option value="kset/2013kset3.pdf">2013 – Paper III</option>
+                    </optgroup>
+                    <optgroup label="2014">
+                        <option value="kset/2014kset2.pdf">2014 – Paper II</option>
+                        <option value="kset/2014kset3.pdf">2014 – Paper III</option>
+                        <option value="kset/2014ksetans.pdf">2014 – Answer Key</option>
+                    </optgroup>
+                    <optgroup label="2015">
+                        <option value="kset/2015kset2.pdf">2015 – Paper II</option>
+                        <option value="kset/2015kset3.pdf">2015 – Paper III</option>
+                        <option value="kset/2015ksetans.pdf">2015 – Answer Key</option>
+                    </optgroup>
+                    <optgroup label="2016">
+                        <option value="kset/2016kset2.pdf">2016 – Paper II</option>
+                        <option value="kset/2016kset3.pdf">2016 – Paper III</option>
+                        <option value="kset/2016ksetans.pdf">2016 – Answer Key</option>
+                    </optgroup>
+                    <optgroup label="2017">
+                        <option value="kset/2017kset2.pdf">2017 – Paper II</option>
+                        <option value="kset/2017kset3.pdf">2017 – Paper III</option>
+                        <option value="kset/2017ksetans.pdf">2017 – Answer Key</option>
+                    </optgroup>
+                    <optgroup label="2018">
+                        <option value="kset/2018kset2.pdf">2018 – Paper II</option>
+                        <option value="kset/2018ksetans.pdf">2018 – Answer Key</option>
+                    </optgroup>
+                    <optgroup label="2020">
+                        <option value="kset/2020kset2.pdf">2020 – Paper II</option>
+                        <option value="kset/2020ksetans.pdf">2020 – Answer Key</option>
+                    </optgroup>
+                </select>
+                <div class="bundle-row">
+                    <span>📄 12 Papers</span>
+                    <a href="kset/bundle.pdf" download class="bundle-btn">📥 Complete Bundle</a>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="card-stats"><span>📅 12 Papers</span><span>📝 1000+ Qs</span></div>
+                <a href="kset/bundle.pdf" class="card-link" download>📥 Download All →</a>
+            </div>
+        </div>
+
+</section>
+
+<!-- ===== UGC NET ===== -->
+<section class="pyq-section" id="ugc-net">
+    <div class="section-header">
+        <h2><span>🎯</span> UGC NET Library Science Papers</h2>
+        <a href="ugcnet.html">View All UGC NET →</a>
+    </div>
+    <div class="flash-grid">
+
+        <!-- Featured UGC Bundle -->
+        <div class="flash-card featured-card" data-type="ugc" data-filter="ugc" data-search="ugc net library science complete bundle all papers solved" onclick="glowCard(this)">
+            <div class="card-header">
+                <div class="card-icon">🏆</div>
+                <span class="card-badge" style="background:#ff9800;">MOST POPULAR</span>
+            </div>
+            <h3>UGC NET Complete Bundle (2012–2025)</h3>
+            <p>All UGC NET Library Science papers from 2012 to 2025 with detailed solutions, answer keys, and topic-wise analysis. Includes Paper 1 &amp; 2.</p>
+            <div class="card-footer">
+                <div class="card-stats"><span>📅 26 Papers</span><span>📝 3900 Qs</span></div>
+                <a href="ugcnet.html" class="card-link">Access Bundle →</a>
+            </div>
+        </div>
+
+        <!-- UGC NET June 2024 -->
+        <div class="flash-card" data-type="ugc" data-filter="ugc" data-search="ugc net june 2024 library science answer key" onclick="glowCard(this)">
+            <div class="card-header">
+                <div class="card-icon">📅</div>
+                <span class="card-badge">NEW</span>
+            </div>
+            <h3>UGC NET June 2024</h3>
+            <p>Latest UGC NET Library Science paper.</p>
+            <div class="card-footer">
+                <div class="card-stats"><span>📝 150 Qs</span><span>⭐ 98% Accuracy</span></div>
+                <a href="ugcnet/NETJune2024.pdf" class="card-link">View →</a>
+            </div>
+        </div>
+
+        <!-- UGC NET Dec 2024 -->
+        <div class="flash-card" data-type="ugc" data-filter="ugc" data-search="ugc net december 2023 library science solved video" onclick="glowCard(this)">
+            <div class="card-header">
+                <div class="card-icon">📅</div>
+                <span class="card-badge">NEW</span>
+            </div>
+            <h3>UGC NET December 2024</h3>
+            <p>Complete Question Paper.</p>
+            <div class="card-footer">
+                <div class="card-stats"><span>📝 150 Qs</span><span>⭐ 98% Accuracy</span></div>
+                <a href="ugcnet/NETDec2024.pdf" class="card-link">View →</a>
+            </div>
+        </div>
+</section>
+
+<!-- ===== UNIVERSITY ===== -->
+<section class="pyq-section" id="university">
+    <div class="section-header">
+        <h2><span>🏛️</span> University Wise Syllabus &amp; Semester Papers</h2>
+        <a href="university.html">View All Universities →</a>
+    </div>
+    <div class="flash-grid">
+
+        <div class="flash-card" data-type="university" data-filter="university" data-search="delhi university du mlis blis library science semester" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">DU</div><span class="card-badge">MLIS</span></div>
+            <h3>Delhi University (DU)</h3>
+            <p>Complete syllabus and previous semester papers for MLIS and BLIS courses.</p>
+            <div class="card-footer"><div class="card-stats"><span>📅 2018–2024</span><span>📝 24 Papers</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+        
+        <div class="flash-card" data-type="university" data-filter="university" data-search="jnu jawaharlal nehru university mlis phd library science entrance" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">JNU</div><span class="card-badge">MLIS/PhD</span></div>
+            <h3>Jawaharlal Nehru University</h3>
+            <p>JNU LIS department semester papers with entrance exam questions.</p>
+            <div class="card-footer"><div class="card-stats"><span>📅 2019–2024</span><span>📝 18 Papers</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+
+        <div class="flash-card" data-type="university" data-filter="university" data-search="bhu banaras hindu university blis mlis library science" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">BHU</div><span class="card-badge">BLIS/MLIS</span></div>
+            <h3>Banaras Hindu University</h3>
+            <p>BHU Department of Library and Information Science previous year papers.</p>
+            <div class="card-footer"><div class="card-stats"><span>📅 2017–2024</span><span>📝 20 Papers</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+
+        <div class="flash-card" data-type="university" data-filter="university" data-search="university calcutta lis library information science semester" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">CU</div><span class="card-badge">Semester Wise</span></div>
+            <h3>University of Calcutta</h3>
+            <p>Calcutta University LIS department semester question papers with syllabus.</p>
+            <div class="card-footer"><div class="card-stats"><span>📅 2016–2024</span><span>📝 22 Papers</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+
+        <div class="flash-card" data-type="university" data-filter="university" data-search="mumbai university blis mlis library science previous year" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">MU</div><span class="card-badge">BLIS/MLIS</span></div>
+            <h3>University of Mumbai</h3>
+            <p>Mumbai University Library Science previous year papers with solutions.</p>
+            <div class="card-footer"><div class="card-stats"><span>📅 2018–2024</span><span>📝 16 Papers</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+
+        <div class="flash-card" data-type="university" data-filter="university" data-search="ignou blis mlis certificate library science term end exam distance" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">IG</div><span class="card-badge">Distance</span></div>
+            <h3>IGNOU LIS Programs</h3>
+            <p>IGNOU BLIS, MLIS, and Certificate programs previous term-end exam papers.</p>
+            <div class="card-footer"><div class="card-stats"><span>📅 2015–2024</span><span>📝 30+ Papers</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== GOVT / IIT NIT IIIT ===== -->
+<section class="pyq-section" id="govt-exams">
+    <div class="section-header">
+        <h2><span>🏢</span> IIT / NIT / IIIT Librarian Exams</h2>
+        <a href="iit.html">View All Govt Exams →</a>
+    </div>
+    <div class="flash-grid">
+
+        <div class="flash-card" data-type="govt" data-filter="govt" data-search="iit librarian exam previous paper bombay delhi madras kanpur kharagpur" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">IIT</div><span class="card-badge">IITs</span></div>
+            <h3>IIT Librarian Exams</h3>
+            <p>Previous year papers for IIT Bombay, Delhi, Madras, Kanpur, Kharagpur Librarian posts.</p>
+            <div class="card-footer"><div class="card-stats"><span>🏫 7 IITs</span><span>📝 25 Papers</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+
+        <div class="flash-card" data-type="govt" data-filter="govt" data-search="nit librarian exam previous paper recruitment assistant" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">NIT</div><span class="card-badge">NITs</span></div>
+            <h3>NIT Librarian Exams</h3>
+            <p>Complete collection of NIT Librarian and Assistant Librarian recruitment papers.</p>
+            <div class="card-footer"><div class="card-stats"><span>🏫 31 NITs</span><span>📝 40+ Papers</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+
+        <div class="flash-card" data-type="govt" data-filter="govt" data-search="iiit librarian exam allahabad gwalior jabalpur library" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">IIIT</div><span class="card-badge">IIITs</span></div>
+            <h3>IIIT Librarian Exams</h3>
+            <p>IIIT Allahabad, Gwalior, Jabalpur and other IIITs Librarian exam papers.</p>
+            <div class="card-footer"><div class="card-stats"><span>🏫 20 IIITs</span><span>📝 15 Papers</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+
+        <div class="flash-card" data-type="govt" data-filter="govt" data-search="central university librarian previous paper recruitment india" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">CU</div><span class="card-badge">Central Univ</span></div>
+            <h3>Central Universities Librarian</h3>
+            <p>Previous papers for Librarian posts in various Central Universities across India.</p>
+            <div class="card-footer"><div class="card-stats"><span>🏫 45+ Univ</span><span>📝 35 Papers</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== KVS / NVS / EMRS ===== -->
+<section class="pyq-section" id="school-exams">
+    <div class="section-header">
+        <h2><span>🏫</span> KVS | NVS | EMRS Librarian Exams</h2>
+        <a href="kvsnvs.html">View All School Exams →</a>
+    </div>
+    <div class="flash-grid">
+
+        <div class="flash-card" data-type="kvs" data-filter="kvs" data-search="kvs kendriya vidyalaya librarian exam previous paper answer key" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">KVS</div><span class="card-badge" style="background:#2196f3;">KVS</span></div>
+            <h3>KVS Librarian Previous Papers</h3>
+            <p>Kendriya Vidyalaya Sangathan Librarian exam papers from 2010 to 2024 with answer keys.</p>
+            <div class="card-footer"><div class="card-stats"><span>📅 12 Papers</span><span>📝 1800 Qs</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+
+        <div class="flash-card" data-type="kvs" data-filter="kvs" data-search="nvs navodaya vidyalaya librarian exam solved paper recruitment" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">NVS</div><span class="card-badge" style="background:#4caf50;">NVS</span></div>
+            <h3>NVS Librarian Previous Papers</h3>
+            <p>Navodaya Vidyalaya Samiti Librarian recruitment exam solved papers.</p>
+            <div class="card-footer"><div class="card-stats"><span>📅 8 Papers</span><span>📝 1200 Qs</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+
+        <div class="flash-card" data-type="kvs" data-filter="kvs" data-search="emrs ekalavya model residential school librarian exam solved" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">EMRS</div><span class="card-badge" style="background:#ff9800;">EMRS</span></div>
+            <h3>EMRS Librarian Previous Papers</h3>
+            <p>Ekalavya Model Residential School Librarian exam papers with detailed solutions.</p>
+            <div class="card-footer"><div class="card-stats"><span>📅 5 Papers</span><span>📝 750 Qs</span></div><a href="#" class="card-link">Browse →</a></div>
+        </div>
+
+        <div class="flash-card featured-card" data-type="kvs" data-filter="kvs" data-search="kvs nvs emrs bundle complete school librarian exam" onclick="glowCard(this)">
+            <div class="card-header"><div class="card-icon">🎯</div><span class="card-badge" style="background:#e50914;">BEST VALUE</span></div>
+            <h3>KVS + NVS + EMRS Complete Bundle</h3>
+            <p>All school-level Librarian exam papers in one package. Includes KVS, NVS, EMRS, and other school service commissions.</p>
+            <div class="card-footer"><div class="card-stats"><span>📅 25 Papers</span><span>📝 3750 Qs</span></div><a href="#" class="card-link">Get Bundle →</a></div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="social-links">
+        <a href="https://www.youtube.com/@LIBflix-w6y" title="YouTube" target="_blank" rel="noopener">📺</a>
+        <a href="https://t.me/libflix369" title="Telegram" target="_blank" rel="noopener">💬</a>
+        <a href="mailto:libflix369@gmail.com" title="Email">📧</a>
+    </div>
+    <div class="footer-links">
+        <a href="about.html">About Us</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="contact.html">Contact</a>
+        <a href="faq.html">FAQ</a>
+    </div>
+    <div class="copyright">
+        <p>© 2025 LIS Study Hub. Complete PYQ Library for Library Science Aspirants</p>
+        <p>UGC NET, KVS, NVS, SET are trademarks of their respective bodies.</p>
+    </div>
+</footer>
+
+<script>
+    /* ===== SINGLE downloadPDF FUNCTION ===== */
+    function downloadPDF(pdfPath, examName) {
+        if (!pdfPath) return;
+        if (pdfPath.endsWith('.pdf')) {
+            window.open(pdfPath, '_blank');
+        } else {
+            alert('PDF coming soon!');
+        }
+    }
+
+    /* ===== GLOW EFFECT ===== */
+    function glowCard(card) {
+        card.classList.remove('glow');
+        void card.offsetWidth; // reflow to restart animation
+        card.classList.add('glow');
+        setTimeout(() => card.classList.remove('glow'), 600);
+    }
+
+    /* ===== FILTER CARDS ===== */
+   function filterCards(filterType, el) {
+    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+    if (el) el.classList.add('active');
+
+    document.querySelectorAll('.flash-card').forEach(card => {
+        const match = filterType === 'all' || card.dataset.filter === filterType;
+        card.classList.toggle('hidden', !match);
+    });
+
+    // ✅ Delete this line → clearSearch();
+}
+
+    /* ===== DYNAMIC SEARCH ===== */
+    const searchInput  = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const searchClear  = document.getElementById('searchClear');
+    const allCards     = () => document.querySelectorAll('.flash-card');
+
+    function highlight(text, query) {
+        if (!query) return text;
+        const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return text.replace(re, '<mark>$1</mark>');
+    }
+
+    function performSearch(query) {
+        query = query.trim().toLowerCase();
+        searchClear.classList.toggle('visible', query.length > 0);
+
+        if (!query) {
+            searchResults.classList.remove('open');
+            // Restore filter state
+            const activeFilter = document.querySelector('.filter-tag.active');
+            const ft = activeFilter ? activeFilter.textContent.trim() : 'All PYQs';
+            allCards().forEach(c => c.classList.remove('hidden'));
+            return;
+        }
+
+        // Build results
+        const matches = [];
+        allCards().forEach(card => {
+            const searchData = (card.dataset.search || '').toLowerCase();
+            const title = card.querySelector('h3') ? card.querySelector('h3').textContent : '';
+            const desc  = card.querySelector('p')  ? card.querySelector('p').textContent  : '';
+            const combined = (title + ' ' + desc + ' ' + searchData).toLowerCase();
+
+            if (combined.includes(query)) {
+                matches.push({ card, title, desc });
+            }
+        });
+
+        // Show/hide cards inline
+        allCards().forEach(card => {
+            const inMatch = matches.some(m => m.card === card);
+            card.classList.toggle('hidden', !inMatch);
+        });
+
+        // Dropdown results
+        if (matches.length === 0) {
+            searchResults.innerHTML = `<div class="search-no-results">No results found for "<strong>${query}</strong>"</div>`;
+        } else {
+            searchResults.innerHTML = matches.map(({card, title, desc}) => {
+                const badge = card.querySelector('.card-badge') ? card.querySelector('.card-badge').textContent : '';
+                const icon  = card.querySelector('.card-icon')  ? card.querySelector('.card-icon').textContent  : '📄';
+                const truncDesc = desc.length > 70 ? desc.substring(0, 70) + '...' : desc;
+                return `
+                <div class="search-result-item" onclick="scrollToCard(this)" data-card-title="${title}">
+                    <div class="search-result-icon">${icon}</div>
+                    <div class="search-result-text">
+                        <div class="search-result-title">${highlight(title, query)}</div>
+                        <div class="search-result-desc">${truncDesc}</div>
+                    </div>
+                    ${badge ? `<span class="search-result-badge">${badge}</span>` : ''}
+                </div>`;
+            }).join('');
+        }
+
+        searchResults.classList.add('open');
+    }
+
+    function scrollToCard(resultEl) {
+        const title = resultEl.dataset.cardTitle;
+        const card = Array.from(allCards()).find(c => {
+            const h3 = c.querySelector('h3');
+            return h3 && h3.textContent === title;
+        });
+        if (card) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            glowCard(card);
+        }
+        searchResults.classList.remove('open');
+        searchInput.blur();
+    }
+
+    function clearSearch() {
+        searchInput.value = '';
+        searchClear.classList.remove('visible');
+        searchResults.classList.remove('open');
+        allCards().forEach(c => c.classList.remove('hidden'));
+    }
+
+    // Input event
+    searchInput.addEventListener('input', (e) => performSearch(e.target.value));
+
+    // Keyboard support
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') { clearSearch(); searchInput.blur(); }
+    });
+
+    // Focus to reopen dropdown if there's a query
+    searchInput.addEventListener('focus', () => {
+        if (searchInput.value.trim()) {
+            searchResults.classList.add('open');
+        }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-wrapper')) {
+            searchResults.classList.remove('open');
+        }
+    });
+
+    /* ===== THEME ===== */
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        const dark = document.body.classList.contains('dark-theme');
+        document.getElementById('themeIcon').textContent = dark ? '☀️' : '🌙';
+        document.getElementById('themeText').textContent = dark ? 'Light' : 'Dark';
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+        document.getElementById('themeIcon').textContent = '☀️';
+        document.getElementById('themeText').textContent = 'Light';
+    }
+
+    /* ===== NAVBAR SCROLL ===== */
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    /* ===== MOBILE NAV ===== */
+    function openMobileNav() {
+        document.getElementById('mobileNav').classList.add('open');
+        document.getElementById('hamburger').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeMobileNav() {
+        document.getElementById('mobileNav').classList.remove('open');
+        document.getElementById('hamburger').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+</script>
+
+</body>
+</html>

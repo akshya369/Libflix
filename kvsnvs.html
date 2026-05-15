@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KVS, NVS, EMRS Librarian Previous Year Papers - Complete collection for Library Science exams">
+    <title>KVS/NVS/EMRS - Librarian PYQs | Libflix</title>
+    <style>
+        :root {
+            --bg-primary: #f0f8ff;
+            --bg-secondary: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #546e7a;
+            --accent-light: #e3f2fd;
+            --accent: #4fc3f7;
+            --accent-dark: #0288d1;
+            --card-bg: white;
+            --border: #b3e5fc;
+            --nav-scrolled: #e3f2fd;
+            --footer-bg: white;
+            --kvs-accent: #f44336;
+            --kvs-light: #ffebee;
+            --nvs-accent: #2196f3;
+            --nvs-light: #e3f2fd;
+            --emrs-accent: #4caf50;
+            --emrs-light: #e8f5e9;
+        }
+        body.dark-theme {
+            --bg-primary: #141414;
+            --bg-secondary: #1f1f1f;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-light: #330000;
+            --accent: #e50914;
+            --accent-dark: #b20710;
+            --card-bg: #1f1f1f;
+            --border: #330000;
+            --nav-scrolled: #141414;
+            --footer-bg: #1f1f1f;
+            --kvs-accent: #ef5350;
+            --kvs-light: #3a1e1e;
+            --nvs-accent: #64b5f6;
+            --nvs-light: #1a2a3a;
+            --emrs-accent: #81c784;
+            --emrs-light: #1b3b1f;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;transition:all 0.3s}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6}
+
+        /* NAVBAR (same structure) */
+        .navbar{position:fixed;top:0;width:100%;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;z-index:1000;background:linear-gradient(to bottom,var(--accent-light),transparent)}
+        .navbar.scrolled{background:var(--nav-scrolled);box-shadow:0 2px 10px rgba(0,0,0,0.08)}
+        .logo{font-size:1.8rem;font-weight:800;color:var(--accent-dark);text-decoration:none}
+        .nav-links{display:flex;gap:20px;list-style:none}
+        .nav-links a{font-weight:700;color:var(--text-primary);text-decoration:none;font-size:0.9rem}
+        .nav-links a:hover,.nav-links a.active{color:var(--accent-dark)}
+        .nav-right{display:flex;align-items:center;gap:12px}
+        .theme-toggle{background:var(--accent);color:white;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;font-weight:bold}
+        .theme-toggle:hover{transform:scale(1.05)}
+        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+        .hamburger span{display:block;width:22px;height:2px;background:var(--text-primary);border-radius:2px}
+        .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+        .hamburger.open span:nth-child(2){opacity:0}
+        .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+        .mobile-nav{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-secondary);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+        .mobile-nav.open{display:flex}
+        .mobile-nav a{font-size:1.4rem;font-weight:700;color:var(--text-primary);text-decoration:none}
+        .mobile-nav a.active,.mobile-nav a:hover{color:var(--accent-dark)}
+        .mobile-nav-close{position:absolute;top:20px;right:5%;background:none;border:none;font-size:1.8rem;cursor:pointer}
+
+        /* HERO */
+        .page-header{padding:110px 5% 44px;background:linear-gradient(135deg,var(--kvs-light) 0%,var(--accent-light) 100%);text-align:center}
+        .page-header h1{font-size:2.8rem;margin-bottom:12px}
+        .breadcrumb{margin-top:16px}
+        .breadcrumb a{color:var(--accent-dark);text-decoration:none}
+        .header-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+        .header-tag{color:white;padding:4px 14px;border-radius:20px;font-size:0.8rem;font-weight:600}
+
+        /* EXAM CARDS */
+        .exam-grid{padding:40px 5%;display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:30px}
+        .exam-card{background:var(--card-bg);border-radius:20px;padding:28px;border:2px solid var(--border);transition:all 0.3s}
+        .exam-card:hover{transform:translateY(-8px)}
+        .exam-header{display:flex;align-items:center;gap:15px;margin-bottom:20px}
+        .exam-icon{font-size:3rem}
+        .exam-title{font-size:1.6rem;font-weight:700}
+        .exam-details{color:var(--text-secondary);margin-bottom:20px}
+        .year-list{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0}
+        .year-btn{background:var(--bg-primary);border:2px solid var(--border);padding:6px 14px;border-radius:20px;cursor:pointer;transition:all 0.2s}
+        .year-btn:hover{transform:scale(1.05)}
+        .download-all{display:inline-block;margin-top:15px;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;text-align:center}
+
+        /* FOOTER */
+        .footer{background:var(--footer-bg);padding:44px 5%;margin-top:36px;border-top:3px solid var(--accent)}
+        .social-links{display:flex;gap:18px;margin-bottom:20px}
+        .social-links a{color:var(--accent-dark);text-decoration:none;font-size:1.4rem}
+        .footer-links{display:flex;flex-wrap:wrap;gap:14px 22px;margin-bottom:20px}
+        .footer-links a{color:var(--text-secondary);text-decoration:none;font-size:0.85rem}
+        .copyright{color:var(--text-secondary);font-size:0.8rem}
+
+        @media(max-width:900px){.nav-links{display:none}.hamburger{display:flex}}
+        @media(max-width:600px){.page-header h1{font-size:2rem}.exam-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+    <a href="index.html">Home</a>
+    <a href="pyq.html">PYQs</a>
+    <a href="ugcnet.html">UGC NET</a>
+    <a href="set.html">State SETs</a>
+    <a href="university.html">University</a>
+    <a href="iit.html">IIT/NIT/IIIT</a>
+    <a href="kvsnvs.html" class="active">KVS/NVS/EMRS</a>
+</nav>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="logo">📚 Libflix</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pyq.html">PYQs</a></li>
+        <li><a href="ugcnet.html">UGC NET</a></li>
+        <li><a href="set.html">State SETs</a></li>
+        <li><a href="university.html">University</a></li>
+        <li><a href="iit.html">IIT/NIT/IIIT</a></li>
+        <li><a href="kvsnvs.html" class="active">KVS/NVS/EMRS</a></li>
+    </ul>
+    <div class="nav-right">
+        <button class="theme-toggle" onclick="toggleTheme()"><span id="themeIcon">🌙</span><span>Dark</span></button>
+        <button class="hamburger" id="hamburger" onclick="openMobileNav()"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="page-header">
+    <h1>📚 KVS | NVS | EMRS Librarian</h1>
+    <p>Complete previous year papers for Kendriya Vidyalaya, Navodaya Vidyalaya, and Eklavya Model Residential School Librarian exams</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="pyq.html">PYQs</a> / <span>KVS/NVS/EMRS</span></div>
+    <div class="header-tags">
+        <span class="header-tag" style="background:var(--kvs-accent)">KVS Librarian</span>
+        <span class="header-tag" style="background:var(--nvs-accent)">NVS Librarian</span>
+        <span class="header-tag" style="background:var(--emrs-accent)">EMRS Librarian</span>
+    </div>
+</section>
+
+<!-- Exam Cards -->
+<div class="exam-grid">
+    <!-- KVS Card -->
+    <div class="exam-card" style="border-top:5px solid var(--kvs-accent)">
+        <div class="exam-header">
+            <div class="exam-icon">🏫</div>
+            <div class="exam-title" style="color:var(--kvs-accent)">KVS Librarian</div>
+        </div>
+        <div class="exam-details">
+            <p>Kendriya Vidyalaya Sangathan Librarian recruitment exam papers. Complete collection with answer keys.</p>
+            <p><strong>Exam Pattern:</strong> Written Test + Interview | <strong>Total Papers:</strong> 12+</p>
+        </div>
+        <div class="year-list" id="kvsYears"></div>
+        <a href="#" class="download-all" style="background:var(--kvs-accent);color:white" onclick="downloadAll('kvs')">📥 Download All KVS Papers</a>
+    </div>
+
+    <!-- NVS Card -->
+    <div class="exam-card" style="border-top:5px solid var(--nvs-accent)">
+        <div class="exam-header">
+            <div class="exam-icon">🏫</div>
+            <div class="exam-title" style="color:var(--nvs-accent)">NVS Librarian</div>
+        </div>
+        <div class="exam-details">
+            <p>Navodaya Vidyalaya Samiti Librarian exam papers. Updated with latest patterns and answer keys.</p>
+            <p><strong>Exam Pattern:</strong> CBT + Interview | <strong>Total Papers:</strong> 10+</p>
+        </div>
+        <div class="year-list" id="nvsYears"></div>
+        <a href="#" class="download-all" style="background:var(--nvs-accent);color:white" onclick="downloadAll('nvs')">📥 Download All NVS Papers</a>
+    </div>
+
+    <!-- EMRS Card -->
+    <div class="exam-card" style="border-top:5px solid var(--emrs-accent)">
+        <div class="exam-header">
+            <div class="exam-icon">🏫</div>
+            <div class="exam-title" style="color:var(--emrs-accent)">EMRS Librarian</div>
+        </div>
+        <div class="exam-details">
+            <p>Eklavya Model Residential School Librarian exam papers. Latest 2024 papers included.</p>
+            <p><strong>Exam Pattern:</strong> Objective + Descriptive | <strong>Total Papers:</strong> 8+</p>
+        </div>
+        <div class="year-list" id="emrsYears"></div>
+        <a href="#" class="download-all" style="background:var(--emrs-accent);color:white" onclick="downloadAll('emrs')">📥 Download All EMRS Papers</a>
+    </div>
+</div>
+
+<!-- Syllabus Section -->
+<section style="padding:20px 5% 40px">
+    <div style="background:var(--card-bg);border-radius:15px;padding:28px;border:2px solid var(--border)">
+        <h2 style="margin-bottom:20px">📖 Exam Syllabus Comparison</h2>
+        <div style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse">
+                <thead>
+                    <tr style="background:var(--accent-light)">
+                        <th style="padding:12px;text-align:left">Topic</th>
+                        <th style="padding:12px;text-align:left">KVS</th>
+                        <th style="padding:12px;text-align:left">NVS</th>
+                        <th style="padding:12px;text-align:left">EMRS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding:10px;border-bottom:1px solid var(--border)">Library Classification</td><td>✅</td><td>✅</td><td>✅</td></tr>
+                    <tr><td style="padding:10px;border-bottom:1px solid var(--border)">Cataloguing</td><td>✅</td><td>✅</td><td>✅</td></tr>
+                    <tr><td style="padding:10px;border-bottom:1px solid var(--border)">Library Management</td><td>✅</td><td>✅</td><td>✅</td></tr>
+                    <tr><td style="padding:10px;border-bottom:1px solid var(--border)">IT & Digital Libraries</td><td>✅</td><td>✅</td><td>✅</td></tr>
+                    <tr><td style="padding:10px;border-bottom:1px solid var(--border)">Reference Services</td><td>✅</td><td>✅</td><td>✅</td></tr>
+                    <tr><td style="padding:10px;border-bottom:1px solid var(--border)">Current Affairs</td><td>✅</td><td>✅</td><td>✅</td></tr>
+                    <tr><td style="padding:10px;border-bottom:1px solid var(--border)">Teaching Aptitude</td><td>✅</td><td>✅</td><td>-</td></tr>
+                    <tr><td style="padding:10px">General Knowledge</td><td>✅</td><td>✅</td><td>✅</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="social-links">
+        <a href="https://www.youtube.com/@LIBflix-w6y" target="_blank">📺</a>
+        <a href="https://t.me/libflix369" target="_blank">💬</a>
+        <a href="mailto:libflix369@gmail.com">📧</a>
+    </div>
+    <div class="footer-links">
+        <a href="#">About Us</a><a href="#">Privacy Policy</a><a href="#">Terms of Use</a>
+        <a href="#">Contact</a><a href="#">FAQ</a><a href="#">Help Center</a>
+    </div>
+    <div class="copyright">
+        <p>© 2025 LIS Study Hub. Complete PYQ Library for Library Science Aspirants</p>
+    </div>
+</footer>
+
+<script>
+    const examData = {
+        kvs: { years: ["2016", "2018", "2020", "2022", "2023", "2024"], papers: 12 },
+        nvs: { years: ["2017", "2019", "2021", "2022", "2023"], papers: 10 },
+        emrs: { years: ["2019", "2020", "2021", "2022", "2023", "2024"], papers: 8 }
+    };
+
+    function renderYearButtons(exam, containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = examData[exam].years.map(year => `
+            <button class="year-btn" onclick="downloadPaper('${exam}', '${year}')">${year}</button>
+        `).join('');
+    }
+
+    function downloadPaper(exam, year) {
+        window.open(`kvs_nvs_papers/${exam}_${year}.pdf`, '_blank');
+    }
+
+    function downloadAll(exam) {
+        window.open(`kvs_nvs_papers/${exam}_complete_bundle.zip`, '_blank');
+    }
+
+    renderYearButtons('kvs', 'kvsYears');
+    renderYearButtons('nvs', 'nvsYears');
+    renderYearButtons('emrs', 'emrsYears');
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        const dark = document.body.classList.contains('dark-theme');
+        document.getElementById('themeIcon').textContent = dark ? '☀️' : '🌙';
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }
+    
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+        document.getElementById('themeIcon').textContent = '☀️';
+    }
+
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    function openMobileNav() {
+        document.getElementById('mobileNav').classList.add('open');
+        document.getElementById('hamburger').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeMobileNav() {
+        document.getElementById('mobileNav').classList.remove('open');
+        document.getElementById('hamburger').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+</script>
+</body>
+</html>
